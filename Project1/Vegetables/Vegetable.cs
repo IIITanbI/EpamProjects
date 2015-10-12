@@ -6,33 +6,24 @@ using System.Threading.Tasks;
 
 namespace Project1.Vegetables
 {
-    public class Calories
+    public interface IVegetable
     {
-        public double Fat { get; set; }
-        public double Protein { get; set; }
-        public double Carbohydrate { get; set; }
-        
-        public Calories(double protein, double fat, double carbohydrate)
-        {
-            this.Protein = protein;
-            this.Fat = fat;
-            this.Carbohydrate = carbohydrate;
-        }
-
-        public double Count
-        {
-            get { return Fat*9 + Protein*4 + Carbohydrate*4; }
-        }
-
+        string Name { get; }
+        double Weight { get; }
+        Calories Calories { get; }
     }
-    public abstract class Vegetable
+
+    public abstract class Vegetable : IVegetable
     {
+        public string Name { get; }
+        public double Weight { get;}
+        public Calories Calories { get; }
 
-        public double Weight { get; }
-
-        protected Vegetable(double weight)
+        protected Vegetable(string name, double weight, Calories calories)
         {
+            Name = name;
             Weight = weight;
+            Calories = calories;
         }
     }
 }
