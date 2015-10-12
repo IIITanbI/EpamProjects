@@ -27,12 +27,17 @@ namespace Project1
             salad.Add(potato);
             salad.Add(fryPotato);
             salad.Add(cucmber);
-            Console.WriteLine("ttoal calories = " + salad.TotalCalories);
+            Console.WriteLine("total calories = " + salad.TotalCalories);
             Console.WriteLine();
             Console.WriteLine();
             salad.PrintVegetables();
             var tt = salad.GetVegetables(0, 1000);
  
+            Console.WriteLine();
+            Console.WriteLine();
+            salad.PrintVegetables();
+            
+            salad.Sort(salad.CompareByName);
             Console.WriteLine();
             Console.WriteLine();
             salad.PrintVegetables();

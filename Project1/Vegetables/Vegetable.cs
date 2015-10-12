@@ -13,7 +13,7 @@ namespace Project1.Vegetables
         Calories Calories { get; }
     }
 
-    public abstract class Vegetable : IVegetable
+    public class Vegetable : IVegetable
     {
         public string Name { get; }
         public double Weight { get;}
