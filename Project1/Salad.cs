@@ -25,7 +25,19 @@ namespace Project1
         }
     }
 
+    public class Test<TMat, TCol>
+        where TMat : Vegetable
+        where TCol : ICollection<Vegetable>//, ICloneable
 
+    {
+        private TCol collection;
+
+        public Test(TMat item)
+        {
+            collection.Add(item);
+            collection.OrderBy(mat => mat.Calories);
+        }
+    }
     public class Salad : ICollection<IVegetable>
     {
  

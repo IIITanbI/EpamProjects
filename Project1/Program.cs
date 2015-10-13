@@ -42,6 +42,8 @@ namespace Project1
             Console.WriteLine();
             salad.PrintVegetables();
 
+            Test<Vegetable, HashSet<Vegetable>> ttt = new Test<Vegetable, HashSet<Vegetable>>(potato);
+
         }
     }
 }

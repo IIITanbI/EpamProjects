@@ -11,6 +11,7 @@ namespace Project1.Vegetables
         public Cucumber(double weight) 
             : base("Cucumber", weight, new Calories(0.8, 0.1, 2.8))
         {
+
         }
     }
 }
