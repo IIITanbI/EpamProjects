@@ -102,14 +102,14 @@ namespace Project1
             Console.WriteLine();
             salad.PrintVegetables();
             
-            salad.Sort(VegetableComparators.CompareByName);
+            salad.Sort(VegetableComparasions.CompareByName);
             Console.WriteLine();
             Console.WriteLine();
             salad.PrintVegetables();
 
             salad.Sort(vegetable => vegetable.Calories, new CompareByCalories());
             salad.PrintVegetables();
-            salad.Sort(VegetableComparators.CompareByWeight);
+            salad.Sort(VegetableComparasions.CompareByWeight);
 
 
             Console.WriteLine("TESTTTT");
