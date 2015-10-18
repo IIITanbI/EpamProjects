@@ -52,60 +52,35 @@ namespace Project1
         }
     }
 
-    public interface IMyCollection<T> : ICollection<T>, ICloneable
-    {
-        
-    }
+   
     
-    public class Salad : IEnumerable<IVegetable>
+    public class Salad 
     {
-        private IMyCollection<IVegetable> _ingridients = null;
+        private IMyCollection<IIngredient> _ingridients = null;
 
         public Salad()
         {
-            this._ingridients = new MyList<IVegetable>();
+            this._ingridients = new MyList<IIngredient>();
         }
-        public Salad(IMyCollection<IVegetable> ingridients)
+        public Salad(IMyCollection<IIngredient> ingridients)
         {
-            var copy = (IMyCollection<IVegetable>) ingridients.Clone();
+            var copy = (IMyCollection<IIngredient>) ingridients.Clone();
             copy.Clear();
             copy.AddCloneRange(ingridients);
 
             this._ingridients = copy;
         }
 
-        private IVegetable[] CloneCollectionObjects()
-        {
-            IVegetable[] copy = new IVegetable[this._ingridients.Count];
-            int ind = 0;
-
-            lock (this)
-            {
-                foreach (var veg in this._ingridients)
-                {
-                    copy[ind] = (IVegetable)veg.Clone();
-                    ind++;
-                }
-            }
-
-            //var cp = (IMyCollection<IVegetable>)this._ingridients.Clone();
-            //cp.Clear();
-            //cp.AddCloneRange(this._ingridients);
-            //return cp;
-
-            return copy;
-        }
-
-        public void Sort<TKey>(Func<IVegetable, TKey> keySelector)
+        public void Sort<TKey>(Func<IIngredient, TKey> keySelector)
         {
             this.Sort(keySelector, null);
         }
-        public void Sort<TKey>(Func<IVegetable, TKey> keySelector, IComparer<TKey> comparer)
+        public void Sort<TKey>(Func<IIngredient, TKey> keySelector, IComparer<TKey> comparer)
         {
-            IVegetable[] copy = this._ingridients.CloneObjectsToArray();
+            IIngredient[] copy = this._ingridients.CloneObjectsToArray();
             var sorted = copy.OrderBy(keySelector, comparer);
 
-            var cp = (IMyCollection<IVegetable>)this._ingridients.Clone();
+            var cp = (IMyCollection<IIngredient>)this._ingridients.Clone();
             cp.Initialize(copy);
             this._ingridients = cp;
 
@@ -126,15 +101,15 @@ namespace Project1
                 
             */
         }
-        public void Sort(IComparer<IVegetable> comparer)
+        public void Sort(IComparer<IIngredient> comparer)
         {
-            IVegetable[] copy = this._ingridients.CloneObjectsToArray();
+            IIngredient[] copy = this._ingridients.CloneObjectsToArray();
             Array.Sort(copy, comparer);
             this._ingridients.Initialize(copy);
         }
-        public void Sort(Comparison<IVegetable> comparison)
+        public void Sort(Comparison<IIngredient> comparison)
         {
-            IVegetable[] copy = this._ingridients.CloneObjectsToArray();
+            IIngredient[] copy = this._ingridients.CloneObjectsToArray();
             Array.Sort(copy, comparison);
             this._ingridients.Initialize(copy);
         }
@@ -143,23 +118,23 @@ namespace Project1
         {
             foreach (var vegetable in this._ingridients)
             {
-                Console.WriteLine(vegetable.Name + " " + vegetable.Calories + " " + vegetable.Weight);
+                Console.WriteLine(vegetable);
             }
         }
 
-        public IMyCollection<IVegetable> GetVegetables(double bottom, double upper)
+        public IMyCollection<IIngredient> GetVegetables(double bottom, double upper)
         {
-            var copy = (IMyCollection<IVegetable>)this._ingridients.Clone();
+            var copy = (IMyCollection<IIngredient>)this._ingridients.Clone();
             copy.Clear();
 
-            var temp = this._ingridients.Where(x => x.Calories > bottom && x.Calories < upper);
+            var temp = this._ingridients.Where(x => x.CaloriesPer100G > bottom && x.CaloriesPer100G < upper);
             copy.AddCloneRange(temp);
 
             return copy;
         }
-        public IMyCollection<IVegetable> GetVegetables(Func<IVegetable, bool> func)
+        public IMyCollection<IIngredient> GetVegetables(Func<IIngredient, bool> func)
         {
-            var copy = (IMyCollection<IVegetable>)this._ingridients.Clone();
+            var copy = (IMyCollection<IIngredient>)this._ingridients.Clone();
             copy.Clear();
 
             var temp = this._ingridients.Where(x => func(x) == true);
@@ -175,31 +150,23 @@ namespace Project1
                 Calories res = new Calories();
                 foreach (var vegetable in this._ingridients)
                 {
-                    res += vegetable.Calories * (vegetable.Weight / 100.0);
+                    res += vegetable.CaloriesPer100G * (vegetable.Weight / 100.0);
                 }
                 return res;
             }
         }
-        public IMyCollection<IVegetable> Ingridients
+        public IMyCollection<IIngredient> Ingridients
         {
             get
             {
-                var cp = (IMyCollection<IVegetable>)this._ingridients.Clone();
+                var cp = (IMyCollection<IIngredient>)this._ingridients.Clone();
                 cp.Clear();
                 cp.AddCloneRange(this._ingridients);
                 return cp;
             }
         }
-        public IEnumerator<IVegetable> GetEnumerator()
-        {
-            return _ingridients.GetEnumerator();
-        }
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
 
-        public void Add(IVegetable item)
+        public void Add(IIngredient item)
         {
             _ingridients.Add(item);
         }
@@ -207,15 +174,15 @@ namespace Project1
         {
             _ingridients.Clear();
         }
-        public bool Contains(IVegetable item)
+        public bool Contains(IIngredient item)
         {
             return _ingridients.Contains(item);
         }
-        public void CopyTo(IVegetable[] array, int arrayIndex)
+        public void CopyTo(IIngredient[] array, int arrayIndex)
         {
             _ingridients.CopyTo(array, arrayIndex);
         }
-        public bool Remove(IVegetable item)
+        public bool Remove(IIngredient item)
         {
             return _ingridients.Remove(item);
         }
@@ -230,7 +197,5 @@ namespace Project1
               return ((IList)_ingridients).IsReadOnly;
             } 
         }
-
-        
     }
 }

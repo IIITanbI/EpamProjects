@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -10,83 +9,17 @@ using Project1.Vegetables;
 
 namespace Project1
 {
-
-    class MyList<T> : IMyCollection<T>
-    {
-        public List<T> list = new List<T>();
-
-        public MyList()
-        {
-            
-        } 
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            return list.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public void Add(T item)
-        {
-            list.Add(item);
-        }
-
-        public void Clear()
-        {
-            list.Clear();
-        }
-
-        public bool Contains(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CopyTo(T[] array, int arrayIndex)
-        {
-            list.CopyTo(array, arrayIndex);
-        }
-
-        public bool Remove(T item)
-        {
-            return list.Remove(item);
-        }
-
-        public int Count => list.Count;
-
-        public bool IsReadOnly { get; }
-        public object Clone()
-        {
-            var copy = new MyList<T>();
-
-            foreach (var item in list)
-            {
-                copy.Add(item);
-            }
-
-            return copy;
-
-
-        }
-}
-
     class Program
     {
         static void Main(string[] args)
         {
             Calories cl = new Calories(2, 3, 4);
-            Calories c2 = 2*cl;
+            Calories c2 = new Calories();
 
-            var potato = new  Potato(100);
-            var cucmber = new Cucumber(100);
-            var fryPotato = new FryPotato(200);
 
-            Console.WriteLine(potato.Name + " " + potato.Calories + " " + potato.Weight);
-            Console.WriteLine(cucmber.Name + " " + cucmber.Calories + " " + cucmber.Weight);
-            Console.WriteLine(fryPotato.Name + " " + fryPotato.Calories + " " + fryPotato.Weight);
+            var potato = new Vegetable("potato", 100, new Calories(1,2,3));
+            var cucmber = new Vegetable("Cucumber", 200, new Calories(4, 5, 6));
+            var fryPotato = new Vegetable("fryPotato", 300, new Calories(7, 8, 9));
             
             Salad salad = new Salad();
             salad.Add(potato);
@@ -98,52 +31,52 @@ namespace Project1
             salad.PrintVegetables();
             var tt = salad.GetVegetables(0, 1000);
  
-            Console.WriteLine();
+            Console.WriteLine("BEFORE SOrt");
             Console.WriteLine();
             salad.PrintVegetables();
-            
             salad.Sort(VegetableComparasions.CompareByName);
-            Console.WriteLine();
+
+            Console.WriteLine("AFЕУК ЫЩКЕ");
             Console.WriteLine();
             salad.PrintVegetables();
 
-            salad.Sort(vegetable => vegetable.Calories, new CompareByCalories());
+            salad.Sort(vegetable => vegetable.CaloriesPer100G, new CompareByCalories());
             salad.PrintVegetables();
             salad.Sort(VegetableComparasions.CompareByWeight);
 
 
             Console.WriteLine("TESTTTT");
-            MyList<IVegetable> list = new MyList<IVegetable>();
+            MyList<IIngredient> list = new MyList<IIngredient>();
             list.Add(potato);
             list.Add(cucmber);
             list.Add(fryPotato);
             foreach (var v in list)
             {
-                Console.WriteLine(v.Name + " " + v.Calories + " " + v.Weight);
+                Console.WriteLine(v);
             }
             Console.WriteLine("CLONE");
 
-            IMyCollection<IVegetable> list2 = list.CloneObjects();
+            IMyCollection<IIngredient> list2 = list.CloneObjects();
             foreach (var v in list2)
             {
-                Console.WriteLine(v.Name + " " + v.Calories + " " + v.Weight);
+                Console.WriteLine(v);
             }
-            list.list[0].Weight = 0;
-            list.list[1].Weight = 0;
-            list.list[2].Weight = 0;
+            list[0].Weight = 0;
+            list[1].Weight = 0;
+            list[2].Weight = 0;
 
             Console.WriteLine("TESTTTT");
 
             foreach (var v in list)
             {
-                Console.WriteLine(v.Name + " " + v.Calories + " " + v.Weight);
+                Console.WriteLine(v);
             }
             Console.WriteLine("CLONE");
 
           
             foreach (var v in list2)
             {
-                Console.WriteLine(v.Name + " " + v.Calories + " " + v.Weight);
+                Console.WriteLine(v);
             }
         }
 

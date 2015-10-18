@@ -1,33 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Project1.Vegetables
 {
-    public interface IVegetable : ICloneable 
-    {
-        string Name { get; }
-        double Weight { get; set; }
-        Calories Calories { get; }
-    }
 
-    public abstract class Vegetable : IVegetable
+    public class Vegetable : Ingredient
     {
-        public string Name { get; }
-        public double Weight { get; set; }
-        public Calories Calories { get; }
-
-        protected Vegetable(string name, double weight, Calories calories)
+        public Vegetable() { }
+        public Vegetable(string name, double weight, Calories caloriesPer100G)
         {
-            Name = name;
-            Weight = weight;
-            Calories = calories;
+            this.Name = name;
+            this.Weight = weight;
+            this.CaloriesPer100G = caloriesPer100G;
+        }
+        public Vegetable(Vegetable vegetable)
+        {
+            this.Name = vegetable.Name;
+            this.Weight = vegetable.Weight;
+            this.CaloriesPer100G = vegetable.CaloriesPer100G;
         }
 
-        public abstract object Clone();
-
-
+        public override object Clone()
+        {
+            return new Vegetable(this);
+        }
     }
 }

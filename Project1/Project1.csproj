@@ -45,10 +45,12 @@
   <ItemGroup>
     <Compile Include="Chef.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="MyList.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Salad.cs" />
-    <Compile Include="VegetableComparators.cs" />
+    <Compile Include="Vegetables\Ingredient.cs" />
+    <Compile Include="Vegetables\VegetableComparators.cs" />
     <Compile Include="Vegetables\Calories.cs" />
     <Compile Include="Vegetables\Cucumber.cs" />
     <Compile Include="Vegetables\FryPotato.cs" />
