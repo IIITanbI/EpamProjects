@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,10 +14,15 @@ namespace Project1.Vegetables
         {
 
         }
+        public Cucumber(Cucumber cucumber)
+            : base(cucumber)
+        {
+            
+        }
 
         public override object Clone()
         {
-            return new Cucumber(this.Weight);
+            return new Cucumber(this);
         }
     }
 }

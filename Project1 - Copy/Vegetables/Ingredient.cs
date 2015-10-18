@@ -6,25 +6,32 @@ using System.Threading.Tasks;
 
 namespace Project1.Vegetables
 {
-    public interface IVegetable : ICloneable
+    public interface IIngredient : ICloneable
     {
         string Name { get; set; }
         double Weight { get; set; }
         Calories CaloriesPer100G { get; set; }
     }
-    public abstract class Vegetable : IIngredient
+    public abstract class Ingredient : IIngredient
     {
         public string Name { get; set; }
         public double Weight { get; set; }
         public Calories CaloriesPer100G { get; set; }
 
-        protected Vegetable() { }
+        protected Ingredient() { }
 
-        protected Vegetable(IIngredient ingredient)
+        protected Ingredient(IIngredient ingredient)
         {
-            Name = ingredient.Name;
-            Weight = ingredient.Weight;
-            CaloriesPer100G = ingredient.CaloriesPer100G;
+            this.Name = ingredient.Name;
+            this.Weight = ingredient.Weight;
+            this.CaloriesPer100G = ingredient.CaloriesPer100G;
+        }
+
+        protected Ingredient(string name, double weight, Calories caloriesPer100G)
+        {
+            this.Name = name;
+            this.Weight = weight;
+            this.CaloriesPer100G = caloriesPer100G;
         }
 
         public override string ToString()

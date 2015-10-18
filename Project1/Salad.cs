@@ -11,50 +11,13 @@ using Project1.Vegetables;
 
 namespace Project1
 {
-    public class Utility
-    {
-        public static object CloneObject(object objSource)
-        {
-            //step : 1 Get the type of source object and create a new instance of that type
-            Type typeSource = objSource.GetType();
-            object objTarget = Activator.CreateInstance(typeSource);
-
-            //Step2 : Get all the properties of source object type
-            PropertyInfo[] propertyInfo = typeSource.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-
-            //Step : 3 Assign all source property to taget object 's properties
-            foreach (PropertyInfo property in propertyInfo)
-            {
-                //Check whether property can be written to
-                if (property.CanWrite)
-                {
-                    //Step : 4 check whether property type is value type, enum or string type
-                    if (property.PropertyType.IsValueType || property.PropertyType.IsEnum || property.PropertyType == typeof(string))
-                    {
-                        property.SetValue(objTarget, property.GetValue(objSource, null), null);
-                    }
-                    //else property type is object/complex types, so need to recursively call this method until the end of the tree is reached
-                    else
-                    {
-                        object objPropertyValue = property.GetValue(objSource, null);
-                        if (objPropertyValue == null)
-                        {
-                            property.SetValue(objTarget, null, null);
-                        }
-                        else
-                        {
-                            property.SetValue(objTarget, CloneObject(objPropertyValue), null);
-                        }
-                    }
-                }
-            }
-            return objTarget;
-        }
-    }
-
-   
     
-    public class Salad 
+    public interface IMyCollection<T> : ICollection<T>, ICloneable
+    {
+        
+    }
+    
+    public class Salad
     {
         private IMyCollection<IVegetable> _ingridients = null;
 
@@ -80,11 +43,7 @@ namespace Project1
             IVegetable[] copy = this._ingridients.CloneObjectsToArray();
             var sorted = copy.OrderBy(keySelector, comparer);
 
-            var cp = (IMyCollection<IVegetable>)this._ingridients.Clone();
-            cp.Initialize(copy);
-            this._ingridients = cp;
-
-            this._ingridients.Initialize(copy);
+            this._ingridients.Initialize(sorted);
             /*
                 sort via array
                 1. new array                    n memory
@@ -118,7 +77,7 @@ namespace Project1
         {
             foreach (var vegetable in this._ingridients)
             {
-                Console.WriteLine(vegetable);
+                Console.WriteLine(vegetable.Name + " " + vegetable.Calories + " " + vegetable.Weight);
             }
         }
 
@@ -127,7 +86,7 @@ namespace Project1
             var copy = (IMyCollection<IVegetable>)this._ingridients.Clone();
             copy.Clear();
 
-            var temp = this._ingridients.Where(x => x.CaloriesPer100G > bottom && x.CaloriesPer100G < upper);
+            var temp = this._ingridients.Where(x => x.Calories > bottom && x.Calories < upper);
             copy.AddCloneRange(temp);
 
             return copy;
@@ -137,11 +96,10 @@ namespace Project1
             var copy = (IMyCollection<IVegetable>)this._ingridients.Clone();
             copy.Clear();
 
-            var temp = this._ingridients.Where(x => func(x) == true);
+            var temp = this._ingridients.Where(func);
             copy.AddCloneRange(temp);
 
             return copy;
-            //return this.Ingridients.Where(x => func(x) == true).ToList();
         }
         public Calories TotalCalories
         {
@@ -150,21 +108,12 @@ namespace Project1
                 Calories res = new Calories();
                 foreach (var vegetable in this._ingridients)
                 {
-                    res += vegetable.CaloriesPer100G * (vegetable.Weight / 100.0);
+                    res += vegetable.Calories * (vegetable.Weight / 100.0);
                 }
                 return res;
             }
         }
-        public IMyCollection<IVegetable> Ingridients
-        {
-            get
-            {
-                var cp = (IMyCollection<IVegetable>)this._ingridients.Clone();
-                cp.Clear();
-                cp.AddCloneRange(this._ingridients);
-                return cp;
-            }
-        }
+        public IMyCollection<IVegetable> Ingridients => this._ingridients.CloneObjects();
 
         public void Add(IVegetable item)
         {

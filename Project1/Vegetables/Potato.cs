@@ -7,23 +7,21 @@ using System.Threading.Tasks;
 
 namespace Project1.Vegetables
 {
-    public class Potato : Vegetable
+    class Potato : Vegetable
     {
-        protected Potato(string name, double weight, Calories caloriesPer100G)
-            : base(name, weight, caloriesPer100G)
-        {
-           
-        }
         public Potato(double weight) 
             : base("Potato", weight, new Calories(2.0, 0.4, 18.1))
         {
-            this.Name = "asd";
+        }
+        public Potato(Potato potato)
+            : base(potato)
+        {
+
         }
 
-        public new string Name { get; }
         public override object Clone()
         {
-            return new Potato(this.Weight);
+            return new Potato(this);
         }
     }
 }
