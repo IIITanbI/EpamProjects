@@ -17,7 +17,7 @@ namespace Project1
             Calories c2 = new Calories();
 
 
-            var potato = new Vegetable("potato", 100, new Calories(1,2,3));
+            var potato = new Potato("potato", 100, new Calories(1,2,3));
             var cucmber = new Vegetable("Cucumber", 200, new Calories(4, 5, 6));
             var fryPotato = new Vegetable("fryPotato", 300, new Calories(7, 8, 9));
             
@@ -46,7 +46,7 @@ namespace Project1
 
 
             Console.WriteLine("TESTTTT");
-            MyList<IIngredient> list = new MyList<IIngredient>();
+            MyList<IVegetable> list = new MyList<IVegetable>();
             list.Add(potato);
             list.Add(cucmber);
             list.Add(fryPotato);
@@ -56,7 +56,7 @@ namespace Project1
             }
             Console.WriteLine("CLONE");
 
-            IMyCollection<IIngredient> list2 = list.CloneObjects();
+            IMyCollection<IVegetable> list2 = list.CloneObjects();
             foreach (var v in list2)
             {
                 Console.WriteLine(v);

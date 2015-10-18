@@ -5,15 +5,15 @@ namespace Project1
 {
     public static class VegetableComparasions
     {
-        public static int CompareByWeight(IIngredient ingredient1, IIngredient ingredient2)
+        public static int CompareByWeight(IVegetable ingredient1, IVegetable ingredient2)
         {
             return   ingredient1.Weight.CompareTo(ingredient2.Weight);
         }
-        public static int CompareByCalories(IIngredient ingredient1, IIngredient ingredient2)
+        public static int CompareByCalories(IVegetable ingredient1, IVegetable ingredient2)
         {
             return ingredient1.CaloriesPer100G.CompareTo(ingredient2.CaloriesPer100G);
         }
-        public static int CompareByName<T>(T ingredient1, T ingredient2) where T:IIngredient
+        public static int CompareByName<T>(T ingredient1, T ingredient2) where T:IVegetable
         {
             return ingredient1.Name.CompareTo(ingredient2.Name);
         }

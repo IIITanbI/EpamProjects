@@ -55,7 +55,6 @@
     <Compile Include="Vegetables\Cucumber.cs" />
     <Compile Include="Vegetables\FryPotato.cs" />
     <Compile Include="Vegetables\Potato.cs" />
-    <Compile Include="Vegetables\Vegetable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

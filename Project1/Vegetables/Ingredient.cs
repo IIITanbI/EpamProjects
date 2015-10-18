@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace Project1.Vegetables
 {
-    public interface IIngredient : ICloneable
+    public interface IVegetable : ICloneable
     {
         string Name { get; set; }
         double Weight { get; set; }
         Calories CaloriesPer100G { get; set; }
     }
-    public abstract class Ingredient : IIngredient
+    public abstract class Vegetable : IIngredient
     {
         public string Name { get; set; }
         public double Weight { get; set; }
         public Calories CaloriesPer100G { get; set; }
 
-        protected Ingredient() { }
+        protected Vegetable() { }
 
-        protected Ingredient(IIngredient ingredient)
+        protected Vegetable(IIngredient ingredient)
         {
             Name = ingredient.Name;
             Weight = ingredient.Weight;

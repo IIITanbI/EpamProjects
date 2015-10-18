@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Project1.Vegetables
 {
-    class Potato : Vegetable
+    public class Potato : Vegetable
     {
         protected Potato(string name, double weight, Calories caloriesPer100G)
             : base(name, weight, caloriesPer100G)

@@ -23,16 +23,16 @@ namespace Project1
             }
         }
 
-        public static IIngredient[] CloneObjectsToArray<T>(this IMyCollection<T> source) where T : ICloneable
+        public static IVegetable[] CloneObjectsToArray<T>(this IMyCollection<T> source) where T : ICloneable
         {
-            IIngredient[] copy = new IIngredient[source.Count];
+            IVegetable[] copy = new IVegetable[source.Count];
             int ind = 0;
 
             lock (source)
             {
                 foreach (var veg in source)
                 {
-                    copy[ind] = (IIngredient)veg.Clone();
+                    copy[ind] = (IVegetable)veg.Clone();
                     ind++;
                 }
             }
@@ -40,9 +40,9 @@ namespace Project1
             return copy;
         }
 
-        public static IMyCollection<IIngredient> CloneObjects<T>(this IMyCollection<T> source) where T : ICloneable
+        public static IMyCollection<IVegetable> CloneObjects<T>(this IMyCollection<T> source) where T : ICloneable
         {
-            var copy = (IMyCollection<IIngredient>)source.Clone();
+            var copy = (IMyCollection<IVegetable>)source.Clone();
             var tt = copy.ToArray();
             copy.InitializeClone(tt);
 
