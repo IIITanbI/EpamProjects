@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,92 +11,184 @@ using Project1.Vegetables;
 
 namespace Project1
 {
-    public static class Util
+    public class Utility
     {
-        public static int CompareByWeight(this Salad source, IVegetable vegetable1, IVegetable vegetable2)
+        public static object CloneObject(object objSource)
         {
-            return vegetable1.Weight.CompareTo(vegetable2.Weight);
-        }
-        public static int CompareByCalories(this Salad source, IVegetable vegetable1, IVegetable vegetable2)
-        {
-            return vegetable1.Calories.CompareTo(vegetable2.Calories);
-        }
-        public static int CompareByName(this Salad source, IVegetable vegetable1, IVegetable vegetable2)
-        {
-            return vegetable1.Name.CompareTo(vegetable2.Name);
+            //step : 1 Get the type of source object and create a new instance of that type
+            Type typeSource = objSource.GetType();
+            object objTarget = Activator.CreateInstance(typeSource);
+
+            //Step2 : Get all the properties of source object type
+            PropertyInfo[] propertyInfo = typeSource.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+            //Step : 3 Assign all source property to taget object 's properties
+            foreach (PropertyInfo property in propertyInfo)
+            {
+                //Check whether property can be written to
+                if (property.CanWrite)
+                {
+                    //Step : 4 check whether property type is value type, enum or string type
+                    if (property.PropertyType.IsValueType || property.PropertyType.IsEnum || property.PropertyType == typeof(string))
+                    {
+                        property.SetValue(objTarget, property.GetValue(objSource, null), null);
+                    }
+                    //else property type is object/complex types, so need to recursively call this method until the end of the tree is reached
+                    else
+                    {
+                        object objPropertyValue = property.GetValue(objSource, null);
+                        if (objPropertyValue == null)
+                        {
+                            property.SetValue(objTarget, null, null);
+                        }
+                        else
+                        {
+                            property.SetValue(objTarget, CloneObject(objPropertyValue), null);
+                        }
+                    }
+                }
+            }
+            return objTarget;
         }
     }
 
-    public class Test<TMat, TCol>
-        where TMat : Vegetable
-        where TCol : ICollection<Vegetable>//, ICloneable
-
+    public interface IMyCollection<T> : ICollection<T>, ICloneable
     {
-        private TCol collection;
-
-        public Test(TMat item)
-        {
-            collection.Add(item);
-            collection.OrderBy(mat => mat.Calories);
-        }
+        
     }
-    public class Salad : ICollection<IVegetable>
+    
+    public class Salad : IEnumerable<IVegetable>
     {
- 
-        private List<IVegetable> _ingridients;// = new List<IVegetable>();
+        private IMyCollection<IVegetable> _ingridients = null;
 
         public Salad()
         {
-            this._ingridients = new List<IVegetable>();
+            this._ingridients = new MyList<IVegetable>();
         }
-        public Salad(IEnumerable<IVegetable> ingridients)
+        public Salad(IMyCollection<IVegetable> ingridients)
         {
-            //   _ingridients = ingridients;
-            this._ingridients.AddRange(ingridients);
+            var copy = (IMyCollection<IVegetable>) ingridients.Clone();
+            copy.Clear();
+            copy.AddCloneRange(ingridients);
+
+            this._ingridients = copy;
         }
 
-        public Calories TotalCalories
+        private IVegetable[] CloneCollectionObjects()
         {
-            get
+            IVegetable[] copy = new IVegetable[this._ingridients.Count];
+            int ind = 0;
+
+            lock (this)
             {
-                Calories res = new Calories();
-                foreach (var vegetable in Ingridients)
+                foreach (var veg in this._ingridients)
                 {
-                    res += vegetable.Calories*(vegetable.Weight/100.0);
+                    copy[ind] = (IVegetable)veg.Clone();
+                    ind++;
                 }
-                return res;
             }
 
+            //var cp = (IMyCollection<IVegetable>)this._ingridients.Clone();
+            //cp.Clear();
+            //cp.AddCloneRange(this._ingridients);
+            //return cp;
+
+            return copy;
         }
-        public List<IVegetable> GetVegetables(double bottom, double upper)
+
+        public void Sort<TKey>(Func<IVegetable, TKey> keySelector)
         {
-            return this.Ingridients.Where(x => x.Calories > bottom && x.Calories < upper).ToList();
+            this.Sort(keySelector, null);
         }
-        public List<IVegetable> GetVegetables(Func<IVegetable, bool> func)
+        public void Sort<TKey>(Func<IVegetable, TKey> keySelector, IComparer<TKey> comparer)
         {
-            return this.Ingridients.Where(x => func(x) == true).ToList();
+            IVegetable[] copy = this._ingridients.CloneObjectsToArray();
+            var sorted = copy.OrderBy(keySelector, comparer);
+
+            var cp = (IMyCollection<IVegetable>)this._ingridients.Clone();
+            cp.Initialize(copy);
+            this._ingridients = cp;
+
+            this._ingridients.Initialize(copy);
+            /*
+                sort via array
+                1. new array                    n memory
+                2. InitizlizeClone              n copy
+                3. linq sort without ToArray()  
+                4. Initizlize with linq         
+
+                sort via IMyCollection
+                1. Clone collection             n copy + n memory
+                2. InitizlizeClone              n copy
+                3. linq sort with ToArray()     n memory
+                4. Initizlize with linq
+                
+                
+            */
+        }
+        public void Sort(IComparer<IVegetable> comparer)
+        {
+            IVegetable[] copy = this._ingridients.CloneObjectsToArray();
+            Array.Sort(copy, comparer);
+            this._ingridients.Initialize(copy);
         }
         public void Sort(Comparison<IVegetable> comparison)
         {
-            this._ingridients.Sort(comparison);
+            IVegetable[] copy = this._ingridients.CloneObjectsToArray();
+            Array.Sort(copy, comparison);
+            this._ingridients.Initialize(copy);
         }
-        
-        public void Sort( IComparer<IVegetable> comparer)
-        {
 
-            this._ingridients.Sort(comparer);
-        }
         public void PrintVegetables()
         {
-            foreach (var vegetable in Ingridients)
+            foreach (var vegetable in this._ingridients)
             {
                 Console.WriteLine(vegetable.Name + " " + vegetable.Calories + " " + vegetable.Weight);
             }
         }
 
-        public IEnumerable<IVegetable> Ingridients
+        public IMyCollection<IVegetable> GetVegetables(double bottom, double upper)
         {
-            get { return this._ingridients; }
+            var copy = (IMyCollection<IVegetable>)this._ingridients.Clone();
+            copy.Clear();
+
+            var temp = this._ingridients.Where(x => x.Calories > bottom && x.Calories < upper);
+            copy.AddCloneRange(temp);
+
+            return copy;
+        }
+        public IMyCollection<IVegetable> GetVegetables(Func<IVegetable, bool> func)
+        {
+            var copy = (IMyCollection<IVegetable>)this._ingridients.Clone();
+            copy.Clear();
+
+            var temp = this._ingridients.Where(x => func(x) == true);
+            copy.AddCloneRange(temp);
+
+            return copy;
+            //return this.Ingridients.Where(x => func(x) == true).ToList();
+        }
+        public Calories TotalCalories
+        {
+            get
+            {
+                Calories res = new Calories();
+                foreach (var vegetable in this._ingridients)
+                {
+                    res += vegetable.Calories * (vegetable.Weight / 100.0);
+                }
+                return res;
+            }
+        }
+        public IMyCollection<IVegetable> Ingridients
+        {
+            get
+            {
+                var cp = (IMyCollection<IVegetable>)this._ingridients.Clone();
+                cp.Clear();
+                cp.AddCloneRange(this._ingridients);
+                return cp;
+            }
         }
         public IEnumerator<IVegetable> GetEnumerator()
         {
@@ -112,7 +206,6 @@ namespace Project1
         public void Clear()
         {
             _ingridients.Clear();
-            bool lt = ((IList) _ingridients).IsReadOnly;
         }
         public bool Contains(IVegetable item)
         {
@@ -137,7 +230,7 @@ namespace Project1
               return ((IList)_ingridients).IsReadOnly;
             } 
         }
-         
 
+        
     }
 }

@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace Project1.Vegetables
 {
-    public interface IVegetable
+    public interface IVegetable : ICloneable 
     {
         string Name { get; }
-        double Weight { get; }
+        double Weight { get; set; }
         Calories Calories { get; }
     }
 
-    public class Vegetable : IVegetable
+    public abstract class Vegetable : IVegetable
     {
         public string Name { get; }
-        public double Weight { get;}
+        public double Weight { get; set; }
         public Calories Calories { get; }
 
         protected Vegetable(string name, double weight, Calories calories)
@@ -25,5 +25,9 @@ namespace Project1.Vegetables
             Weight = weight;
             Calories = calories;
         }
+
+        public abstract object Clone();
+
+
     }
 }

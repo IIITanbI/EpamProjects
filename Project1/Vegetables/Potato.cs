@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,14 +18,10 @@ namespace Project1.Vegetables
             : base("Potato", weight, new Calories(2.0, 0.4, 18.1))
         {
         }
-    }
 
-    class FryPotato : Potato
-    {
-
-        public FryPotato(double weight)
-            : base("Fry Potato", weight, new Calories(2.8, 9.5, 23.4))
+        public override object Clone()
         {
+            return new Potato(this.Weight);
         }
     }
 }

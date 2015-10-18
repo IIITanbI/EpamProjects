@@ -13,5 +13,10 @@ namespace Project1.Vegetables
         {
 
         }
+
+        public override object Clone()
+        {
+            return new Cucumber(this.Weight);
+        }
     }
 }
