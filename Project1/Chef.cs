@@ -8,8 +8,8 @@ namespace Project1
 {
     public class Chef
     {
-        public string Name { get; } = "qwerty";
-        public Salad Salad { get; }
+        public string Name { get; set; } = "qwerty";
+        public Salad Salad { get; set; }
 
         public Chef()
         {
@@ -24,7 +24,5 @@ namespace Project1
         {
             Salad = salad;
         }
-
-        
     }
 }

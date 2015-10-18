@@ -54,6 +54,7 @@
     <Compile Include="Vegetables\Cucumber.cs" />
     <Compile Include="Vegetables\Carrot.cs" />
     <Compile Include="Vegetables\CustomVegetable.cs" />
+    <Compile Include="Vegetables\IVegetable.cs" />
     <Compile Include="Vegetables\Potato.cs" />
     <Compile Include="Vegetables\Vegetable.cs" />
   </ItemGroup>
