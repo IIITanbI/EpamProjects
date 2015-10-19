@@ -32,7 +32,7 @@ namespace Project1
             Console.WriteLine(cucmber.Name + " " + cucmber.Calories + " " + cucmber.Weight);
             Console.WriteLine(carrot.Name + " " + carrot.Calories + " " + carrot.Weight);
             
-            Salad salad = new Salad();
+            Salad salad = new Salad(new CloneList<IVegetable>() {potato});
             salad.Add(potato);
             salad.Add(carrot);
             salad.Add(cucmber);

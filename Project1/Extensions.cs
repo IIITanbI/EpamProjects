@@ -28,13 +28,10 @@ namespace Project1
             IVegetable[] copy = new IVegetable[source.Count];
             int ind = 0;
 
-            lock (source)
+            foreach (var veg in source)
             {
-                foreach (var veg in source)
-                {
-                    copy[ind] = (IVegetable)veg.Clone();
-                    ind++;
-                }
+                copy[ind] = (IVegetable)veg.Clone();
+                ind++;
             }
 
             return copy;

@@ -21,21 +21,14 @@ namespace Project1
     {
         private ICloneCollection<IVegetable> _ingridients = null;
 
-        public Salad()
-        {
-            this._ingridients = new CloneList<IVegetable>();
-        }
+        //public Salad()
+        //{
+        //    this._ingridients = new CloneList<IVegetable>();
+        //}
+
         public Salad(ICloneCollection<IVegetable> ingridients)
         {
-            if (ingridients == null)
-            {
-                throw new ArgumentNullException();
-            }
-            var copy = (ICloneCollection<IVegetable>) ingridients.Clone();
-            copy.Clear();
-            copy.AddCloneRange(ingridients);
-
-            this._ingridients = copy;
+            this._ingridients = ingridients;
         }
 
         public void Sort<TKey>(Func<IVegetable, TKey> keySelector)
@@ -44,25 +37,10 @@ namespace Project1
         }
         public void Sort<TKey>(Func<IVegetable, TKey> keySelector, IComparer<TKey> comparer)
         {
-            IVegetable[] copy = this._ingridients.CloneObjectsToArray();
+            var copy = this._ingridients.CloneObjects();
             var sorted = copy.OrderBy(keySelector, comparer);
-
+            
             this._ingridients.Initialize(sorted);
-            /*
-                sort via array
-                1. new array                    n memory
-                2. InitizlizeClone              n copy
-                3. linq sort without ToArray()  
-                4. Initizlize with linq         
-
-                sort via IMyCollection
-                1. Clone collection             n copy + n memory
-                2. InitizlizeClone              n copy
-                3. linq sort with ToArray()     n memory
-                4. Initizlize with linq
-                
-                
-            */
         }
         public void Sort(IComparer<IVegetable> comparer)
         {
