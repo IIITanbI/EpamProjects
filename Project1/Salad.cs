@@ -65,21 +65,18 @@ namespace Project1
 
         public ICloneCollection<IVegetable> GetVegetables(double bottom, double upper)
         {
-            var copy = (ICloneCollection<IVegetable>)this._ingridients.Clone();
-            copy.Clear();
+            return this.GetVegetables(x => x.Calories > bottom && x.Calories < upper);
+            //var copy = (ICloneCollection<IVegetable>)this._ingridients.Clone();
+            //var temp = this._ingridients.Where(x => x.Calories > bottom && x.Calories < upper);
+            //copy.InitializeClone(temp);
 
-            var temp = this._ingridients.Where(x => x.Calories > bottom && x.Calories < upper);
-            copy.AddCloneRange(temp);
-
-            return copy;
+            //return copy;
         }
         public ICloneCollection<IVegetable> GetVegetables(Func<IVegetable, bool> func)
         {
             var copy = (ICloneCollection<IVegetable>)this._ingridients.Clone();
-            copy.Clear();
-
             var temp = this._ingridients.Where(func);
-            copy.AddCloneRange(temp);
+            copy.InitializeClone(temp);
 
             return copy;
         }
