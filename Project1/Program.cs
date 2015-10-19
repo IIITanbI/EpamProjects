@@ -31,7 +31,11 @@ namespace Project1
             Console.WriteLine(potato.Name + " " + potato.Calories + " " + potato.Weight);
             Console.WriteLine(cucmber.Name + " " + cucmber.Calories + " " + cucmber.Weight);
             Console.WriteLine(carrot.Name + " " + carrot.Calories + " " + carrot.Weight);
-            
+            List<IVegetable> lst = new List<IVegetable>();
+            lst.Add(cucmber);
+
+            Salad s = new Salad(new CloneList<IVegetable>(lst));
+
             Salad salad = new Salad(new CloneList<IVegetable>() {potato});
             salad.Add(potato);
             salad.Add(carrot);
