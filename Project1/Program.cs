@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -59,7 +60,10 @@ namespace Project1
             
 
             Console.WriteLine("TESTTTT");
-            MyList<IVegetable> list = new MyList<IVegetable>();
+            CloneList<IVegetable> list = new CloneList<IVegetable>();
+
+            List<int> li = new List<int>();
+           
             list.Add(potato);
             list.Add(cucmber);
             list.Add(carrot);
@@ -69,7 +73,7 @@ namespace Project1
             }
             Console.WriteLine("CLONE");
 
-            IMyCollection<IVegetable> list2 = list.CloneObjects();
+            ICloneCollection<IVegetable> list2 = list.CloneObjects();
             foreach (var v in list2)
             {
                 Console.WriteLine(v.Name + " " + v.Calories + " " + v.Weight);

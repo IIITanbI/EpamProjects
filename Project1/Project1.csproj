@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="Chef.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="MyList.cs" />
+    <Compile Include="CloneList.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Salad.cs" />

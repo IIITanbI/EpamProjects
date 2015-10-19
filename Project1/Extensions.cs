@@ -7,7 +7,7 @@ namespace Project1
 {
     public static class Extensions
     {
-        public static void AddRange<T>(this IMyCollection<T> source, IEnumerable<T> collection)
+        public static void AddRange<T>(this ICloneCollection<T> source, IEnumerable<T> collection)
         {
             foreach (var value in collection)
             {
@@ -15,7 +15,7 @@ namespace Project1
             }
         }
 
-        public static void AddCloneRange<T>(this IMyCollection<T> source, IEnumerable<T> collection) where T:ICloneable
+        public static void AddCloneRange<T>(this ICloneCollection<T> source, IEnumerable<T> collection) where T:ICloneable
         {
             foreach (var value in collection)
             {
@@ -23,7 +23,7 @@ namespace Project1
             }
         }
 
-        public static IVegetable[] CloneObjectsToArray<T>(this IMyCollection<T> source) where T : ICloneable
+        public static IVegetable[] CloneObjectsToArray<T>(this ICloneCollection<T> source) where T : ICloneable
         {
             IVegetable[] copy = new IVegetable[source.Count];
             int ind = 0;
@@ -40,22 +40,22 @@ namespace Project1
             return copy;
         }
 
-        public static IMyCollection<IVegetable> CloneObjects<T>(this IMyCollection<T> source) where T : ICloneable
+        public static ICloneCollection<IVegetable> CloneObjects<T>(this ICloneCollection<T> source) where T : ICloneable
         {
-            var copy = (IMyCollection<IVegetable>)source.Clone();
+            var copy = (ICloneCollection<IVegetable>)source.Clone();
             var tt = copy.ToArray();
             copy.InitializeClone(tt);
 
             return copy;
         }
 
-        public static void Initialize<T>(this IMyCollection<T> source, IEnumerable<T> collection)
+        public static void Initialize<T>(this ICloneCollection<T> source, IEnumerable<T> collection)
         {
             source.Clear();
             source.AddRange(collection);
         }
 
-        public static void InitializeClone<T>(this IMyCollection<T> source, IEnumerable<T> collection) where T:ICloneable
+        public static void InitializeClone<T>(this ICloneCollection<T> source, IEnumerable<T> collection) where T:ICloneable
         {
             source.Clear();
             source.AddCloneRange(collection);

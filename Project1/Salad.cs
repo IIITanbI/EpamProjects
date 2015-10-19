@@ -12,22 +12,26 @@ using Project1.Vegetables;
 namespace Project1
 {
     
-    public interface IMyCollection<T> : ICollection<T>, ICloneable
+    public interface ICloneCollection<T> : ICollection<T>, ICloneable
     {
         
     }
     
     public class Salad
     {
-        private IMyCollection<IVegetable> _ingridients = null;
+        private ICloneCollection<IVegetable> _ingridients = null;
 
         public Salad()
         {
-            this._ingridients = new MyList<IVegetable>();
+            this._ingridients = new CloneList<IVegetable>();
         }
-        public Salad(IMyCollection<IVegetable> ingridients)
+        public Salad(ICloneCollection<IVegetable> ingridients)
         {
-            var copy = (IMyCollection<IVegetable>) ingridients.Clone();
+            if (ingridients == null)
+            {
+                throw new ArgumentNullException();
+            }
+            var copy = (ICloneCollection<IVegetable>) ingridients.Clone();
             copy.Clear();
             copy.AddCloneRange(ingridients);
 
@@ -81,9 +85,9 @@ namespace Project1
             }
         }
 
-        public IMyCollection<IVegetable> GetVegetables(double bottom, double upper)
+        public ICloneCollection<IVegetable> GetVegetables(double bottom, double upper)
         {
-            var copy = (IMyCollection<IVegetable>)this._ingridients.Clone();
+            var copy = (ICloneCollection<IVegetable>)this._ingridients.Clone();
             copy.Clear();
 
             var temp = this._ingridients.Where(x => x.Calories > bottom && x.Calories < upper);
@@ -91,9 +95,9 @@ namespace Project1
 
             return copy;
         }
-        public IMyCollection<IVegetable> GetVegetables(Func<IVegetable, bool> func)
+        public ICloneCollection<IVegetable> GetVegetables(Func<IVegetable, bool> func)
         {
-            var copy = (IMyCollection<IVegetable>)this._ingridients.Clone();
+            var copy = (ICloneCollection<IVegetable>)this._ingridients.Clone();
             copy.Clear();
 
             var temp = this._ingridients.Where(func);
@@ -113,7 +117,7 @@ namespace Project1
                 return res;
             }
         }
-        public IMyCollection<IVegetable> Ingridients => this._ingridients.CloneObjects();
+        public ICloneCollection<IVegetable> Ingridients => this._ingridients.CloneObjects();
 
         public void Add(IVegetable item)
         {
