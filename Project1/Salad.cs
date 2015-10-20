@@ -37,20 +37,25 @@ namespace Project1
         }
         public void Sort<TKey>(Func<IVegetable, TKey> keySelector, IComparer<TKey> comparer)
         {
-            var copy = this._ingridients.CloneObjects();
+            //var copy = this._ingridients.CloneObjects();
+            var copy = (ICloneCollection<IVegetable>)this._ingridients.Clone();
             var sorted = copy.OrderBy(keySelector, comparer);
             
             this._ingridients.Initialize(sorted);
         }
         public void Sort(IComparer<IVegetable> comparer)
         {
-            IVegetable[] copy = this._ingridients.CloneObjectsToArray();
+            //IVegetable[] copy = this._ingridients.CloneObjectsToArray();
+            IVegetable[] copy = this._ingridients.ToArray();
+
             Array.Sort(copy, comparer);
             this._ingridients.Initialize(copy);
         }
         public void Sort(Comparison<IVegetable> comparison)
         {
-            IVegetable[] copy = this._ingridients.CloneObjectsToArray();
+            //IVegetable[] copy = this._ingridients.CloneObjectsToArray();
+            IVegetable[] copy = this._ingridients.ToArray();
+
             Array.Sort(copy, comparison);
             this._ingridients.Initialize(copy);
         }

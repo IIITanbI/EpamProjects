@@ -11,10 +11,7 @@ namespace Project1.Vegetables
         public double Weight { get; set; }
         public Calories Calories { get; protected set; }
 
-        protected Vegetable()
-        {
-
-        }
+        
         protected Vegetable(string name, double weight, Calories calories)
         {
             this.Name = name;

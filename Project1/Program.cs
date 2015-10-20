@@ -34,9 +34,8 @@ namespace Project1
             List<IVegetable> lst = new List<IVegetable>();
             lst.Add(cucmber);
 
-            Salad s = new Salad(new CloneList<IVegetable>(lst));
 
-            Salad salad = new Salad(new CloneList<IVegetable>() {potato});
+            Salad salad = new Salad(new CloneList<IVegetable>());
             salad.Add(potato);
             salad.Add(carrot);
             salad.Add(cucmber);
@@ -54,14 +53,19 @@ namespace Project1
             Console.WriteLine();
             Console.WriteLine();
            
-            Console.WriteLine("AFTER SRT");
+            Console.WriteLine("BEFORE SRT");
             salad.PrintVegetables();
             salad.Sort(vegetable => vegetable.Calories, new CompareByCalories());
             
-            Console.WriteLine("BEFORE SRT");
+            Console.WriteLine("AFTER SRT");
             salad.PrintVegetables();
             salad.Sort(VegetableComparasions.CompareByWeight);
-            
+            Console.WriteLine("BEFORE REMOVE");
+            salad.PrintVegetables();
+            salad.Remove(potato);
+
+            Console.WriteLine("AFTER REMOVE");
+            salad.PrintVegetables();
 
             Console.WriteLine("TESTTTT");
             CloneList<IVegetable> list = new CloneList<IVegetable>();
