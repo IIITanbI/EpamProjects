@@ -55,8 +55,11 @@ namespace Project1
            
             Console.WriteLine("BEFORE SRT");
             salad.PrintVegetables();
+
             salad.Sort(vegetable => vegetable.Calories, new CompareByCalories());
-            
+
+            Func<int, int> d = delegate(int i) { return i*3; };
+
             Console.WriteLine("AFTER SRT");
             salad.PrintVegetables();
             salad.Sort(VegetableComparasions.CompareByWeight);

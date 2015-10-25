@@ -20,7 +20,7 @@ namespace Project1.Vegetables
         }
         protected Vegetable(IVegetable vegetable)
         {
-            this.Name = vegetable.Name;
+            this.Name = vegetable.Name; 
             this.Weight = vegetable.Weight;
             this.Calories = vegetable.Calories;
         }
