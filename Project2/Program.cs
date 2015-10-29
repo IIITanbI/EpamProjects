@@ -24,6 +24,8 @@ namespace Project2
 
             Text text = new Text("text.txt");
             Console.WriteLine(text);
+            
+            //Console.WriteLine(char.GetUnicodeCategory('—'));
             return;
 
             char ch;

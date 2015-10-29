@@ -26,7 +26,7 @@ namespace Project2
 
         public Sentence(string sentence)
         {
-           Console.WriteLine();
+          
            sentenceItems.AddRange(Parse(sentence));
         }
         private List<ISentenceItem> Parse(string sentence)
@@ -36,7 +36,7 @@ namespace Project2
             string pattern = @"(\w+(?:\-\w*)*)|(\p{P}+)|\s(?=[^\s])";
 
             var words = Regex.Matches(sentence, pattern);
-            bool flag = true;
+            //bool flag = true;
             foreach (var word in words)
             {
                 //if (string.IsNullOrWhiteSpace(word.ToString()))
@@ -54,10 +54,11 @@ namespace Project2
 
             foreach (ISentenceItem word in result)
             {
-                Console.WriteLine(word);
+                //if (!string.IsNullOrWhiteSpace(word.ToString()))
+                //Console.WriteLine(word);
             }
-            Console.WriteLine();
-            Console.WriteLine();
+          //  Console.WriteLine();
+          //  Console.WriteLine();
            
 
             return result;
@@ -67,10 +68,8 @@ namespace Project2
         {
             StringBuilder builder = new StringBuilder();
 
-            
-            for (int index = 0; index < sentenceItems.Count; index++)
+            foreach (ISentenceItem item in sentenceItems)
             {
-                ISentenceItem item = sentenceItems[index];
                 ItemType cur = item.type;
 
                 if (cur == ItemType.Word)
