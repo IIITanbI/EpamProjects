@@ -72,6 +72,8 @@ namespace Project2
             ch = '!';
            // if (Char.IsSeparator(ch))
              //   Console.WriteLine(@"\u{0:X4} ({1})", (int)ch, Char.GetUnicodeCategory(ch).ToString());
+
+
         }
     }
 }

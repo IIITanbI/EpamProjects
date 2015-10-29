@@ -33,11 +33,22 @@ namespace Project2
         {
             var result = new List<ISentenceItem>();
 
-            string pattern = @"(\w+(?:\-\w*)*)|(\p{P}+)";
+            string pattern = @"(\w+(?:\-\w*)*)|(\p{P}+)|\s(?=[^\s])";
 
             var words = Regex.Matches(sentence, pattern);
+            bool flag = true;
             foreach (var word in words)
             {
+                //if (string.IsNullOrWhiteSpace(word.ToString()))
+                //{
+                //    if (flag)
+                //        result.Add(new SentceItemFactory().GetItem(word.ToString()));
+
+                //    flag = false;
+                //    continue;
+                //}
+                //else flag = true;
+                
                 result.Add(new SentceItemFactory().GetItem(word.ToString()));
             }
 
@@ -63,7 +74,7 @@ namespace Project2
                 ItemType cur = item.type;
 
                 if (cur == ItemType.Word)
-                    builder.Append(" " + item);
+                    builder.Append(item);
                 else builder.Append(item);
             }
 
