@@ -8,16 +8,32 @@ namespace Project2
 {
     public class Word: ISentenceItem
     {
-        public ItemType type { get; } = ItemType.Word;
-        private string word;
+        public ItemType Type { get; } = ItemType.Word;
+
+        private SymbolString[] _symbols;
         public Word(string word)
         {
-            this.word = word;
+            this._symbols = word?.Select(c => new SymbolString(c)).ToArray() ?? new SymbolString[0];
+        }
+
+        public string Value
+        {
+            get { return this.ToString(); } 
+        }
+
+        public int Length
+        {
+            get { return this._symbols.Length; }
         }
 
         public override string ToString()
         {
-            return word;
+            StringBuilder builder = new StringBuilder(_symbols.Length);
+            foreach (var symbol in _symbols)
+            {
+                builder.Append(symbol);
+            }
+            return builder.ToString();
         }
     }
 }

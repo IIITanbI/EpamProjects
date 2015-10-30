@@ -11,12 +11,28 @@ namespace Project2
     {
         public ISentenceItem GetItem(string item)
         {
-            string pattern = @"\w+(?:\-\w*)*";
+            //WORD
+            string pattern = @"^\w+(?:\-\w*)*$";
             if (Regex.Match(item, pattern).Success)
             {
                 return new Word(item);
             }
-            return new Punctuation(item);
+
+            //PUNCTUATION
+            pattern = @"^\p{P}+$";
+            if (Regex.Match(item, pattern).Success)
+            {
+                return new Punctuation(item);
+            }
+
+            //WHITE SPACE
+            pattern = @"^\s+$";
+            if (Regex.Match(item, pattern).Success)
+            {
+                return new WhiteSpace();
+            }
+
+            return null;
         }
     }
     public class Sentence : ISentence
@@ -26,7 +42,6 @@ namespace Project2
 
         public Sentence(string sentence)
         {
-          
            sentenceItems.AddRange(Parse(sentence));
         }
         private List<ISentenceItem> Parse(string sentence)
@@ -36,25 +51,13 @@ namespace Project2
             string pattern = @"(\w+(?:\-\w*)*)|(\p{P}+)|\s(?=[^\s])";
 
             var words = Regex.Matches(sentence, pattern);
-            //bool flag = true;
             foreach (var word in words)
             {
-                //if (string.IsNullOrWhiteSpace(word.ToString()))
-                //{
-                //    if (flag)
-                //        result.Add(new SentceItemFactory().GetItem(word.ToString()));
-
-                //    flag = false;
-                //    continue;
-                //}
-                //else flag = true;
-                
                 result.Add(new SentceItemFactory().GetItem(word.ToString()));
             }
 
             foreach (ISentenceItem word in result)
             {
-                //if (!string.IsNullOrWhiteSpace(word.ToString()))
                 //Console.WriteLine(word);
             }
           //  Console.WriteLine();
@@ -70,14 +73,11 @@ namespace Project2
 
             foreach (ISentenceItem item in sentenceItems)
             {
-                ItemType cur = item.type;
-
-                if (cur == ItemType.Word)
-                    builder.Append(item);
-                else builder.Append(item);
+               builder.Append(item);
             }
 
             return builder.ToString();
         }
+
     }
 }

@@ -58,7 +58,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Punctuation.cs" />
     <Compile Include="Sentence.cs" />
+    <Compile Include="Symbol.cs" />
     <Compile Include="Text.cs" />
+    <Compile Include="WhiteSpace.cs" />
     <Compile Include="Word.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

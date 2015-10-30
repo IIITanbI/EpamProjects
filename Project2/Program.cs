@@ -19,11 +19,13 @@ namespace Project2
     */
     class Program
     {
+       
         static void Main(string[] args)
         {
-
+            var cc = new SentceItemFactory().GetItem("  ");
             Text text = new Text("text.txt");
             Console.WriteLine(text);
+            Console.WriteLine(Regex.Escape("(...)"));
             
             //Console.WriteLine(char.GetUnicodeCategory('—'));
             return;
