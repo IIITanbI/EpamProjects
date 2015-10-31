@@ -33,7 +33,6 @@ namespace Project2
 
             //Вывести все предложения заданного текста в порядке возрастания количества слов в каждом из них.
             {
-
                 foreach (var v in text.Sentences.OrderBy(s => s.WordCount).ToArray())
                 {
                     Console.WriteLine(v);
@@ -77,12 +76,17 @@ namespace Project2
                         else i++;
                     }
                 }
+
+                foreach (var v in text)
+                {
+                    Console.WriteLine(v);
+                }
                 Console.WriteLine();
                 Console.WriteLine();
             }
             // В некотором предложении текста слова заданной длины заменить указанной подстрокой, длина которой может не совпадать с длиной слова.
             {
-                int length = 4;
+                int length = 5;
                 int sentenceIndex = 0;
                 string subString = "serega wall table pc";
 
@@ -108,6 +112,10 @@ namespace Project2
                         //1 2 8 9 4 5 6 7
                     }
                     else i++;
+                }
+                foreach (var v in text)
+                {
+                    Console.WriteLine(v);
                 }
 
                 Console.WriteLine();
