@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Project2
 {
-    public class Word: ISentenceItem
+    public class Word: ISentenceItem, IComparable<Word>
     {
         public ItemType Type { get; } = ItemType.Word;
 
@@ -26,6 +26,11 @@ namespace Project2
             get { return this._symbols.Length; }
         }
 
+        public int CompareTo(Word other)
+        {
+            return this.Value.CompareTo(other.Value);
+        }
+
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder(_symbols.Length);
@@ -35,5 +40,7 @@ namespace Project2
             }
             return builder.ToString();
         }
+
+
     }
 }

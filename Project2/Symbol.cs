@@ -10,14 +10,6 @@ namespace Project2
     {
         private string _chars;
 
-        public string Chars
-        {
-            get { return _chars; }
-            set
-            {
-                this._chars = value ?? String.Empty;
-            }
-        }
         public SymbolString(string chars)
         {
             this._chars = chars ?? String.Empty;
@@ -28,20 +20,29 @@ namespace Project2
             this._chars = string.Format("{0}", value);
         }
 
-        public override string ToString()
+        public string Value
         {
-            return this._chars;
+            get { return _chars; }
+            set
+            {
+                this._chars = value ?? String.Empty;
+            }
         }
-
         public int Length
         {
             get { return _chars.Length; }
+        }
+
+        public override string ToString()
+        {
+            return this._chars;
         }
     }
 
     public interface ISymbol
     {
         int Length { get; }
+        string Value { get; }
     }
 
     public struct Symbol

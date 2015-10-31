@@ -10,7 +10,7 @@ namespace Project2
         None
     }
 
-    public interface ISentenceItem
+    public interface ISentenceItem 
     {
         ItemType Type { get; }
 

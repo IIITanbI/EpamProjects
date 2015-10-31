@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,47 +38,73 @@ namespace Project2
     }
     public class Sentence : ISentence
     {
-        private List<ISentenceItem> sentenceItems = new List<ISentenceItem>();
+        private List<ISentenceItem> _sentenceItems = new List<ISentenceItem>();
         
-
         public Sentence(string sentence)
         {
-           sentenceItems.AddRange(Parse(sentence));
+           _sentenceItems.AddRange(Parse(sentence));
         }
+
+
         private List<ISentenceItem> Parse(string sentence)
         {
             var result = new List<ISentenceItem>();
-
+            var sentenceItemFactory = new SentceItemFactory();
             string pattern = @"(\w+(?:\-\w*)*)|(\p{P}+)|\s(?=[^\s])";
+            pattern = @"[\.!\?]+$|(\w+(?:\-\w*)*)|\p{P}|\s(?=[^\s])";
 
             var words = Regex.Matches(sentence, pattern);
             foreach (var word in words)
             {
-                result.Add(new SentceItemFactory().GetItem(word.ToString()));
+                result.Add(sentenceItemFactory.GetItem(word.ToString()));
             }
-
-            foreach (ISentenceItem word in result)
-            {
-                //Console.WriteLine(word);
-            }
-          //  Console.WriteLine();
-          //  Console.WriteLine();
-           
 
             return result;
+        }
+
+        public int Count
+        {
+            get { return this._sentenceItems.Count; }
+        }
+
+        public ISentenceItem this[int index]
+        {
+            get { return this._sentenceItems[index]; }
+            set { this._sentenceItems[index] = value; }
+        }
+
+        public void Add(ISentenceItem item)
+        {
+            this._sentenceItems.Add(item);
+        }
+        public void Insert(int index, ISentenceItem item)
+        {
+            this._sentenceItems.Insert(index, item);
+        }
+        public void Remove(int index)
+        {
+            this._sentenceItems.RemoveAt(index);
+        }
+
+        public IEnumerator<ISentenceItem> GetEnumerator()
+        {
+            return this._sentenceItems.GetEnumerator();
+        }
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
 
-            foreach (ISentenceItem item in sentenceItems)
+            foreach (ISentenceItem item in _sentenceItems)
             {
-               builder.Append(item);
+                builder.Append(item);
             }
 
             return builder.ToString();
         }
-
     }
 }

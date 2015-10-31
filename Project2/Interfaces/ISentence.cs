@@ -1,7 +1,10 @@
-﻿namespace Project2
+﻿using System.Collections.Generic;
+
+namespace Project2
 {
-    public interface ISentence
+    public interface ISentence : IEnumerable<ISentenceItem>
     {
+        int Count { get; }
         
     }
 }

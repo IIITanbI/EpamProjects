@@ -21,15 +21,13 @@ namespace Project2
             get { return _symbol.ToString(); }
         }
 
-        public int Length { get { return 1; } }
+        public int Length { get { return _symbol.Length; } }
 
         public SymbolString Symbol
         {
             get { return this._symbol; }
         }
-
-        
-
+ 
         public override string ToString()
         {
             return _symbol.ToString();
