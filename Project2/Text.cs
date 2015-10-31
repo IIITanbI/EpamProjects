@@ -90,7 +90,7 @@ namespace Project2
             }
         }
 
-        public void Huyak(int length)
+        public void GetWordsByLength(int length)
         {
             foreach (var s in this._sentences)
             {
@@ -110,9 +110,9 @@ namespace Project2
                 }
             }
         }
-        public IEnumerable<ISentence> SortThisShit()
+        public IEnumerable<ISentence> Sort()
         {
-            return this.Sentences.OrderBy(s => s.Count).ToArray();
+            return this.Sentences.OrderBy(s => s.WordCount).ToArray();
         } 
         public IEnumerable<ISentence> Sentences
         {

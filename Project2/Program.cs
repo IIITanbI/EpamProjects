@@ -22,22 +22,25 @@ namespace Project2
        
         static void Main(string[] args)
         {
+            string str = new string(' ', -3);
+            Console.WriteLine(str);
             var cc = new SentceItemFactory().GetItem("  ");
             Text text = new Text("text.txt");
 
             Console.WriteLine(text);
             Console.WriteLine();
             Console.WriteLine();
-            foreach (var v in text.SortThisShit())
+            foreach (var v in text.Sort())
             {
                 Console.WriteLine(v);
             }
 
             Console.WriteLine();
             Console.WriteLine();
-            text.Huyak(5);
+            text.GetWordsByLength(5);
 
             var rr = Regex.Matches("deep", @"(\w)\1*");
+            string[] serega = {"."};
             Console.WriteLine(Regex.Escape("(...)"));
             
             //Console.WriteLine(char.GetUnicodeCategory('—'));

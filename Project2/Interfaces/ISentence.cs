@@ -4,7 +4,8 @@ namespace Project2
 {
     public interface ISentence : IEnumerable<ISentenceItem>
     {
-        int Count { get; }
+        int TotalCount { get; }
+        int WordCount { get; }
         
     }
 }

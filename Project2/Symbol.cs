@@ -14,7 +14,6 @@ namespace Project2
         {
             this._chars = chars ?? String.Empty;
         }
-
         public SymbolString(char value)
         {
             this._chars = string.Format("{0}", value);
@@ -32,7 +31,6 @@ namespace Project2
         {
             get { return _chars.Length; }
         }
-
         public override string ToString()
         {
             return this._chars;
@@ -43,20 +41,5 @@ namespace Project2
     {
         int Length { get; }
         string Value { get; }
-    }
-
-    public struct Symbol
-    {
-        public char Char { get; set; }
-        
-        public Symbol(char value)
-        {
-            this.Char = value;
-        }
-
-        public override string ToString()
-        {
-            return this.Char.ToString();
-        }
     }
 }

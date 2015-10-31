@@ -45,13 +45,12 @@ namespace Project2
            _sentenceItems.AddRange(Parse(sentence));
         }
 
-
         private List<ISentenceItem> Parse(string sentence)
         {
             var result = new List<ISentenceItem>();
             var sentenceItemFactory = new SentceItemFactory();
-            string pattern = @"(\w+(?:\-\w*)*)|(\p{P}+)|\s(?=[^\s])";
-            pattern = @"[\.!\?]+$|(\w+(?:\-\w*)*)|\p{P}|\s(?=[^\s])";
+            //string pattern = @"(\w+(?:\-\w*)*)|(\p{P}+)|\s(?=[^\s])";
+            string pattern = @"[\.!\?]+$|(\w+(?:\-\w*)*)|\p{P}|\s(?=[^\s])";
 
             var words = Regex.Matches(sentence, pattern);
             foreach (var word in words)
@@ -62,9 +61,17 @@ namespace Project2
             return result;
         }
 
-        public int Count
+        public int TotalCount
         {
             get { return this._sentenceItems.Count; }
+        }
+
+        public int WordCount
+        {
+            get
+            {
+                return this._sentenceItems.Count(item => item.Type == ItemType.Word);
+            }
         }
 
         public ISentenceItem this[int index]
@@ -81,7 +88,7 @@ namespace Project2
         {
             this._sentenceItems.Insert(index, item);
         }
-        public void Remove(int index)
+        public void RemoveAt(int index)
         {
             this._sentenceItems.RemoveAt(index);
         }
