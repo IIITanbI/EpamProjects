@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -13,8 +14,8 @@ namespace Project2
     Во всех задачах с формированием текста заменять табуляции и последовательности пробелов одним пробелом.
 
     \/ Вывести все предложения заданного текста в порядке возрастания количества слов в каждом из них.
-    Во всех вопросительных предложениях текста найти и напечатать без повторений слова заданной длины.
-    Из текста удалить все слова заданной длины, начинающиеся на согласную букву.
+    \/ Во всех вопросительных предложениях текста найти и напечатать без повторений слова заданной длины.
+    \| Из текста удалить все слова заданной длины, начинающиеся на согласную букву.
     В некотором предложении текста слова заданной длины заменить указанной подстрокой, длина которой может не совпадать с длиной слова.
     */
     class Program
@@ -22,11 +23,9 @@ namespace Project2
        
         static void Main(string[] args)
         {
-            string str = new string(' ', -3);
-            Console.WriteLine(str);
-            var cc = new SentceItemFactory().GetItem("  ");
-            Text text = new Text("text.txt");
 
+            Text text = new Text("text.txt");
+            SymbolString.Vowels = new []{'а', 'о', 'е', 'ы', 'э', 'ю', 'и', 'я'};
             Console.WriteLine(text);
             Console.WriteLine();
             Console.WriteLine();
@@ -39,8 +38,33 @@ namespace Project2
             Console.WriteLine();
             text.GetWordsByLength(5);
 
+            Console.WriteLine();
+            Console.WriteLine();
+
+            text.DeleteAllVowelWords(6);
+            foreach (var v in text)
+            {
+                Console.WriteLine(v);
+            }
+            Console.WriteLine();
+            Console.WriteLine();
+            text.ReplaceBySequence(0, 4, "serega wall table pc");
+            foreach (var v in text)
+            {
+                Console.WriteLine(v);
+            }
+
+
             var rr = Regex.Matches("deep", @"(\w)\1*");
-            string[] serega = {"."};
+            string pattern = @"(?<=[\.!\?])\s*(?=[^\.!\?»])";
+            string pat = @"(?<=[";
+
+            string[] serega = {".", "!", "?"};
+            foreach (var it in serega)
+            {
+               var reg = Regex.Escape(it);
+                pat += "(" + reg + ")";
+            }
             Console.WriteLine(Regex.Escape("(...)"));
             
             //Console.WriteLine(char.GetUnicodeCategory('—'));

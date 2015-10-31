@@ -8,8 +8,6 @@ namespace Project2
 {
     public class Word: ISentenceItem, IComparable<Word>
     {
-        public ItemType Type { get; } = ItemType.Word;
-
         private SymbolString[] _symbols;
         public Word(string word)
         {
@@ -26,6 +24,11 @@ namespace Project2
             get { return this._symbols.Length; }
         }
 
+        public bool StartWithVowel()
+        {
+            return _symbols.Length > 0 && SymbolString.IsVowel(_symbols[0]);
+        }
+
         public int CompareTo(Word other)
         {
             return this.Value.CompareTo(other.Value);
@@ -40,7 +43,5 @@ namespace Project2
             }
             return builder.ToString();
         }
-
-
     }
 }
