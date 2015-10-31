@@ -21,35 +21,28 @@ namespace Project2
                 this.Add(sentenceItemFactory.GetItem(item));
             }
         }
-
         public Sentence()
         {
         }
-
         public Sentence(IEnumerable<ISentenceItem> source)
         {
             this._sentenceItems.AddRange(source);
         }
 
+        public int Count => TotalCount;
+        public bool IsReadOnly { get; } = false;
         public int TotalCount
         {
             get { return this._sentenceItems.Count; }
         }
-
         public int WordCount
         {
-            get
-            {
-                return this._sentenceItems.Count(item => item is Word);
-            }
+            get { return this._sentenceItems.Count(item => item is Word); }
         }
 
         public Punctuation EndSentence
         {
-            get
-            {
-                return this._sentenceItems[this._sentenceItems.Count - 1] as Punctuation;
-            }
+            get { return this._sentenceItems[this._sentenceItems.Count - 1] as Punctuation; }
         }
         public ISentenceItem this[int index]
         {
@@ -61,18 +54,35 @@ namespace Project2
         {
             this._sentenceItems.Add(item);
         }
+        public void Clear()
+        {
+            this._sentenceItems.Clear();
+        }
+        public bool Contains(ISentenceItem item)
+        {
+            return this._sentenceItems.Contains(item);
+        }
+        public void CopyTo(ISentenceItem[] array, int arrayIndex)
+        {
+            this._sentenceItems.CopyTo(array, arrayIndex);
+        }
+        public int IndexOf(ISentenceItem item)
+        {
+            return this._sentenceItems.IndexOf(item);
+        }
         public void Insert(int index, ISentenceItem item)
         {
             this._sentenceItems.Insert(index, item);
         }
-        public void Remove(ISentenceItem item)
+        public bool Remove(ISentenceItem item)
         {
-            this._sentenceItems.Remove(item);
+            return this._sentenceItems.Remove(item);
         }
         public void RemoveAt(int index)
         {
             this._sentenceItems.RemoveAt(index);
         }
+
 
         public IEnumerator<ISentenceItem> GetEnumerator()
         {
@@ -83,19 +93,19 @@ namespace Project2
             return GetEnumerator();
         }
 
-        public bool IsInterrogative()
+        public static bool IsInterrogative(Sentence sentence)
         {
-            string temp = EndSentence?.Value;
+            string temp = sentence?.EndSentence?.Value;
             return (temp != null && temp.Contains('?'));
         }
-        public bool IsExclamatory()
+        public static bool IsExclamatory(Sentence sentence)
         {
-            string temp = EndSentence?.Value;
+            string temp = sentence?.EndSentence?.Value;
             return (temp != null && temp.Contains('!'));
         }
-        public bool IsDeclarative()
+        public static bool IsDeclarative(Sentence sentence)
         {
-            string temp = EndSentence?.Value;
+            string temp = sentence?.EndSentence?.Value;
             return (temp != null && temp.Contains('.'));
         }
 

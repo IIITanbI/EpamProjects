@@ -28,6 +28,10 @@ namespace Project2
         {
             return _symbols.Length > 0 && Symbol.IsVowel(_symbols[0]);
         }
+        public bool StartWithConsonant()
+        {
+            return _symbols.Length > 0 && Symbol.IsConsonant(_symbols[0]);
+        }
 
         public int CompareTo(Word other)
         {

@@ -23,39 +23,100 @@ namespace Project2
        
         static void Main(string[] args)
         {
-
+            Symbol.Vowels = new[] { 'а', 'о', 'е', 'ы', 'э', 'ю', 'и', 'я' };
+            Symbol.Consonants = new[] { 'Б', 'В', 'Г', 'Д', 'Ж', 'З', 'Й', 'К', 'Л', 'М', 'Н', 'П', 'Р', 'С', 'Т', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ' };
             Text text = new Text("text.txt");
-            Symbol.Vowels = new []{'а', 'о', 'е', 'ы', 'э', 'ю', 'и', 'я'};
-            
             Console.WriteLine(text);
+
             Console.WriteLine();
             Console.WriteLine();
-            foreach (var v in text.Sort())
+
+            //Вывести все предложения заданного текста в порядке возрастания количества слов в каждом из них.
             {
-                Console.WriteLine(v);
+
+                foreach (var v in text.Sentences.OrderBy(s => s.WordCount).ToArray())
+                {
+                    Console.WriteLine(v);
+                }
+
+                Console.WriteLine();
+                Console.WriteLine();
+            }
+            // Во всех вопросительных предложениях текста найти и напечатать без повторений слова заданной длины.
+            {
+                int length = 5;
+                foreach (var sentence in text.Sentences)
+                {
+                    if (!Sentence.IsInterrogative(sentence as Sentence))
+                        continue;
+
+                    var set = new SortedSet<Word>();
+                    foreach (var item in sentence)
+                    {
+                        if (item is Word && item.Length == length)
+                            set.Add((Word) item);
+                    }
+
+                    foreach (var word in set)
+                        Console.WriteLine(word);
+                }
+                Console.WriteLine();
+                Console.WriteLine();
             }
 
-            Console.WriteLine();
-            Console.WriteLine();
-            text.GetWordsByLength(5);
-
-            Console.WriteLine();
-            Console.WriteLine();
-
-            text.DeleteAllVowelWords(6);
-            foreach (var v in text)
+            // Из текста удалить все слова заданной длины, начинающиеся на согласную букву.
             {
-                Console.WriteLine(v);
+                int length = 4;
+                foreach (var sentence in text.Sentences)
+                {
+                    for (int i = 0; i < sentence.TotalCount;)
+                    {
+                        var item = sentence[i] as Word;
+                        if (item != null && item.Length == length && item.StartWithConsonant())
+                            (sentence as Sentence)?.Remove(item);
+                        else i++;
+                    }
+                }
+                Console.WriteLine();
+                Console.WriteLine();
             }
-            Console.WriteLine();
-            Console.WriteLine();
-            text.ReplaceBySequence(0, 4, "serega wall table pc");
-            foreach (var v in text)
+            // В некотором предложении текста слова заданной длины заменить указанной подстрокой, длина которой может не совпадать с длиной слова.
             {
-                Console.WriteLine(v);
+                int length = 4;
+                int sentenceIndex = 0;
+                string subString = "serega wall table pc";
+
+                Sentence sentence = text[sentenceIndex] as Sentence;
+                if (sentence == null) return;
+
+                var sub = TextParser.Parse(subString);
+                var sentenceItemFactory = new SentceItemFactory();
+
+                for (int i = 0; i < sentence.TotalCount;)
+                {
+                    Word word = sentence[i] as Word;
+                    if (word?.Length == length)
+                    {
+                        sentence.RemoveAt(i);
+                        foreach (var item in sub)
+                        {
+                            sentence.Insert(i, sentenceItemFactory.GetItem(item));
+                            i++;
+                        }
+                        //1 2 3 4 5 6 7 
+                        //0 1 2 3 4 5 6 7 
+                        //1 2 8 9 4 5 6 7
+                    }
+                    else i++;
+                }
+
+                Console.WriteLine();
+                Console.WriteLine();
             }
 
 
+
+            return;
             var rr = Regex.Matches("deep", @"(\w)\1*");
             string pattern = @"(?<=[\.!\?])\s*(?=[^\.!\?»])";
             string pat = @"(?<=[";
@@ -69,7 +130,7 @@ namespace Project2
             Console.WriteLine(Regex.Escape("(...)"));
             
             //Console.WriteLine(char.GetUnicodeCategory('—'));
-            return;
+            
 
             char ch;
             //for (int ctr = Convert.ToInt32(Char.MinValue); ctr <= Convert.ToInt32(Char.MaxValue); ctr++)

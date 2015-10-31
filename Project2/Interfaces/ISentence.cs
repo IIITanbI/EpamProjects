@@ -2,7 +2,7 @@
 
 namespace Project2
 {
-    public interface ISentence : IEnumerable<ISentenceItem>
+    public interface ISentence : IEnumerable<ISentenceItem>, ICollection<ISentenceItem>, IList<ISentenceItem>
     {
         Punctuation EndSentence { get; }
 
