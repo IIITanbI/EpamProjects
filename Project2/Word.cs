@@ -8,10 +8,10 @@ namespace Project2
 {
     public class Word: ISentenceItem, IComparable<Word>
     {
-        private SymbolString[] _symbols;
+        private Symbol[] _symbols;
         public Word(string word)
         {
-            this._symbols = word?.Select(c => new SymbolString(c)).ToArray() ?? new SymbolString[0];
+            this._symbols = word?.Select(c => new Symbol(c)).ToArray() ?? new Symbol[0];
         }
 
         public string Value
@@ -26,7 +26,7 @@ namespace Project2
 
         public bool StartWithVowel()
         {
-            return _symbols.Length > 0 && SymbolString.IsVowel(_symbols[0]);
+            return _symbols.Length > 0 && Symbol.IsVowel(_symbols[0]);
         }
 
         public int CompareTo(Word other)

@@ -8,11 +8,11 @@ namespace Project2
 {
     public class Punctuation : ISentenceItem
     {
-        private SymbolString _symbol;
+        private Symbol _symbol;
 
         public Punctuation(string punctuation)
         {
-            this._symbol = new SymbolString(punctuation);
+            this._symbol = new Symbol(punctuation);
         }
 
         public string Value
@@ -22,7 +22,7 @@ namespace Project2
 
         public int Length { get { return _symbol.Length; } }
 
-        public SymbolString Symbol
+        public Symbol Symbol
         {
             get { return this._symbol; }
         }

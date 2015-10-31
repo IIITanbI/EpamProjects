@@ -8,27 +8,21 @@ using System.Threading.Tasks;
 
 namespace Project2
 {
-    public struct SymbolString : ISymbol
+    public struct Symbol : ISymbol
     {
-
-        private static char[] _vowels = { 'a', 'e', 'i', 'o', 'u' };
+        public static readonly char[] DefaultVowels = { 'a', 'e', 'i', 'o', 'u' };
         private string _chars;
 
-        public SymbolString(string chars)
+        public Symbol(string chars)
         {
             this._chars = chars ?? String.Empty;
         }
-        public SymbolString(char value)
+        public Symbol(char value)
         {
-            this._chars = string.Format("{0}", value);
-           
+            this._chars = $"{value}";
         }
 
-        public static char[] Vowels
-        {
-            get { return _vowels; }
-            set { _vowels = value; }
-        }
+        public static char[] Vowels { get; set; } = DefaultVowels;
 
         public string Value
         {
@@ -43,13 +37,13 @@ namespace Project2
             get { return _chars.Length; }
         }
 
-        public static bool IsConsonant(SymbolString symbol)
+        public static bool IsConsonant(Symbol symbol)
         {
-            return symbol.Value != null && symbol.Length == 1 && !_vowels.Contains(symbol.Value[0]);
+            return symbol.Value != null && symbol.Length == 1 && !Vowels.Contains(symbol.Value[0]);
         }
-        public static bool IsVowel(SymbolString symbol)
+        public static bool IsVowel(Symbol symbol)
         {
-            return symbol.Value != null && symbol.Length == 1 && _vowels.Contains(symbol.Value[0]);
+            return symbol.Value != null && symbol.Length == 1 && Vowels.Contains(symbol.Value[0]);
         }
 
         public override string ToString()

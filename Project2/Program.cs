@@ -25,7 +25,8 @@ namespace Project2
         {
 
             Text text = new Text("text.txt");
-            SymbolString.Vowels = new []{'а', 'о', 'е', 'ы', 'э', 'ю', 'и', 'я'};
+            Symbol.Vowels = new []{'а', 'о', 'е', 'ы', 'э', 'ю', 'и', 'я'};
+            
             Console.WriteLine(text);
             Console.WriteLine();
             Console.WriteLine();
