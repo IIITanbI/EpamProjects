@@ -1,95 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Project2
 {
-    public class TextParser
-    {
-        public static List<string> ParseFile(string filePath)
-        {
-            var result = new List<string>();
-
-            string pattern = @"(?<=[\.!\?])\s*(?=[^\.!\?»])";
-            string line;
-            string remainingLine = null;
-            var file = new StreamReader(filePath);
-
-            while ((line = file.ReadLine()) != null)
-            {
-                string[] sentences = Regex.Split(line, pattern);
-  
-                if (!string.IsNullOrWhiteSpace(remainingLine))
-                    sentences[0] = remainingLine + " " + sentences[0];
-
-                remainingLine = !IsSentence(sentences[sentences.Length - 1]) ? sentences[sentences.Length - 1] : null;
-
-                foreach (string sentence in sentences)
-                {
-                    if (string.IsNullOrWhiteSpace(sentence))
-                        continue;
-                    if (IsSentence(sentence))
-                        result.Add(sentence);
-                }
-            }
-            if (!string.IsNullOrWhiteSpace(remainingLine))
-                result.Add(remainingLine);
-
-            file.Close();
-            return result;
-        }
-        public static List<string> ParseText(string text)
-        {
-            var result = new List<string>();
-
-            string pattern = @"(?<=[\.!\?])\s*(?=[^\.!\?»])";
-            string[] sentences = Regex.Split(text, pattern);
-
-            foreach (string sentence in sentences)
-            {
-                if (string.IsNullOrWhiteSpace(sentence))
-                    continue;
-                result.Add(sentence);
-            }
-
-            foreach (var sentence in result)
-            {
-                Console.Write(sentence + " ");
-            }
-            Console.WriteLine();
-            Console.WriteLine();
-
-            return result;
-        }
-        public static List<string> Parse(string sentence)
-        {
-            var result = new List<string>();
-            //string pattern = @"(\w+(?:\-\w*)*)|(\p{P}+)|\s(?=[^\s])";
-            string pattern = @"[\.!\?]+$|(\w+(?:\-\w*)*)|\p{P}|\s(?=[^\s])";
-
-            var items = Regex.Matches(sentence, pattern);
-            foreach (var item in items)
-                result.Add(item.ToString());
-            
-
-            return result;
-        }
-
-        public static bool IsSentence(string str)
-        {
-            return Regex.Match(str, @"[\.!\?]+$").Success;
-        }
-    }
-
-    public class Text : IEnumerable<ISentence>
+    public class Text : IList<ISentence>
     {
         private List<ISentence> _sentences = new List<ISentence>();
-
 
         public Text()
         {
@@ -105,8 +25,13 @@ namespace Project2
                 _sentences.Add(new Sentence(val));
             }
         }
-        
-       
+
+        public bool IsReadOnly { get; } = false;
+        public int Count
+        {
+            get { return this._sentences.Count; }
+        }
+
         public IEnumerable<ISentence> Sort()
         {
             return this.Sentences.OrderBy(s => s.WordCount).ToArray();
@@ -115,7 +40,6 @@ namespace Project2
         {
             foreach (var sentence in this._sentences)
             {
-                //sentence.EndSentence.
                 var sentence1 = sentence as Sentence;
                 if (sentence1 != null && !sentence1.IsInterrogative())
                     continue;
@@ -151,7 +75,6 @@ namespace Project2
                 }
             }
         }
-
         public void ReplaceBySequence(int sentenceIndex, int wordLength, string subString)
         {
             Sentence sentence = this[sentenceIndex] as Sentence;
@@ -181,16 +104,7 @@ namespace Project2
 
         }
 
-        public IEnumerable<ISentence> Sentences
-        {
-            get { return this._sentences; }
-        }
-
-        public int Count
-        {
-            get { return this._sentences.Count; }
-        }
-
+       
         public ISentence this[int index]
         {
             get { return this._sentences[index]; }
@@ -201,17 +115,47 @@ namespace Project2
         {
             this._sentences.Add(item);
         }
+        public void Clear()
+        {
+            this._sentences.Clear();
+        }
+        public bool Contains(ISentence item)
+        {
+            return this._sentences.Contains(item);
+        }
+        public void CopyTo(ISentence[] array, int arrayIndex)
+        {
+            this._sentences.CopyTo(array, arrayIndex);
+        }
+        public int IndexOf(ISentence item)
+        {
+            return this._sentences.IndexOf(item);
+        }
         public void Insert(int index, ISentence item)
         {
             this._sentences.Insert(index, item);
         }
-        public void Remove(ISentence item)
+        public bool Remove(ISentence item)
         {
-            this._sentences.Remove(item);
+           return this._sentences.Remove(item);
         }
         public void RemoveAt(int index)
         {
             this._sentences.RemoveAt(index);
+        }
+
+      
+        public IEnumerable<ISentence> Sentences
+        {
+            get { return this._sentences; }
+        }
+        public IEnumerator<ISentence> GetEnumerator()
+        {
+            return this._sentences.GetEnumerator();
+        }
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         public static Text operator +(Text l, Text r)
@@ -227,15 +171,6 @@ namespace Project2
             return result;
         }
 
-
-        public IEnumerator<ISentence> GetEnumerator()
-        {
-            return this._sentences.GetEnumerator();
-        }
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
@@ -249,7 +184,5 @@ namespace Project2
             }
             return builder.ToString();
         }
-
-       
     }
 }

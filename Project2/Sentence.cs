@@ -3,43 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Project2
 {
-    public class SentceItemFactory
-    {
-        public ISentenceItem GetItem(string item)
-        {
-            //WORD
-            string pattern = @"^\w+(?:\-\w*)*$";
-            if (Regex.Match(item, pattern).Success)
-            {
-                return new Word(item);
-            }
-
-            //PUNCTUATION
-            pattern = @"^\p{P}+$";
-            if (Regex.Match(item, pattern).Success)
-            {
-                return new Punctuation(item);
-            }
-
-            //WHITE SPACE
-            pattern = @"^\s+$";
-            if (Regex.Match(item, pattern).Success)
-            {
-                return new WhiteSpace();
-            }
-
-            return null;
-        }
-    }
     public class Sentence : ISentence
     {
         private List<ISentenceItem> _sentenceItems = new List<ISentenceItem>();
-        
+        public SentceItemFactory SentceItemFactory { get; set; }
         public Sentence(string sentence)
         {
             var sentenceItemFactory = new SentceItemFactory();
