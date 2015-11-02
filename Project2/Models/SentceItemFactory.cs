@@ -2,32 +2,25 @@ using System.Text.RegularExpressions;
 
 namespace Project2
 {
+   
     public class SentceItemFactory
     {
         public ISentenceItem GetItem(string item)
         {
             //WORD
-            string pattern = @"^\w+(?:\-\w*)*$";
-            if (Regex.Match(item, pattern).Success)
-            {
+            if (TextParser.IsWord(item))
                 return new Word(item);
-            }
 
             //PUNCTUATION
-            pattern = @"^\p{P}+$";
-            if (Regex.Match(item, pattern).Success)
-            {
+            if (TextParser.IsPunctuation(item))
                 return new Punctuation(item);
-            }
 
             //WHITE SPACE
-            pattern = @"^\s+$";
-            if (Regex.Match(item, pattern).Success)
-            {
+            if (TextParser.IsWhiteSpace(item))
                 return new WhiteSpace();
-            }
 
             return null;
         }
     }
+    
 }

@@ -2,11 +2,11 @@
 
 namespace Project2
 {
-    public interface ISentence : IEnumerable<ISentenceItem>, ICollection<ISentenceItem>, IList<ISentenceItem>
+    public interface ISentence : IList<ISentenceItem>
     {
         Punctuation EndSentence { get; }
 
-        ISentenceItem this[int index] { get; set; }
+        //ISentenceItem this[int index] { get; set; }
 
         int TotalCount { get; }
         int WordCount { get; }

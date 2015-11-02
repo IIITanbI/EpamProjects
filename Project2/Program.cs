@@ -26,6 +26,7 @@ namespace Project2
             Symbol.Vowels = new[] { 'а', 'о', 'е', 'ы', 'э', 'ю', 'и', 'я' };
             Symbol.Consonants = new[] { 'Б', 'В', 'Г', 'Д', 'Ж', 'З', 'Й', 'К', 'Л', 'М', 'Н', 'П', 'Р', 'С', 'Т', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ' };
             Text text = new Text("text.txt");
+            text = TextParser.ParseFile("input.txt");
             Console.WriteLine(text);
 
             Console.WriteLine();
@@ -93,8 +94,7 @@ namespace Project2
                 Sentence sentence = text[sentenceIndex] as Sentence;
                 if (sentence == null) return;
 
-                var sub = TextParser.Parse(subString);
-                var sentenceItemFactory = new SentceItemFactory();
+                var sub = TextParser.ParseSentence(subString);
 
                 for (int i = 0; i < sentence.TotalCount;)
                 {
@@ -104,7 +104,7 @@ namespace Project2
                         sentence.RemoveAt(i);
                         foreach (var item in sub)
                         {
-                            sentence.Insert(i, sentenceItemFactory.GetItem(item));
+                            sentence.Insert(i, item);
                             i++;
                         }
                         //1 2 3 4 5 6 7 

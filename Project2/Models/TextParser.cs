@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace Project2
 {
     public class TextParser
     {
-        public static List<string> ParseFile(string filePath)
+        public static SentceItemFactory SentceItemFactory { get; set; } = new SentceItemFactory();
+
+        public static Text ParseFile(string filePath)
         {
+            Text text = new Text();
             var result = new List<string>();
 
             string pattern = @"(?<=[\.!\?])\s*(?=[^\.!\?»])";
@@ -37,10 +41,15 @@ namespace Project2
                 result.Add(remainingLine);
 
             file.Close();
-            return result;
+
+            foreach (var sentence in result)
+                text.Add(ParseSentence(sentence));
+            
+            return text;
         }
-        public static List<string> ParseText(string text)
+        public static Text ParseText(string text)
         {
+            Text _text = new Text();
             var result = new List<string>();
 
             string pattern = @"(?<=[\.!\?])\s*(?=[^\.!\?»])";
@@ -54,28 +63,41 @@ namespace Project2
             }
 
             foreach (var sentence in result)
-            {
-                Console.Write(sentence + " ");
-            }
-            Console.WriteLine();
-            Console.WriteLine();
+                _text.Add(ParseSentence(sentence));
 
-            return result;
+            return _text;
         }
-        public static List<string> Parse(string sentence)
+        public static ISentence ParseSentence(string sentence)
         {
-            var result = new List<string>();
+            var result = new Sentence();
             //string pattern = @"(\w+(?:\-\w*)*)|(\p{P}+)|\s(?=[^\s])";
             string pattern = @"[\.!\?]+$|(\w+(?:\-\w*)*)|\p{P}|\s(?=[^\s])";
 
             var items = Regex.Matches(sentence, pattern);
             foreach (var item in items)
-                result.Add(item.ToString());
-            
+            {
+                result.Add(SentceItemFactory.GetItem(item.ToString()));
+            }
 
             return result;
         }
 
+
+        public static bool IsWord(string str)
+        {
+            string pattern = @"^\w+(?:\-\w*)*$";
+            return (Regex.Match(str, pattern).Success);
+        }
+        public static bool IsPunctuation(string str)
+        {
+            string pattern = @"^\p{P}+$";
+            return (Regex.Match(str, pattern).Success);
+        }
+        public static bool IsWhiteSpace(string str)
+        {
+            string pattern = @"^\s+$";
+            return (Regex.Match(str, pattern).Success);
+        }
         public static bool IsSentence(string str)
         {
             return Regex.Match(str, @"[\.!\?]+$").Success;

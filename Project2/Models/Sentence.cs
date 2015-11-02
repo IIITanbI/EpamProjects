@@ -10,17 +10,7 @@ namespace Project2
     public class Sentence : ISentence
     {
         private List<ISentenceItem> _sentenceItems = new List<ISentenceItem>();
-        public SentceItemFactory SentceItemFactory { get; set; }
-        public Sentence(string sentence)
-        {
-            var sentenceItemFactory = new SentceItemFactory();
-
-            var list = TextParser.Parse(sentence);
-            foreach (var item in list)
-            {
-                this.Add(sentenceItemFactory.GetItem(item));
-            }
-        }
+               
         public Sentence()
         {
         }
