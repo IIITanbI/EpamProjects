@@ -8,9 +8,9 @@ namespace Project2
 {
     public class TextParser
     {
-        public static SentceItemFactory SentceItemFactory { get; set; } = new SentceItemFactory();
+        public ISentceItemFactory SentceItemFactory { get; set; } = new SentceItemFactory();
 
-        public static Text ParseFile(string filePath)
+        public Text ParseFile(string filePath)
         {
             Text text = new Text();
             var result = new List<string>();
@@ -47,7 +47,7 @@ namespace Project2
             
             return text;
         }
-        public static Text ParseText(string text)
+        public Text ParseText(string text)
         {
             Text _text = new Text();
             var result = new List<string>();
@@ -67,7 +67,7 @@ namespace Project2
 
             return _text;
         }
-        public static ISentence ParseSentence(string sentence)
+        public  ISentence ParseSentence(string sentence)
         {
             var result = new Sentence();
             //string pattern = @"(\w+(?:\-\w*)*)|(\p{P}+)|\s(?=[^\s])";
@@ -76,7 +76,7 @@ namespace Project2
             var items = Regex.Matches(sentence, pattern);
             foreach (var item in items)
             {
-                result.Add(SentceItemFactory.GetItem(item.ToString()));
+                result.Add(SentceItemFactory.Create(item.ToString()));
             }
 
             return result;

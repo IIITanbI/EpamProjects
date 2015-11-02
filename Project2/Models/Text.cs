@@ -17,14 +17,6 @@ namespace Project2
         public Text(IEnumerable<ISentence> source)
         {
         }
-        public Text(string text)
-        {
-            var list = TextParser.ParseFile(text);
-            foreach (var val in list)
-            {
-                _sentences.Add(new Sentence(val));
-            }
-        }
 
         public bool IsReadOnly { get; } = false;
         public int Count

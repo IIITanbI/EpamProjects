@@ -1,11 +1,11 @@
+using System.Dynamic;
 using System.Text.RegularExpressions;
 
 namespace Project2
 {
-   
-    public class SentceItemFactory
+    public class SentceItemFactory : ISentceItemFactory
     {
-        public ISentenceItem GetItem(string item)
+        public ISentenceItem Create(string item)
         {
             //WORD
             if (TextParser.IsWord(item))

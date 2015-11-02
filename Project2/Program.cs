@@ -25,8 +25,9 @@ namespace Project2
         {
             Symbol.Vowels = new[] { 'а', 'о', 'е', 'ы', 'э', 'ю', 'и', 'я' };
             Symbol.Consonants = new[] { 'Б', 'В', 'Г', 'Д', 'Ж', 'З', 'Й', 'К', 'Л', 'М', 'Н', 'П', 'Р', 'С', 'Т', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ' };
-            Text text = new Text("text.txt");
-            text = TextParser.ParseFile("input.txt");
+            TextParser textParser = new TextParser();
+            Text text = textParser.ParseFile("text.txt");
+           // Text text = TextParser.ParseFile("text.txt");
             Console.WriteLine(text);
 
             Console.WriteLine();
@@ -93,8 +94,8 @@ namespace Project2
 
                 Sentence sentence = text[sentenceIndex] as Sentence;
                 if (sentence == null) return;
-
-                var sub = TextParser.ParseSentence(subString);
+                var sub = new TextParser().ParseSentence(subString);
+                //var sub = TextParser.ParseSentence(subString);
 
                 for (int i = 0; i < sentence.TotalCount;)
                 {
