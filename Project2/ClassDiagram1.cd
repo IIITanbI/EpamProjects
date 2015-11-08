@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Project2.SentceItemFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\SentceItemFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Project2.Sentence" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEoAAEAAAIAABBAUGAAABAYAAAAAAAAECAQABABQIAA=</HashCode>
+      <FileName>Models\Sentence.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Project2.Punctuation" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAABAAIAAAAAAAAAgAAAACAA=</HashCode>
+      <FileName>Models\SentenceItem\Punctuation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Project2.WhiteSpace" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAABAAIAAAAAAAAAgAAAACAA=</HashCode>
+      <FileName>Models\SentenceItem\WhiteSpace.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Project2.Word" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAQEAAAAAABAAAAAAAAAAAAgAAQCAAA=</HashCode>
+      <FileName>Models\SentenceItem\Word.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Project2.Text" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AkIAAEAAAAAAABAUSAAABAQAAAAAAAAECAAEAABQIAA=</HashCode>
+      <FileName>Models\Text.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Project2.TextParser" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABIAAAAAAACQAAAQCgAAAAgAA=</HashCode>
+      <FileName>Models\TextParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project2.Program" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Project2.Symbol" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAEAAAYAABAAIAAgBAAAAAwAAAAAAA=</HashCode>
+      <FileName>Models\Symbol.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Interface Name="Project2.ISentence" Collapsed="true">
+    <Position X="2.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQABAAAAAA=</HashCode>
+      <FileName>Interfaces\ISentence.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Project2.ISentenceItem" Collapsed="true">
+    <Position X="4" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Interfaces\ISentenceItem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Project2.ISentceItemFactory" Collapsed="true">
+    <Position X="0.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ISentceItemFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Project2.ISymbol" Collapsed="true">
+    <Position X="0.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Models\Symbol.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
