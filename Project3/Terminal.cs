@@ -22,7 +22,8 @@ namespace Project3
             }
         }
 
-        public Request Request { get; set; }
+        public Request Request { get;
+            set; }
         public bool IsOnline { get; private set; }
 
         public Terminal(PhoneNumber phoneNumber)
@@ -47,25 +48,32 @@ namespace Project3
         {
             if (!IsOnline)
             {
-                OnOnline(this, EventArgs.Empty);
-                var request = new Request(this.PhoneNumber, target, Request.OutcomingCall);
-                OnOutConnection(this, request);
+                //OnOnline(this, EventArgs.Empty);
+                this.Request = new Request(this.PhoneNumber, target, Request.OutcomingCall);
+                OnOutConnection(this, this.Request);
             }
         }
         public void Answer()
         {
-            if (IsOnline || Request == null) return;
+            if (Request == null) return;
             var respond = new Respond(Respond.Accept, this.Request);
             OnIncomRespond(this, respond);
-            OnOnline(this, EventArgs.Empty);
+           // OnOnline(this, EventArgs.Empty);
         }
         public void Drop()
         {
             var respond = new Respond(Respond.Drop, this.Request);
             OnIncomRespond(this, respond);
-            OnOffline(this, EventArgs.Empty);
+            //OnOffline(this, EventArgs.Empty);
         }
 
+        public void Interrupt()
+        {
+            if (this.Request == null) return;
+            this.Request = new Request(this.PhoneNumber, Request.Target, Request.DisconnectCall);
+            OnOutConnection(this, Request);
+           // OnOffline(this, EventArgs.Empty);
+        }
         #region 
         //EVENTS
         public event EventHandler<PhoneNumber> PhoneChanged;
@@ -139,6 +147,7 @@ namespace Project3
         }
         protected virtual void OnDropConnection(object sender, Request e)
         {
+            this.Request = null;
             DropConnection?.Invoke(sender, e);
         }
 
@@ -176,17 +185,20 @@ namespace Project3
         {
             OnIncomConnection(this, this.Request);
 
-            Console.WriteLine("Current number:" + this.PhoneNumber);
+            //Console.WriteLine("Current number:" + this.PhoneNumber);
             Console.WriteLine("Incoming Call From: " + Request.Source);
+            Console.WriteLine("Incoming Call To: " + Request.Target);
+            
 
-           
 
             switch (incomingRespond.Code)
             {
                 case Respond.Accept:
+                    Console.WriteLine("Accepted");
                     OnCallAccepted(this, this.Request);
                     break;
                 case Respond.Drop:
+                    Console.WriteLine("Dropped");
                     OnDropConnection(this, this.Request);
                     break;
                 default:
@@ -198,9 +210,13 @@ namespace Project3
         {
             port.StateChanged += (sender, state) =>
             {
-                if (this.IsOnline && (state == PortState.Free || state == PortState.Free))
+                if (this.IsOnline && state == PortState.Free)
                 {
                     this.OnOffline(this, EventArgs.Empty);
+                }
+                if (!this.IsOnline && state == PortState.Busy)
+                {
+                    this.OnOnline(this, EventArgs.Empty);
                 }
             };
         }

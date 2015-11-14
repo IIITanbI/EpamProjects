@@ -33,16 +33,22 @@ namespace Project3
             PhoneNumber n2 = new PhoneNumber("256");
             Terminal terminal2 = new Terminal(n2);
 
+            PhoneNumber n3 = new PhoneNumber("512");
+            Terminal terminal3 = new Terminal(n3);
+
             Station station = new Station(new List<Port>(), new List<Terminal>());
+            station.Add(new Port());
             station.Add(new Port());
             station.Add(new Port());
 
 
             station.Add(terminal1);
             station.Add(terminal2);
-            terminal1.Plug();
+            station.Add(terminal3);
+           // terminal1.Plug();
             terminal1.Call(terminal2.PhoneNumber);
-
+            terminal3.Call(terminal1.PhoneNumber);
+            terminal1.Interrupt();
             Console.Read();
         }
     }
