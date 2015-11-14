@@ -17,12 +17,10 @@ namespace Project3
             }
             set
             {
-                if (_state != value)
-                {
-                    OnStateChanging(this, value);
-                    _state = value;
-                    OnStateChanged(this, _state);
-                }
+                if (_state == value) return;
+                OnStateChanging(this, value);
+                _state = value;
+                OnStateChanged(this, _state);
             }
         }
 
@@ -30,9 +28,13 @@ namespace Project3
         {
             terminal.Plugging += (sender, args) =>
             {
-                Console.WriteLine((sender as Terminal)?.PhoneNumber);
-
+                Console.WriteLine((sender as Terminal)?.PhoneNumber + " plugging");
             };
+        }
+        public void ClearEvents(Terminal terminal)
+        {
+            this.StateChanged = null;
+            this.StateChanging = null;
         }
 
         public event EventHandler<PortState> StateChanging;

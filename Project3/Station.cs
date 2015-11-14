@@ -12,18 +12,16 @@ namespace Project3
     {
         private ICollection<Port> _ports;
         private ICollection<Terminal> _terminals;
-
+        private ICollection<CallInfo> _connectionCollection;
+        private ICollection<CallInfo> _callCollection;
         private IDictionary<Terminal, Port> _portMap; 
-        public Station()
-        {
-            this._ports = new List<Port>();
-            this._terminals = new List<Terminal>();
-            this._portMap = new Dictionary<Terminal, Port>();
-        }
+        
         public Station(ICollection<Port> ports, ICollection<Terminal> terminals)
         {
             this._ports = ports;
             this._terminals = terminals;
+            this._connectionCollection = new List<CallInfo>();
+            this._callCollection = new List<CallInfo>();
             this._portMap = new Dictionary<Terminal, Port>();
         }
 
@@ -39,6 +37,17 @@ namespace Project3
             this._portMap.Add(terminal, port);
           
         }
+        public void UnmapPort(Port port)
+        {
+            if (port == null) return;
+            if (_portMap.Values.Contains(port))
+            {
+                var terminal = _portMap.FirstOrDefault(pair => pair.Value == port).Key;
+                if (terminal != null)
+                    _portMap.Remove(terminal);
+            }
+        }
+
 
         public Port GetPort(Terminal terminal)
         {
@@ -46,21 +55,20 @@ namespace Project3
             _portMap.TryGetValue(terminal, out port);
             return port;
         }
-
         public Terminal GetTerminal(PhoneNumber phoneNumber)
         {
             return this._terminals.FirstOrDefault(terminal => terminal.PhoneNumber == phoneNumber);
         }
-        public Port this[Terminal terminal]
+
+        public CallInfo GetCallInfo(PhoneNumber source)
         {
-            get
-            {
-                Port port;
-                _portMap.TryGetValue(terminal, out port);
-                return port;
-            }
+            return _callCollection.LastOrDefault(info => (info.Source == source || info.Target == source));
         }
-        
+        public CallInfo GetConnectionInfo(PhoneNumber source)
+        {
+            return _connectionCollection.FirstOrDefault(info => (info.Source == source || info.Target == source));
+        }
+
         public void Add(Port port)
         {
             if (!this._ports.Contains(port))
@@ -85,37 +93,43 @@ namespace Project3
             freePort.State = PortState.Free;
         }
 
-        protected void RegisterOutgoingRequest(Request request)
+        protected void RegisterOutgoingRequest(object sender, Request request)
         {
-            Console.WriteLine("Termianal ocnnect to cstaton");
-            if (request.Sourse != default(PhoneNumber) && request.Target != default(PhoneNumber))
+            Console.WriteLine("Terminal connect to station");
+            if (request.Source != default(PhoneNumber) && request.Target != default(PhoneNumber))
             {
-                Terminal terminal = GetTerminal(request.Target);
-                Port port = GetPort(terminal);
+                var sourceTerminal = GetTerminal(request.Source);
+                var sourcePort = GetPort(sourceTerminal);
 
-                if (port.State == PortState.Free)
+                var targetTerminal = GetTerminal(request.Target);
+                var targetPort = GetPort(targetTerminal);
+
+               
+                if (sourcePort.State == PortState.Free && targetPort.State == PortState.Free)
                 {
-                    port.State = PortState.Busy;
-                    terminal.IncomingRequest(request.Sourse);
+                    sourcePort.State = PortState.Busy;
+                    targetPort.State = PortState.Busy;
+
+                    var callInfo = new CallInfo()
+                    {
+                        Source = request.Source,
+                        Target = request.Target,
+                        Started = DateTime.Now,
+                        Duration = TimeSpan.Zero
+                    };
+                    _connectionCollection.Add(callInfo);
+
+                    var incomingRequest = new Request(request.Source, request.Target, Request.IncomingCall);
+                    targetTerminal.IncomingRequest(incomingRequest);
+                }
+                else
+                {
+                    //user busy
                 }
             }
 
         }
-        protected void InterruptConnection()
-        {
-            //this._callCollection.Remove(callInfo);
-            //SetPortStateWhenConnectionInterrupted(callInfo.Source, callInfo.Target);
-            //OnCallInfoPrepared(this, callInfo);
-        }
-
-        protected void InterruptActiveCall()
-        {
-            //callInfo.Duration = DateTime.Now - callInfo.Started;
-            //this._callCollection.Remove(callInfo);
-            //SetPortStateWhenConnectionInterrupted(callInfo.Source, callInfo.Target);
-            //OnCallInfoPrepared(this, callInfo);
-        }
-
+        
         public void OnIncomingCallRespond(object sender, Respond respond)
         {
             Console.WriteLine("Respond ok");
@@ -124,13 +138,11 @@ namespace Project3
             {
                 case Respond.Accept:
                     Console.WriteLine("Accept");
-                    Terminal terminal = sender as Terminal;
-                    Port port = GetPort(terminal);
-                    port.State = PortState.Busy;
+                    MakeCallActive(null);
                     break;
                 case Respond.Drop:
-
                     Console.WriteLine("Drop");
+                    InterruptConnection(null);
                     break;
                 default:
                     break;
@@ -161,13 +173,50 @@ namespace Project3
             //    }
             //}
         }
+
+        protected void InterruptConnection(CallInfo connection)
+        {
+            //this._callCollection.Remove(callInfo);
+            SetPortStateWhenConnectionInterrupted(connection.Source, connection.Target);
+            //OnCallInfoPrepared(this, callInfo);
+        }
+
+        protected void InterruptActiveCall(CallInfo connection)
+        {
+            connection.Duration = DateTime.Now - connection.Started;
+            //this._callCollection.Remove(callInfo);
+            SetPortStateWhenConnectionInterrupted(connection.Source, connection.Target);
+            //OnCallInfoPrepared(this, callInfo);
+        }
+        protected void MakeCallActive(CallInfo callInfo)
+        {
+            // this._connectionCollection.Remove(callInfo);
+            callInfo.Started = DateTime.Now;
+            // this._callCollection.Add(callInfo);
+        }
+        protected void SetPortStateWhenConnectionInterrupted(PhoneNumber source, PhoneNumber target)
+        {
+            var sourcePort = GetPort(GetTerminal(source));
+            if (sourcePort != null)
+            {
+                sourcePort.State = PortState.Free;
+            }
+
+            var targetPort = GetPort(GetTerminal(target));
+            if (targetPort != null)
+            {
+                targetPort.State = PortState.Free;
+            }
+        }
+
+
+
+
         protected virtual void RegisterEventForTerminal(Terminal terminal)
         {
-            terminal.OutConnection += (sender, request) =>
-            {
-                RegisterOutgoingRequest(request);
+            terminal.OutConnection += RegisterOutgoingRequest;
 
-            };
+            
             terminal.IncomRespond += OnIncomingCallRespond;
 
 

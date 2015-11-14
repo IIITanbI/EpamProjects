@@ -7,13 +7,12 @@ namespace Project3
     {
         public const int Accept = 101;
         public const int Drop = 102;
-
+        public const int Interrupt = 103;
         public Respond(int code, Request request)
         {
             this.Code = code;
             this.Request = request;
         }
-        //public RespondType RespondType { get; set; }
         public int Code { get; }
         public Request Request { get; }
 

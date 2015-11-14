@@ -31,6 +31,43 @@ namespace Project3
             this.IsOnline = false;
         }
 
+        
+
+        public void Plug()
+        {
+            OnPlugging(this, EventArgs.Empty);
+        }
+        public void UnPlug()
+        {
+            OnUnPlugging(this, EventArgs.Empty);
+        }
+        
+
+        public void Call(PhoneNumber target)
+        {
+            if (!IsOnline)
+            {
+                OnOnline(this, EventArgs.Empty);
+                var request = new Request(this.PhoneNumber, target, Request.OutcomingCall);
+                OnOutConnection(this, request);
+            }
+        }
+        public void Answer()
+        {
+            if (IsOnline || Request == null) return;
+            var respond = new Respond(Respond.Accept, this.Request);
+            OnIncomRespond(this, respond);
+            OnOnline(this, EventArgs.Empty);
+        }
+        public void Drop()
+        {
+            var respond = new Respond(Respond.Drop, this.Request);
+            OnIncomRespond(this, respond);
+            OnOffline(this, EventArgs.Empty);
+        }
+
+        #region 
+        //EVENTS
         public event EventHandler<PhoneNumber> PhoneChanged;
         public event EventHandler Plugging;
         public event EventHandler UnPlugging;
@@ -44,15 +81,13 @@ namespace Project3
         //terminal respond to station
         public event EventHandler<Respond> IncomRespond;
 
+        //dialog begin
+        public event EventHandler<Request> CallAccepted;
+        //interrupt conection
+        public event EventHandler<Request> InterruptConnection;
+        //drop connetion
+        public event EventHandler<Request> DropConnection;
 
-        public void Plug()
-        {
-            OnPlugging(this, EventArgs.Empty);
-        }
-        public void UnPlug()
-        {
-            OnUnPlugging(this, EventArgs.Empty);
-        }
 
         protected virtual void OnPlugging(object sender, EventArgs args)
         {
@@ -62,11 +97,11 @@ namespace Project3
         {
             UnPlugging?.Invoke(sender, args);
         }
+
         protected virtual void OnPhoneChanged(object sender, PhoneNumber e)
         {
             PhoneChanged?.Invoke(sender, e);
         }
-
 
         protected virtual void OnOnline(object sender, EventArgs args)
         {
@@ -79,16 +114,6 @@ namespace Project3
                 Offline?.Invoke(sender, args);
             Request = null;
             this.IsOnline = false;
-        }
-
-        public void Call(PhoneNumber target)
-        {
-            if (!IsOnline)
-            {
-                OnOnline(this, EventArgs.Empty);
-                var request = new Request(this.PhoneNumber, target, Request.OutcomingCall);
-                OnOutConnection(this, request);
-            }
         }
 
         protected virtual void OnOutConnection(object sender, Request e)
@@ -104,17 +129,71 @@ namespace Project3
             IncomRespond?.Invoke(sender, e);
         }
 
-
-        public void IncomingRequest(PhoneNumber source)
+        protected virtual void OnCallAccepted(object sender, Request e)
         {
-            Console.WriteLine("current tel = " + this.PhoneNumber);
-            Console.WriteLine("call from = " + source);
-
-            var request = new Request(source, this.PhoneNumber, Request.IncomingCall);
-            var respond = new Respond(Respond.Accept, request);
-            OnIncomConnection(this, request);
-            OnIncomRespond(this, respond);
+            CallAccepted?.Invoke(sender, e);
         }
+        protected virtual void OnInterruptConnection(object sender, Request e)
+        {
+            InterruptConnection?.Invoke(sender, e);
+        }
+        protected virtual void OnDropConnection(object sender, Request e)
+        {
+            DropConnection?.Invoke(sender, e);
+        }
+
+        #endregion
+
+
+        public void IncomingRequest(Request incomingRequest)
+        {
+            this.Request = incomingRequest;
+            OnIncomConnection(this, this.Request);
+
+            Console.WriteLine("Current number:" + this.PhoneNumber);
+            Console.WriteLine("Incoming Call From: " + Request.Source);
+
+            Console.WriteLine("Actions:");
+            Console.WriteLine("1. Accept");
+            Console.WriteLine("2. Drop");
+
+            int action = int.Parse(Console.ReadLine());
+
+            switch (action)
+            {
+                case 1:
+                    Answer();
+                    break;
+                case 2:
+                    Drop();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void IncomingRespond(Respond incomingRespond)
+        {
+            OnIncomConnection(this, this.Request);
+
+            Console.WriteLine("Current number:" + this.PhoneNumber);
+            Console.WriteLine("Incoming Call From: " + Request.Source);
+
+           
+
+            switch (incomingRespond.Code)
+            {
+                case Respond.Accept:
+                    OnCallAccepted(this, this.Request);
+                    break;
+                case Respond.Drop:
+                    OnDropConnection(this, this.Request);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         public void RegisterEventForPort(Port port)
         {
             port.StateChanged += (sender, state) =>
@@ -126,7 +205,24 @@ namespace Project3
             };
         }
 
+        public void RemoveEventHandlersForPort(Port port)
+        {
+        }
 
-        
+ 
+
+        public void ClearEvents()
+        {
+            this.OutConnection = null;
+            this.IncomConnection = null;
+            this.IncomRespond = null;
+            this.Offline = null;
+            this.Online = null;
+            this.PhoneChanged = null;
+            this.Plugging = null;
+            this.UnPlugging = null;
+        }
+
+
     }
 }
