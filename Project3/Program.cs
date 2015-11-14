@@ -21,6 +21,27 @@ namespace Project3
     {
         static void Main(string[] args)
         {
+
+
+
+            PhoneNumber n1 = new PhoneNumber("123");
+            Terminal terminal1 = new Terminal(n1);
+
+            PhoneNumber n2 = new PhoneNumber("256");
+            Terminal terminal2 = new Terminal(n2);
+
+            Station station = new Station();
+            station.Add(new Port());
+            station.Add(new Port());
+            station.Add(new Port());
+            station.Add(new Port());
+
+            station.Add(terminal1);
+            station.Add(terminal2);
+            terminal1.Plug();
+            terminal1.Call(terminal2.PhoneNumber);
+
+            Console.Read();
         }
     }
 }

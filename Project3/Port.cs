@@ -8,5 +8,44 @@ namespace Project3
 {
     class Port
     {
+        private PortState _state = PortState.Off;
+        public PortState State
+        {
+            get
+            {
+                return _state;
+            }
+            set
+            {
+                if (_state != value)
+                {
+                    OnStateChanging(this, value);
+                    _state = value;
+                    OnStateChanged(this, _state);
+                }
+            }
+        }
+
+        public void RegisterEventsForTerminal(Terminal terminal)
+        {
+            terminal.Plugging += (sender, args) =>
+            {
+                Console.WriteLine((sender as Terminal)?.PhoneNumber);
+
+            };
+        }
+
+        public event EventHandler<PortState> StateChanging;
+        public event EventHandler<PortState> StateChanged;
+        protected virtual void OnStateChanging(object sender, PortState e)
+        {
+            StateChanging?.Invoke(sender, e);
+        }
+        protected virtual void OnStateChanged(object sender, PortState e)
+        {
+            StateChanged?.Invoke(sender, e);
+        }
+
+      
     }
 }
