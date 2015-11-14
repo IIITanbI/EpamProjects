@@ -86,7 +86,7 @@ namespace Project3
             if (!IsOnline)
             {
                 OnOnline(this, EventArgs.Empty);
-                Request request = new Request() {RequestType = RequestType.OutcomCall, Sourse = this.PhoneNumber, Target = target};
+                var request = new Request(this.PhoneNumber, target, Request.OutcomingCall);
                 OnOutConnection(this, request);
             }
         }
@@ -107,12 +107,13 @@ namespace Project3
 
         public void IncomingRequest(PhoneNumber source)
         {
-            Console.WriteLine("cur tel = " + this.PhoneNumber);
-            Console.WriteLine("cll from = " + source);
+            Console.WriteLine("current tel = " + this.PhoneNumber);
+            Console.WriteLine("call from = " + source);
 
-            var Request = new Request() { RequestType = RequestType.IncomCall, Sourse = source, Target = this.PhoneNumber};
-            OnIncomConnection(this, Request);
-            OnIncomRespond(this, new Respond() {Request = Request, RespondType = RespondType.Accept});
+            var request = new Request(source, this.PhoneNumber, Request.IncomingCall);
+            var respond = new Respond(Respond.Accept, request);
+            OnIncomConnection(this, request);
+            OnIncomRespond(this, respond);
         }
         public void RegisterEventForPort(Port port)
         {

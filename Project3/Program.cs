@@ -22,8 +22,6 @@ namespace Project3
         static void Main(string[] args)
         {
 
-
-
             PhoneNumber n1 = new PhoneNumber("123");
             Terminal terminal1 = new Terminal(n1);
 

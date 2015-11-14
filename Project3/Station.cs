@@ -119,17 +119,18 @@ namespace Project3
         public void OnIncomingCallRespond(object sender, Respond respond)
         {
             Console.WriteLine("Respond ok");
-            switch (respond.RespondType)
+            Console.WriteLine(respond);
+            switch (respond.Code)
             {
-                case RespondType.Accept:
-                    Console.WriteLine("asd");
+                case Respond.Accept:
+                    Console.WriteLine("Accept");
                     Terminal terminal = sender as Terminal;
                     Port port = GetPort(terminal);
                     port.State = PortState.Busy;
                     break;
-                case RespondType.Drop:
+                case Respond.Drop:
 
-                    Console.WriteLine("ad");
+                    Console.WriteLine("Drop");
                     break;
                 default:
                     break;
