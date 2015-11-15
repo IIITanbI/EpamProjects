@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Win32.SafeHandles;
 using Project3.Interfaces;
 
 namespace Project3
@@ -22,13 +23,14 @@ namespace Project3
             }
         }
 
-        public Request Request { get;
-            set; }
+        public Request Request { get; set; }
         public bool IsOnline { get; private set; }
+        public bool IsPlugged { get; private set; }
 
         public Terminal(PhoneNumber phoneNumber)
         {
             this.PhoneNumber = phoneNumber;
+            this.IsPlugged = false;
             this.IsOnline = false;
         }
 
@@ -62,6 +64,7 @@ namespace Project3
         }
         public void Drop()
         {
+            if (this.Request == null) return;
             var respond = new Respond(Respond.Drop, this.Request);
             OnIncomRespond(this, respond);
             //OnOffline(this, EventArgs.Empty);
@@ -99,10 +102,12 @@ namespace Project3
 
         protected virtual void OnPlugging(object sender, EventArgs args)
         {
+            this.IsPlugged = true;
             Plugging?.Invoke(sender, args);
         }
         protected virtual void OnUnPlugging(object sender, EventArgs args)
         {
+            this.IsPlugged = false;
             UnPlugging?.Invoke(sender, args);
         }
 
@@ -210,14 +215,31 @@ namespace Project3
         {
             port.StateChanged += (sender, state) =>
             {
-                if (this.IsOnline && state == PortState.Free)
+                if (!this.IsPlugged)
                 {
-                    this.OnOffline(this, EventArgs.Empty);
+                    if (state == PortState.Free)
+                    {
+                        this.OnPlugging(this, EventArgs.Empty);
+                    }
                 }
-                if (!this.IsOnline && state == PortState.Busy)
+                if (this.IsPlugged)
                 {
-                    this.OnOnline(this, EventArgs.Empty);
+                    if (state == PortState.Off)
+                    {
+                        this.OnOffline(this, EventArgs.Empty);
+                        OnUnPlugging(this, EventArgs.Empty);
+                    }
+                    if (!this.IsOnline && state == PortState.Busy)
+                    {
+                        this.OnOnline(this, EventArgs.Empty);
+                    }
+                    if (this.IsOnline && state == PortState.Free)
+                    {
+                        this.OnOffline(this, EventArgs.Empty);
+                    }
                 }
+                
+                
             };
         }
 

@@ -14,7 +14,7 @@ namespace Project3
         private ICollection<Terminal> _terminals;
         private ICollection<CallInfo> _connectionCollection;
         private ICollection<CallInfo> _callCollection;
-        private IDictionary<Terminal, Port> _portMap; 
+        private IDictionary<Port, Terminal> _portMap; 
         
         public Station(ICollection<Port> ports, ICollection<Terminal> terminals)
         {
@@ -22,39 +22,33 @@ namespace Project3
             this._terminals = terminals;
             this._connectionCollection = new List<CallInfo>();
             this._callCollection = new List<CallInfo>();
-            this._portMap = new Dictionary<Terminal, Port>();
+            this._portMap = new Dictionary<Port, Terminal>();
         }
 
-        public void MapPort(Terminal terminal, Port port)
+        public void MapPort(Port port, Terminal terminal)
         {
             if (port == null)
                 throw new ArgumentNullException(nameof(port) + " is null");
             if (terminal == null)
                 throw new ArgumentNullException(nameof(terminal) + " is null");
-            if (this._portMap.Values.Contains(port))
+            if (this._portMap.ContainsKey(port))
                 throw new Exception("This port is already use");
-            
-            this._portMap.Add(terminal, port);
+            if (this._portMap.Values.Contains(terminal))
+                throw new Exception("This terminal is already use");
+
+            this._portMap.Add(port, terminal);
           
         }
         public void UnmapPort(Port port)
         {
             if (port == null) return;
-            if (_portMap.Values.Contains(port))
-            {
-                var terminal = _portMap.FirstOrDefault(pair => pair.Value == port).Key;
-                if (terminal != null)
-                    _portMap.Remove(terminal);
-            }
+            _portMap.Remove(port);
         }
 
 
         public Port GetPort(Terminal terminal)
         {
-            if (terminal == null) return null;
-            Port port;
-            _portMap.TryGetValue(terminal, out port);
-            return port;
+            return _portMap.FirstOrDefault(pair => pair.Value == terminal).Key;
         }
         public Terminal GetTerminal(PhoneNumber phoneNumber)
         {
@@ -84,7 +78,7 @@ namespace Project3
         }
         public void Add(Terminal terminal)
         {
-            var freePort = this._ports.Except(_portMap.Values).FirstOrDefault();
+            var freePort = this._ports.Except(_portMap.Keys).FirstOrDefault();
             if (freePort == null) return;
 
             if (this._terminals.Any(term => term.PhoneNumber == terminal.PhoneNumber))
@@ -93,14 +87,28 @@ namespace Project3
             if (!this._terminals.Contains(terminal))
                 _terminals.Add(terminal);
 
-            MapPort(terminal, freePort);
+            MapPort(freePort, terminal);
             freePort.RegisterEventsForTerminal(terminal);
             terminal.RegisterEventForPort(freePort);
             this.RegisterEventForTerminal(terminal);
             this.RegisterEventForPort(freePort);
             freePort.State = PortState.Free;
         }
+        public void Remove(Terminal terminal)
+        {
+            if (terminal == null) return;
+            var port = GetPort(terminal);
+            if (port == null) return;
+            var connection = GetConnectionInfo(terminal.PhoneNumber);
+            InterruptConnection(connection);
 
+            UnmapPort(port);
+            port.State = PortState.Off;
+            port.ClearEvents();
+            terminal.ClearEvents();
+            _terminals.Remove(terminal);
+            
+        }
 
         public event EventHandler<CallInfo> CallInfoAdded;
 
@@ -126,7 +134,8 @@ namespace Project3
                     Console.WriteLine("disconect call");
                     var connectInfoSource = GetConnectionInfo(request.Source);
                     if (connectInfoSource != null)
-                        InterruptActiveCall(connectInfoSource);
+                        InterruptConnection(connectInfoSource);
+                        //InterruptActiveCall(connectInfoSource);
                     
                     break;
                 default:
@@ -163,7 +172,7 @@ namespace Project3
                 }
                 else
                 {
-                    InterruptBusyConnection(callInfo);
+                    InterruptConnection(callInfo);
                     Console.WriteLine("Drop");
                     sourceTerminal.IncomingRespond(new Respond(Respond.Drop, request));
                 }
@@ -200,16 +209,19 @@ namespace Project3
 
         protected void InterruptConnection(CallInfo connection)
         {
+            
+            var cl = GetConnectionInfo(connection.Target);
+            if (connection == cl)
+            {
+                connection.Duration = DateTime.Now - connection.Started;
+                SetPortStateWhenConnectionInterrupted(connection.Source, connection.Target);
+            }
+            else
+                SetPortStateWhenConnectionInterrupted(connection.Source, default(PhoneNumber));
             this._connectionCollection.Remove(connection);
-            SetPortStateWhenConnectionInterrupted(connection.Source, connection.Target);
             AddCallInfo(connection);
         }
-        protected void InterruptBusyConnection(CallInfo connection)
-        {
-            this._connectionCollection.Remove(connection);
-            SetPortStateWhenConnectionInterrupted(connection.Source, default(PhoneNumber));
-            AddCallInfo(connection);
-        }
+        
         protected void InterruptActiveCall(CallInfo connection)
         {
             connection.Duration = DateTime.Now - connection.Started;
@@ -238,6 +250,8 @@ namespace Project3
         {
             terminal.OutConnection += RegisterOutgoingRequest;
             terminal.IncomRespond += OnIncomingCallRespond;
+            //terminal.Plugging += (sender, args) => this.Add(sender as Terminal);
+//terminal.UnPlugging += (sender, args) => this.r
         }
         protected virtual void RegisterEventForPort(Port port)
         {

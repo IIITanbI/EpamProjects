@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Project3.Interfaces;
 
 namespace Project3
 {
@@ -21,6 +22,7 @@ namespace Project3
     {
         static void Main(string[] args)
         {
+            var tt = default(KeyValuePair<Port, Terminal>);
             DateTime now = DateTime.Now;
             DateTime x100 = new DateTime(now.Year, now.Month, now.Day + 5);
             
@@ -40,15 +42,20 @@ namespace Project3
             station.Add(new Port());
             station.Add(new Port());
             station.Add(new Port());
+            station.Remove(terminal1);
+            
 
 
             station.Add(terminal1);
             station.Add(terminal2);
             station.Add(terminal3);
-           // terminal1.Plug();
+            //station.Remove(terminal1);
+            //terminal1.Plug();
+            //terminal1.UnPlug();
             terminal1.Call(terminal2.PhoneNumber);
             terminal3.Call(terminal1.PhoneNumber);
-            terminal1.Interrupt();
+           // terminal1.Interrupt();
+            station.Remove(terminal1);
             Console.Read();
         }
     }

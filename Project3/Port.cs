@@ -31,7 +31,7 @@ namespace Project3
                 Console.WriteLine((sender as Terminal)?.PhoneNumber + " plugging");
             };
         }
-        public void ClearEvents(Terminal terminal)
+        public void ClearEvents()
         {
             this.StateChanged = null;
             this.StateChanging = null;
