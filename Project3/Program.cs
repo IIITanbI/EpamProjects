@@ -22,23 +22,17 @@ namespace Project3
     {
         static void Main(string[] args)
         {
-            var tt = default(KeyValuePair<Port, Terminal>);
-            DateTime now = DateTime.Now;
-            DateTime x100 = new DateTime(now.Year, now.Month, now.Day + 5);
-            
-            TimeSpan ti = new TimeSpan(now.Ticks+500000000);
-            DateTime dt = now;
                 
             PhoneNumber n1 = new PhoneNumber("123");
-            Terminal terminal1 = new Terminal(n1);
+            ITerminal terminal1 = new Terminal(n1);
 
             PhoneNumber n2 = new PhoneNumber("256");
-            Terminal terminal2 = new Terminal(n2);
+            ITerminal terminal2 = new Terminal(n2);
 
             PhoneNumber n3 = new PhoneNumber("512");
-            Terminal terminal3 = new Terminal(n3);
+            ITerminal terminal3 = new Terminal(n3);
 
-            Station station = new Station(new List<Port>(), new List<Terminal>());
+            Station station = new Station(new List<IPort>(), new List<ITerminal>());
             station.Add(new Port());
             station.Add(new Port());
             station.Add(new Port());

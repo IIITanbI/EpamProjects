@@ -8,24 +8,24 @@ using Project3.Interfaces;
 
 namespace Project3
 {
-    class Station
+    public class Station : IStation
     {
-        private ICollection<Port> _ports;
-        private ICollection<Terminal> _terminals;
+        private ICollection<IPort> _ports;
+        private ICollection<ITerminal> _terminals;
         private ICollection<CallInfo> _connectionCollection;
         private ICollection<CallInfo> _callCollection;
-        private IDictionary<Port, Terminal> _portMap; 
+        private IDictionary<IPort, ITerminal> _portMap; 
         
-        public Station(ICollection<Port> ports, ICollection<Terminal> terminals)
+        public Station(ICollection<IPort> ports, ICollection<ITerminal> terminals)
         {
             this._ports = ports;
             this._terminals = terminals;
             this._connectionCollection = new List<CallInfo>();
             this._callCollection = new List<CallInfo>();
-            this._portMap = new Dictionary<Port, Terminal>();
+            this._portMap = new Dictionary<IPort, ITerminal>();
         }
 
-        public void MapPort(Port port, Terminal terminal)
+        public void MapPort(IPort port, ITerminal terminal)
         {
             if (port == null)
                 throw new ArgumentNullException(nameof(port) + " is null");
@@ -39,18 +39,18 @@ namespace Project3
             this._portMap.Add(port, terminal);
           
         }
-        public void UnmapPort(Port port)
+        public void UnmapPort(IPort port)
         {
             if (port == null) return;
             _portMap.Remove(port);
         }
 
 
-        public Port GetPort(Terminal terminal)
+        public IPort GetPort(ITerminal terminal)
         {
             return _portMap.FirstOrDefault(pair => pair.Value == terminal).Key;
         }
-        public Terminal GetTerminal(PhoneNumber phoneNumber)
+        public ITerminal GetTerminal(PhoneNumber phoneNumber)
         {
             return this._terminals.FirstOrDefault(terminal => terminal.PhoneNumber == phoneNumber);
         }
@@ -71,12 +71,12 @@ namespace Project3
         }
 
 
-        public void Add(Port port)
+        public void Add(IPort port)
         {
             if (!this._ports.Contains(port))
                 this._ports.Add(port);
         }
-        public void Add(Terminal terminal)
+        public void Add(ITerminal terminal)
         {
             var freePort = this._ports.Except(_portMap.Keys).FirstOrDefault();
             if (freePort == null) return;
@@ -94,7 +94,7 @@ namespace Project3
             this.RegisterEventForPort(freePort);
             //freePort.State = PortState.Free;
         }
-        public void Remove(Terminal terminal)
+        public void Remove(ITerminal terminal)
         {
             if (terminal == null) return;
             var port = GetPort(terminal);
@@ -261,14 +261,14 @@ namespace Project3
 
 
 
-        protected virtual void RegisterEventForTerminal(Terminal terminal)
+        public virtual void RegisterEventForTerminal(ITerminal terminal)
         {
             terminal.OutConnection += RegisterOutgoingRequest;
             terminal.IncomRespond += OnIncomingCallRespond;
             //terminal.Plugging += (sender, args) => this.Add(sender as Terminal);
 //terminal.UnPlugging += (sender, args) => this.r
         }
-        protected virtual void RegisterEventForPort(Port port)
+        public virtual void RegisterEventForPort(IPort port)
         {
             port.StateChanged += (sender, state) =>
             {
@@ -276,6 +276,10 @@ namespace Project3
             };
         }
 
-       
+
+        public void ClearEvents()
+        {
+            
+        }
     }
 }

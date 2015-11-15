@@ -7,7 +7,7 @@ using Project3.Interfaces;
 
 namespace Project3
 {
-    class Port : IPort
+    public class Port : IPort
     {
         private PortState _state = PortState.Off;
         public PortState State

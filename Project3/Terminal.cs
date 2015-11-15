@@ -11,7 +11,7 @@ using Project3.Interfaces;
 
 namespace Project3
 {
-    class Terminal: ITerminal
+    public class Terminal: ITerminal
     {
         private PhoneNumber _phoneNumber;
         public PhoneNumber PhoneNumber {
