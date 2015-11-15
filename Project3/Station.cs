@@ -55,11 +55,11 @@ namespace Project3
             return this._terminals.FirstOrDefault(terminal => terminal.PhoneNumber == phoneNumber);
         }
 
-        public CallInfo GetCallInfo(PhoneNumber source)
+        public IEnumerable<CallInfo> GetCallInfo(PhoneNumber source)
         {
-            return _callCollection.LastOrDefault(info => (info.Source == source || info.Target == source));
+            return _callCollection.Where(info => (info.Source == source || info.Target == source));
         }
-        public CallInfo GetConnectionInfo(PhoneNumber source)
+        public CallInfo GetLastConnectionInfo(PhoneNumber source)
         {
             return _connectionCollection.FirstOrDefault(info => (info.Source == source || info.Target == source));
         }
@@ -99,7 +99,8 @@ namespace Project3
             if (terminal == null) return;
             var port = GetPort(terminal);
             if (port == null) return;
-            var connection = GetConnectionInfo(terminal.PhoneNumber);
+
+            var connection = GetLastConnectionInfo(terminal.PhoneNumber);
             InterruptConnection(connection);
 
             UnmapPort(port);
@@ -132,7 +133,7 @@ namespace Project3
                     break;
                 case Request.DisconnectCall:
                     Console.WriteLine("disconect call");
-                    var connectInfoSource = GetConnectionInfo(request.Source);
+                    var connectInfoSource = GetLastConnectionInfo(request.Source);
                     if (connectInfoSource != null)
                         InterruptConnection(connectInfoSource);
                         //InterruptActiveCall(connectInfoSource);
@@ -161,10 +162,10 @@ namespace Project3
                     Duration = TimeSpan.Zero
                 };
 
-                var sourceConnection = GetConnectionInfo(request.Source);
-                var targetConnection = GetConnectionInfo(request.Target);
+                var sourceConnection = GetLastConnectionInfo(request.Source);
+                var targetConnection = GetLastConnectionInfo(request.Target);
 
-                _connectionCollection.Add(callInfo);
+                this._connectionCollection.Add(callInfo);
 
                 if ((sourceConnection == null && targetConnection == null)
                     && (sourcePort.State != PortState.Off && targetPort.State != PortState.Off))
@@ -189,7 +190,7 @@ namespace Project3
             Console.WriteLine("Respond ok");
             Console.WriteLine(respond);
 
-            var registeredCallInfo = GetConnectionInfo(respond.Request.Source);
+            var registeredCallInfo = GetLastConnectionInfo(respond.Request.Source);
             if (registeredCallInfo == null) return;
             if (registeredCallInfo.Target != respond.Request.Target) return;
 
@@ -220,10 +221,7 @@ namespace Project3
             var targetTerminal = GetTerminal(connection.Target);
             var targetPort = GetPort(targetTerminal);
 
-          
-
-
-            var cl = GetConnectionInfo(connection.Target);
+            var cl = GetLastConnectionInfo(connection.Target);
             if (connection == cl && targetPort.State != PortState.Off)
             {
                 connection.Duration = DateTime.Now - connection.Started;
@@ -231,6 +229,7 @@ namespace Project3
             }
             else
                 SetPortStateWhenConnectionInterrupted(connection.Source, default(PhoneNumber));
+
             this._connectionCollection.Remove(connection);
             AddCallInfo(connection);
         }
@@ -244,18 +243,12 @@ namespace Project3
         protected void SetPortStateWhenConnectionInterrupted(PhoneNumber source, PhoneNumber target)
         {
             var sourcePort = GetPort(GetTerminal(source));
-            if (sourcePort != null)
-            {
-                if (sourcePort.State == PortState.Busy)
-                    sourcePort.State = PortState.Free;
-            }
+            if (sourcePort?.State == PortState.Busy)
+                sourcePort.State = PortState.Free;
 
             var targetPort = GetPort(GetTerminal(target));
-            if (targetPort != null)
-            {
-                if (targetPort.State == PortState.Busy)
-                    targetPort.State = PortState.Free;
-            }
+            if (targetPort?.State == PortState.Busy)
+                targetPort.State = PortState.Free;
         }
 
 
@@ -265,8 +258,6 @@ namespace Project3
         {
             terminal.OutConnection += RegisterOutgoingRequest;
             terminal.IncomRespond += OnIncomingCallRespond;
-            //terminal.Plugging += (sender, args) => this.Add(sender as Terminal);
-//terminal.UnPlugging += (sender, args) => this.r
         }
         public virtual void RegisterEventForPort(IPort port)
         {
@@ -279,7 +270,7 @@ namespace Project3
 
         public void ClearEvents()
         {
-            
+            this.CallInfoAdded = null;
         }
     }
 }
