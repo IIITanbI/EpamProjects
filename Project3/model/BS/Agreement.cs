@@ -12,7 +12,7 @@ namespace Project3.model.BS
         public Client Client { get; }
         public PhoneNumber PhoneNumber { get; }
         public DateTime AcceptedDate { get; }
-        public Account Account { get; set; }
+        public IAccount Account { get; set; }
         public Agreement(Client client, PhoneNumber phoneNumber, DateTime acceptedDate)
         {
             Client = client;

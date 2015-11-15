@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Project3.model.BS
 {
-    public class Tarrif
+    public class BaseTarrif : ITarrif
     {
         public string Name { get; }
         public double FreeMinutes { get;}
@@ -14,7 +14,7 @@ namespace Project3.model.BS
         public bool CanHaveNegativeBalanse { get; }
        
 
-        public Tarrif(string name, double freeMinutes, double costPerMinutes, bool canHaveNegativeBalanse)
+        public BaseTarrif(string name, double freeMinutes, double costPerMinutes, bool canHaveNegativeBalanse)
         {
             Name = name;
             FreeMinutes = freeMinutes;

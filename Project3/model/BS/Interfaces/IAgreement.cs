@@ -7,6 +7,6 @@ namespace Project3.model.BS
         Client Client { get; }
         PhoneNumber PhoneNumber { get; }
         DateTime AcceptedDate { get; }
-        Account Account { get; }
+        IAccount Account { get; }
     }
 }

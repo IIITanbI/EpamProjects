@@ -9,18 +9,18 @@ namespace Project3.model.BS
 {
     class BillingSystem
     {
-        private ICollection<Account> _accounts;
-        private IDictionary<Account, ICollection<CallStatistic>> _callStatistics; 
-        public BillingSystem(ICollection<Account> accounts, IDictionary<Account, ICollection<CallStatistic>> callStatistics)
+        private ICollection<IAccount> _acccounts;
+        private IDictionary<IAccount, ICollection<CallStatistic>> _callStatistics; 
+        public BillingSystem(ICollection<IAccount> acccounts, IDictionary<IAccount, ICollection<CallStatistic>> callStatistics)
         {
-            _accounts = accounts;
+            _acccounts = acccounts;
             _callStatistics = callStatistics;
         }
 
 
-        public void Add(Account account)
+        public void Add(IAccount account)
         {
-            this._accounts.Add(account);
+            this._acccounts.Add(account);
         }
         private void StationOnCallInfoAdded(object sender, CallInfo callInfo)
         {
@@ -36,25 +36,25 @@ namespace Project3.model.BS
             AddCallStatistic(toAccount, new CallStatistic(callInfo, inCost));
         }
 
-        public void AddCallStatistic(Account account, CallStatistic callStatistic )
+        public void AddCallStatistic(IAccount account, CallStatistic callStatistic )
         {
             this._callStatistics[account].Add(callStatistic);
         }
-        public Account GetAccount(PhoneNumber phoneNumber)
+        public IAccount GetAccount(PhoneNumber phoneNumber)
         {
-            return this._accounts.FirstOrDefault(account => account.Agreement.PhoneNumber == phoneNumber);
+            return this._acccounts.FirstOrDefault(account => account.Agreement.PhoneNumber == phoneNumber);
         }
-        public Account GetAccount(Client client)
+        public IAccount GetAccount(Client client)
         {
-            return this._accounts.FirstOrDefault(account => account.Client == client);
+            return this._acccounts.FirstOrDefault(IAccount => IAccount.Client == client);
         }
 
 
         public IEnumerable<CallStatistic> GetClientCalls(Client client, Func<CallStatistic, bool> predicate)
         {
-            Account account = GetAccount(client);
+            IAccount account = GetAccount(client);
             if (account == null)
-                throw new Exception("Account can not be found");
+                throw new Exception("IAccount can not be found");
             return this._callStatistics[account].Where(predicate);
         }
 

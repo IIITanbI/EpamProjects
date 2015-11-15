@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace Project3.model.BS
 {
-    public class Account
+    public class Account : IAccount
     {
         public Client Client { get; }
         public IAgreement Agreement { get; }
 
-        public Tarrif Tarrif { get; private set; }
+        public ITarrif Tarrif { get; private set; }
         public TimeSpan TarrifChangePeriod { get; private set; }
         public TimeSpan PaymentPeriod { get; private set; }
 
         public Statistic Statistic { get; private set; }
        
         
-        public Account(IAgreement agreement, Tarrif tarrif, TimeSpan tarrifChangePeriod, TimeSpan paymentPeriod)
+        public Account(IAgreement agreement, ITarrif tarrif, TimeSpan tarrifChangePeriod, TimeSpan paymentPeriod)
         {
             if (agreement == null) throw new ArgumentNullException(nameof(agreement));
             if (tarrif == null) throw new ArgumentNullException(nameof(tarrif));
@@ -43,7 +43,7 @@ namespace Project3.model.BS
             this.Statistic.LastDatePayment = DateTime.Now;
         }
 
-        public bool ChangeTarrif(Tarrif newTarrif)
+        public bool ChangeTarrif(ITarrif newTarrif)
         {
             if (this.Tarrif == newTarrif)
                 return true;

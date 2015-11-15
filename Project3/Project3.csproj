@@ -56,9 +56,11 @@
     <Compile Include="model\BS\CallStatistic.cs" />
     <Compile Include="model\BS\Client.cs" />
     <Compile Include="model\BS\Agreement.cs" />
+    <Compile Include="model\BS\Interfaces\IAccount.cs" />
     <Compile Include="model\BS\Interfaces\IAgreement.cs" />
+    <Compile Include="model\BS\ITarrif.cs" />
     <Compile Include="model\BS\Statistic.cs" />
-    <Compile Include="model\BS\Tarrif.cs" />
+    <Compile Include="model\BS\BaseTarrif.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="model\ATS\Request.cs" />
