@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CallInfo.cs" />
+    <Compile Include="Interfaces\IClearEvents.cs" />
     <Compile Include="Interfaces\IPort.cs" />
     <Compile Include="Interfaces\IStation.cs" />
     <Compile Include="Interfaces\ITerminal.cs" />

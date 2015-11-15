@@ -11,7 +11,7 @@ using Project3.Interfaces;
 
 namespace Project3
 {
-    class Terminal
+    class Terminal: ITerminal
     {
         private PhoneNumber _phoneNumber;
         public PhoneNumber PhoneNumber {
@@ -188,11 +188,11 @@ namespace Project3
 
         public void IncomingRespond(Respond incomingRespond)
         {
-            OnIncomConnection(this, this.Request);
+            OnIncomConnection(this, incomingRespond.Request);
 
             //Console.WriteLine("Current number:" + this.PhoneNumber);
-            Console.WriteLine("Incoming Call From: " + Request.Source);
-            Console.WriteLine("Incoming Call To: " + Request.Target);
+            Console.WriteLine("Incoming Call From: " + incomingRespond.Request.Source);
+            Console.WriteLine("Incoming Call To: " + incomingRespond.Request.Target);
             
 
 
@@ -200,18 +200,18 @@ namespace Project3
             {
                 case Respond.Accept:
                     Console.WriteLine("Accepted");
-                    OnCallAccepted(this, this.Request);
+                    OnCallAccepted(this, incomingRespond.Request);
                     break;
                 case Respond.Drop:
                     Console.WriteLine("Dropped");
-                    OnDropConnection(this, this.Request);
+                    OnDropConnection(this, incomingRespond.Request);
                     break;
                 default:
                     break;
             }
         }
 
-        public void RegisterEventForPort(Port port)
+        public void RegisterEventForPort(IPort port)
         {
             port.StateChanged += (sender, state) =>
             {
@@ -243,7 +243,7 @@ namespace Project3
             };
         }
 
-        public void RemoveEventHandlersForPort(Port port)
+        public void RemoveEventHandlersForPort(IPort port)
         {
         }
 

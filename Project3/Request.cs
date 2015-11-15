@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Project3
 {
-    class Request
+    public class Request
     {
         public const int IncomingCall = 101;
         public const int OutcomingCall = 102;

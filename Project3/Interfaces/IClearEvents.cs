@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Project3.Interfaces
 {
-    public interface IStation: IClearEvents
+    public interface IClearEvents
     {
+        void ClearEvents();
     }
 }

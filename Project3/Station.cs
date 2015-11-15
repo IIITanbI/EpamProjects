@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -92,7 +92,7 @@ namespace Project3
             terminal.RegisterEventForPort(freePort);
             this.RegisterEventForTerminal(terminal);
             this.RegisterEventForPort(freePort);
-            freePort.State = PortState.Free;
+            //freePort.State = PortState.Free;
         }
         public void Remove(Terminal terminal)
         {
@@ -160,9 +160,14 @@ namespace Project3
                     Started = DateTime.Now,
                     Duration = TimeSpan.Zero
                 };
+
+                var sourceConnection = GetConnectionInfo(request.Source);
+                var targetConnection = GetConnectionInfo(request.Target);
+
                 _connectionCollection.Add(callInfo);
 
-                if (sourcePort.State == PortState.Free && targetPort.State == PortState.Free)
+                if ((sourceConnection == null && targetConnection == null)
+                    && (sourcePort.State != PortState.Off && targetPort.State != PortState.Off))
                 {
                     sourcePort.State = PortState.Busy;
                     targetPort.State = PortState.Busy;
@@ -209,9 +214,17 @@ namespace Project3
 
         protected void InterruptConnection(CallInfo connection)
         {
-            
+            var sourceTerminal = GetTerminal(connection.Source);
+            var sourcePort = GetPort(sourceTerminal);
+
+            var targetTerminal = GetTerminal(connection.Target);
+            var targetPort = GetPort(targetTerminal);
+
+          
+
+
             var cl = GetConnectionInfo(connection.Target);
-            if (connection == cl)
+            if (connection == cl && targetPort.State != PortState.Off)
             {
                 connection.Duration = DateTime.Now - connection.Started;
                 SetPortStateWhenConnectionInterrupted(connection.Source, connection.Target);
@@ -233,13 +246,15 @@ namespace Project3
             var sourcePort = GetPort(GetTerminal(source));
             if (sourcePort != null)
             {
-                sourcePort.State = PortState.Free;
+                if (sourcePort.State == PortState.Busy)
+                    sourcePort.State = PortState.Free;
             }
 
             var targetPort = GetPort(GetTerminal(target));
             if (targetPort != null)
             {
-                targetPort.State = PortState.Free;
+                if (targetPort.State == PortState.Busy)
+                    targetPort.State = PortState.Free;
             }
         }
 

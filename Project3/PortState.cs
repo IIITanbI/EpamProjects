@@ -1,6 +1,6 @@
 ﻿namespace Project3
 {
-    enum PortState
+    public enum PortState
     {
         Free,
         Busy,

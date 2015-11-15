@@ -2,8 +2,7 @@
 
 namespace Project3
 {
-
-    class Respond
+    public class Respond
     {
         public const int Accept = 101;
         public const int Drop = 102;

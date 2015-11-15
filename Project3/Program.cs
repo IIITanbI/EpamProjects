@@ -42,15 +42,16 @@ namespace Project3
             station.Add(new Port());
             station.Add(new Port());
             station.Add(new Port());
-            station.Remove(terminal1);
-            
+       
 
 
             station.Add(terminal1);
             station.Add(terminal2);
             station.Add(terminal3);
             //station.Remove(terminal1);
-            //terminal1.Plug();
+            terminal1.Plug();
+            //terminal2.Plug();
+            terminal3.Plug();
             //terminal1.UnPlug();
             terminal1.Call(terminal2.PhoneNumber);
             terminal3.Call(terminal1.PhoneNumber);
