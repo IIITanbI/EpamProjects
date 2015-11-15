@@ -22,7 +22,14 @@ namespace Project3
     {
         static void Main(string[] args)
         {
-                
+            DateTime dt = DateTime.Now;
+            DateTime add = new DateTime();
+            TimeSpan addd = new TimeSpan(2000000000);
+            Console.WriteLine(addd.TotalMinutes);
+            
+            add = add.AddMonths(1);
+            Console.WriteLine(dt.TimeOfDay.TotalDays);
+            Console.WriteLine(DateTime.MaxValue.TimeOfDay.TotalDays);
             PhoneNumber n1 = new PhoneNumber("123");
             ITerminal terminal1 = new Terminal(n1);
 

@@ -252,8 +252,6 @@ namespace Project3
         }
 
 
-
-
         public virtual void RegisterEventForTerminal(ITerminal terminal)
         {
             terminal.OutConnection += RegisterOutgoingRequest;

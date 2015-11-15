@@ -43,24 +43,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="model\CallInfo.cs" />
-    <Compile Include="Interfaces\IClearEvents.cs" />
-    <Compile Include="Interfaces\IPort.cs" />
-    <Compile Include="Interfaces\IStation.cs" />
-    <Compile Include="Interfaces\ITerminal.cs" />
-    <Compile Include="model\PhoneNumber.cs" />
-    <Compile Include="model\Port.cs" />
-    <Compile Include="model\PortState.cs" />
+    <Compile Include="model\ATS\CallInfo.cs" />
+    <Compile Include="model\ATS\Interfaces\IClearEvents.cs" />
+    <Compile Include="model\ATS\Interfaces\IPort.cs" />
+    <Compile Include="model\ATS\Interfaces\IStation.cs" />
+    <Compile Include="model\ATS\Interfaces\ITerminal.cs" />
+    <Compile Include="model\ATS\PhoneNumber.cs" />
+    <Compile Include="model\ATS\Port.cs" />
+    <Compile Include="model\ATS\PortState.cs" />
+    <Compile Include="model\BS\Account.cs" />
+    <Compile Include="model\BS\BillingSystem.cs" />
+    <Compile Include="model\BS\CallStatistic.cs" />
+    <Compile Include="model\BS\Client.cs" />
+    <Compile Include="model\BS\Agreement.cs" />
+    <Compile Include="model\BS\Interfaces\IAgreement.cs" />
+    <Compile Include="model\BS\Statistic.cs" />
+    <Compile Include="model\BS\Tarrif.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="model\Request.cs" />
-    <Compile Include="model\Respond.cs" />
-    <Compile Include="model\Station.cs" />
-    <Compile Include="model\Terminal.cs" />
+    <Compile Include="model\ATS\Request.cs" />
+    <Compile Include="model\ATS\Respond.cs" />
+    <Compile Include="model\ATS\Station.cs" />
+    <Compile Include="model\ATS\Terminal.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
