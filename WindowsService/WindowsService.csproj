@@ -83,7 +83,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BL\BL.csproj">
+    <ProjectReference Include="..\Project4\BL\BL.csproj">
       <Project>{59257d42-8d20-4c9d-a441-cd3e698d6c6c}</Project>
       <Name>BL</Name>
     </ProjectReference>
