@@ -16,7 +16,7 @@ namespace DAL.Repository
             {
                 Id = saleInfo.Id,
                 ClientId = saleInfo.Client.Id,
-                FileId = saleInfo.File.Id,
+                FileId = saleInfo.FileInformation.Id,
                 ProductId = saleInfo.Product.Id,
                 Date = saleInfo.Date,
                 Cost = saleInfo.Cost
@@ -24,7 +24,7 @@ namespace DAL.Repository
         }
         internal static SaleInfo ToObject(Model.SaleInfo saleInfo)
         {
-            return saleInfo == null ? null : new SaleInfo(saleInfo.Id, saleInfo.Date, FileRepository.ToObject(saleInfo.File),
+            return saleInfo == null ? null : new SaleInfo(saleInfo.Id, saleInfo.Date, FileInformationRepository.ToObject(saleInfo.File),
                 ClientsRepository.ToObject(saleInfo.Client), ProductRepository.ToObject(saleInfo.Product), saleInfo.Cost);
         }
 

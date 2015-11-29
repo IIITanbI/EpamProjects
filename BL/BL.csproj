@@ -35,6 +35,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -44,7 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\BigBoss.cs" />
+    <Compile Include="Model\Tracker.cs" />
     <Compile Include="Model\FileInfo.cs" />
     <Compile Include="Model\Parser.cs" />
     <Compile Include="Model\Reader.cs" />

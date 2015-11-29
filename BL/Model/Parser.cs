@@ -6,7 +6,7 @@ namespace BL.Model
 {
     public class Parser
     {
-        public Tuple<string, DateTime> ParseFileName(string filePath)
+        public FileInformation ParseFileName(string filePath)
         {
             string fileName = Path.GetFileNameWithoutExtension(filePath);
             if (fileName == null)
@@ -18,14 +18,15 @@ namespace BL.Model
 
             string secondName = str[0];
             DateTime date = DateTime.Parse(str[1]);
-            return new Tuple<string, DateTime>(secondName, date);
+
+            return new FileInformation(fileName, date, new Manager(secondName));
         }
         public SaleInfo ParseRecord(Record record)
         {
             string[] strings = record.Client.Split(' ');
 
             DateTime date = record.Date;
-            DAL.Models.File file = null;
+            DAL.Models.FileInformation fileInformation = null;
             Client client = null;
             Product product = new Product(record.Product);
             decimal cost = record.Cost;
@@ -41,7 +42,7 @@ namespace BL.Model
             }
 
 
-            return new SaleInfo(date, file, client, product, cost);
+            return new SaleInfo(date, fileInformation, client, product, cost);
         }
 
 

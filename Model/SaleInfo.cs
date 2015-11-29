@@ -29,6 +29,6 @@ namespace Model
     
         public virtual Product Product { get; set; }
         public virtual Client Client { get; set; }
-        public virtual File File { get; set; }
+        public virtual FileInformation File { get; set; }
     }
 }

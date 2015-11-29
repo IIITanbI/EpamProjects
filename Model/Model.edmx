@@ -15,7 +15,7 @@
         <EntityContainer Name="ModelContainer" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ManagerSet" EntityType="Model.Manager" />
           <EntitySet Name="ClientSet" EntityType="Model.Client" />
-          <EntitySet Name="FileSet" EntityType="Model.File" />
+          <EntitySet Name="FileInformationSet" EntityType="Model.FileInformation" />
           <EntitySet Name="ProductSet" EntityType="Model.Product" />
           <EntitySet Name="SaleInfoSet" EntityType="Model.SaleInfo" />
           <AssociationSet Name="ProductSaleInfo" Association="Model.ProductSaleInfo">
@@ -24,7 +24,7 @@
           </AssociationSet>
           <AssociationSet Name="ManagerFile" Association="Model.ManagerFile">
             <End Role="Manager" EntitySet="ManagerSet" />
-            <End Role="File" EntitySet="FileSet" />
+            <End Role="File" EntitySet="FileInformationSet" />
           </AssociationSet>
           <AssociationSet Name="ClientSaleInfo" Association="Model.ClientSaleInfo">
             <End Role="Client" EntitySet="ClientSet" />
@@ -32,7 +32,7 @@
           </AssociationSet>
           <AssociationSet Name="SaleInfoFile" Association="Model.SaleInfoFile">
             <End Role="SaleInfo" EntitySet="SaleInfoSet" />
-            <End Role="File" EntitySet="FileSet" />
+            <End Role="File" EntitySet="FileInformationSet" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Manager">
@@ -52,7 +52,7 @@
           <Property Name="SecondName" Type="String" Nullable="false" />
           <NavigationProperty Name="SaleInfos" Relationship="Model.ClientSaleInfo" FromRole="Client" ToRole="SaleInfo" />
         </EntityType>
-        <EntityType Name="File">
+        <EntityType Name="FileInformation">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -99,7 +99,7 @@
         </Association>
         <Association Name="ManagerFile">
           <End Type="Model.Manager" Role="Manager" Multiplicity="1" />
-          <End Type="Model.File" Role="File" Multiplicity="*" />
+          <End Type="Model.FileInformation" Role="File" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Manager">
               <PropertyRef Name="Id" />
@@ -123,7 +123,7 @@
         </Association>
         <Association Name="SaleInfoFile">
           <End Type="Model.SaleInfo" Role="SaleInfo" Multiplicity="*" />
-          <End Type="Model.File" Role="File" Multiplicity="1" />
+          <End Type="Model.FileInformation" Role="File" Multiplicity="1" />
           <ReferentialConstraint>
             <Principal Role="File">
               <PropertyRef Name="Id" />

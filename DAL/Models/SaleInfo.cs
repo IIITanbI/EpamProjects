@@ -12,27 +12,27 @@ namespace DAL.Models
         public DateTime Date { get; set; }
         public Client Client { get; set; }
         public Product Product { get; set; }
-        public File File { get; set; }
+        public FileInformation FileInformation { get; set; }
         public decimal Cost { get; set; }
 
-        public SaleInfo(DateTime date, File file, Client client, Product product, decimal cost)
+        public SaleInfo(DateTime date, FileInformation fileInformation, Client client, Product product, decimal cost)
         {
             this.Date = date;
-            this.File = file;
+            this.FileInformation = fileInformation;
             this.Client = client;
             this.Product = product;
             this.Cost = cost;
         }
 
-        public SaleInfo(int id, DateTime date, File file, Client client, Product product, decimal cost)
-            : this(date, file, client, product, cost)
+        public SaleInfo(int id, DateTime date, FileInformation fileInformation, Client client, Product product, decimal cost)
+            : this(date, fileInformation, client, product, cost)
         {
             this.Id = id;
         }
 
         public override string ToString()
         {
-            return $"{Id} - {Date.ToShortDateString()} File: {File} Client: {Client} Product: {Product} {Cost}";
+            return $"{Id} - {Date.ToShortDateString()} File: {FileInformation} Client: {Client} Product: {Product} {Cost}";
         }
     }
 }

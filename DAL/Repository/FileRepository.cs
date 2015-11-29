@@ -10,21 +10,21 @@ using DAL.Models;
 
 namespace DAL.Repository
 {
-    public class FileRepository : AbstractRepository, IRepository<File>, IEnumerable<File>
+    public class FileInformationRepository : AbstractRepository, IRepository<FileInformation>, IEnumerable<FileInformation>
     {
-        internal static Model.File ToEntity(File file)
+        internal static Model.FileInformation ToEntity(FileInformation fileInformation)
         {
-            return new Model.File()
+            return new Model.FileInformation()
             {
-                Id = file.Id,
-                Name = file.Name,
-                Date = file.Date,
-                ManagerId = file.Manager.Id
+                Id = fileInformation.Id,
+                Name = fileInformation.Name,
+                Date = fileInformation.Date,
+                ManagerId = fileInformation.Manager.Id
             };
         }
-        internal static File ToObject(Model.File file)
+        internal static FileInformation ToObject(Model.FileInformation file)
         {
-            return file == null ? null : new File(file.Id, file.Name, file.Date, ManagerRepository.ToObject(file.Manager));
+            return file == null ? null : new FileInformation(file.Id, file.Name, file.Date, ManagerRepository.ToObject(file.Manager));
         }
 
         internal Model.Manager ManagerByName(string secondName)
@@ -35,12 +35,12 @@ namespace DAL.Repository
         {
             return new ManagerRepository().AddIfNotAndGetManager(secondName);
         }
-        internal Model.File FileById(int id)
+        internal Model.FileInformation FileById(int id)
         {
-            return Context.FileSet.FirstOrDefault(x => x.Id == id);
+            return Context.FileInformationSet.FirstOrDefault(x => x.Id == id);
         }
 
-        public void Add(File item)
+        public void Add(FileInformation item)
         {
             if (item == null)
                 throw new ArgumentException("File can not be null");
@@ -51,7 +51,7 @@ namespace DAL.Repository
                 {
                     var manager = AddIfNotAndGetManager(item.Manager.SecondName);
                     item.Manager.Id = manager.Id;
-                    Context.FileSet.Add(ToEntity(item));
+                    Context.FileInformationSet.Add(ToEntity(item));
                     transaction.Commit();
                 }
                 catch (Exception ex)
@@ -61,7 +61,7 @@ namespace DAL.Repository
                 }
             }
         }
-        public void Update(int id, File item)
+        public void Update(int id, FileInformation item)
         {
             if (item == null)
                 throw new ArgumentException("File can not be null");
@@ -88,23 +88,23 @@ namespace DAL.Repository
                 }
             }
         }
-        public void Remove(File item)
+        public void Remove(FileInformation item)
         {
             if (item == null)
                 throw new ArgumentException("File can not be null");
             var element = FileById(item.Id);
             if (element == null)
                 throw new ArgumentException("File with this ID is not found");
-            Context.FileSet.Remove(element);
+            Context.FileInformationSet.Remove(element);
             Context.SaveChanges();
         }
 
 
-        public IEnumerable<File> Items
+        public IEnumerable<FileInformation> Items
         {
-            get { return Context.FileSet.AsEnumerable().Select(file => ToObject(file)); }
+            get { return Context.FileInformationSet.AsEnumerable().Select(file => ToObject(file)); }
         }
-        public IEnumerator<File> GetEnumerator()
+        public IEnumerator<FileInformation> GetEnumerator()
         {
             return Items.GetEnumerator();
         }

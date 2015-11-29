@@ -27,7 +27,7 @@ namespace Model
     
         public virtual DbSet<Manager> ManagerSet { get; set; }
         public virtual DbSet<Client> ClientSet { get; set; }
-        public virtual DbSet<File> FileSet { get; set; }
+        public virtual DbSet<FileInformation> FileInformationSet { get; set; }
         public virtual DbSet<Product> ProductSet { get; set; }
         public virtual DbSet<SaleInfo> SaleInfoSet { get; set; }
     }
