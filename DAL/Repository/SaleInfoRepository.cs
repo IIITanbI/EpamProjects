@@ -28,11 +28,11 @@ namespace DAL.Repository
                 ClientsRepository.ToObject(saleInfo.Client), ProductRepository.ToObject(saleInfo.Product), saleInfo.Cost);
         }
 
-        private Model.Client AddIfNotAndGetClient(string firstName, string secondName)
+        private static Model.Client AddIfNotAndGetClient(string firstName, string secondName)
         {
             return new ClientsRepository().AddIfNotAndGetClient(firstName, secondName);
         }
-        private Model.Product AddIfNotAndGetProduct(string name)
+        private static Model.Product AddIfNotAndGetProduct(string name)
         {
             return new ProductRepository().AddIfNotAndGetProduct(name);
         }

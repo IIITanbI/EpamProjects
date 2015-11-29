@@ -85,7 +85,13 @@ namespace DAL.Repository
         }
         internal Model.Product AddIfNotAndGetProduct(string name)
         {
-            return ProductByName(name) ?? Context.ProductSet.Add(ToEntity(new Product(name)));
+            var product = ProductByName(name);
+            if (product == null)
+            {
+                product = Context.ProductSet.Add(ToEntity(new Product(name)));
+                Context.SaveChanges();
+            }
+            return product;
         }
 
         public IEnumerable<Product> Items

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Configuration;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
@@ -44,7 +44,10 @@ namespace DAL.Repository
         {
             if (item == null)
                 throw new ArgumentException("File can not be null");
+            var fileExtension = ConfigurationManager.ConnectionStrings["ModelContainer"];
+            
 
+            Console.WriteLine(fileExtension);
             using (var transaction = Context.Database.BeginTransaction())
             {
                 try
@@ -60,6 +63,12 @@ namespace DAL.Repository
                     transaction.Rollback();
                 }
             }
+            foreach (var mm in Context.ManagerSet)
+            {
+                Console.WriteLine(mm.Id + " " + mm.SecondName);
+            }
+            Console.WriteLine(Context.FileInformationSet.Local.Count);
+
         }
         public void Update(int id, FileInformation item)
         {

@@ -70,7 +70,13 @@ namespace DAL.Repository
         }
         internal Model.Manager AddIfNotAndGetManager(string secondName)
         {
-            return ManagerByName(secondName) ?? Context.ManagerSet.Add(ToEntity(new Manager(secondName)));
+            var manager = ManagerByName(secondName);
+            if (manager == null)
+            {
+                manager = Context.ManagerSet.Add(ToEntity(new Manager(secondName)));
+                Context.SaveChanges();
+            }
+            return manager;
         }
 
         public IEnumerable<Manager> Items

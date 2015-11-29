@@ -3,40 +3,59 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using BL.Model;
 
 namespace Project4
 {
-    class A
+    public class Service
     {
-        public int abc;
-    }
+        private readonly Thread _workerThread;
 
-    class B
-    {
-        public A abc;
-
-        public void test()
+        public Service()
         {
-            test1(ref abc);
-            
+            Tracker dataManager = new Tracker();
+            _workerThread = new Thread(dataManager.OnStart);
+            _workerThread.SetApartmentState(ApartmentState.STA);
         }
 
-        public void test1(ref A a)
+        public void Start()
         {
-            throw new ArgumentNullException(nameof(a));
+            _workerThread.Start();
+        }
+
+        public void Stop()
+        {
+            _workerThread.Abort();
         }
     }
     class Program
     {
         static void Main(string[] args)
         {
-            B b = new B();
+            Service service = new Service();
+            Console.CancelKeyPress += (x, y) =>
+            {
+                Console.WriteLine("Service is stopped");
+                service.Stop();
+            };
+            Console.WriteLine("Service is running");
+            service.Start();
+            return;
 
-            string tt = "abcdfg";
-            var ss = tt.Split(' ');
-            Console.WriteLine(ss.Length);
-            //b.test();
+            Task task1 = new Task(() => Go(1));
+            Task task2 = new Task(() => Go(2));
+            task1.Start();
+            task2.Start();
+            //Task.WaitAll(task1, task2);
+            Console.Read();
+        }
+
+        static void Go(int i)
+        {
+            for(int j = 0; j < 100; j++)
+            Console.WriteLine("current " + i + " thread = " + Task.CurrentId);
         }
     }
 }

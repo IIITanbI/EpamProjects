@@ -24,6 +24,7 @@ namespace Model
         public string Name { get; set; }
         public System.DateTime Date { get; set; }
         public int ManagerId { get; set; }
+        public string Property1 { get; set; }
     
         public virtual Manager Manager { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

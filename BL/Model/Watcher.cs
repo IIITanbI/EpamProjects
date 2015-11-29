@@ -19,13 +19,14 @@ namespace BL.Model
 
         public void Run(Func<bool> func)
         {
-            var watcher = new FileSystemWatcher(Path, Filter)
+            var fileSystemWatcher = new FileSystemWatcher(Path, Filter)
             {
-                NotifyFilter = NotifyFilters.FileName
+                NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName
+                                | NotifyFilters.DirectoryName
             };
 
-            watcher.Created += (sender, args) => OnCreatedFile(new FileInfo(args.FullPath, args.ChangeType));
-            watcher.EnableRaisingEvents = true;
+            fileSystemWatcher.Created += (sender, args) => OnCreatedFile(new FileInfo(args.FullPath, args.ChangeType));
+            fileSystemWatcher.EnableRaisingEvents = true;
 
             while (func.Invoke()) {}
         }

@@ -28,7 +28,9 @@ namespace BL.Model
 
         public void CreateTask(FileInfo fileInfo)
         {
-            ;
+            Task task = new Task(() => AddInformationToTheDb(fileInfo.FilePath));
+            //task.Start();
+            AddInformationToTheDb(fileInfo.FilePath);
         }
         static readonly object Locker = new object();
         public void AddInformationToTheDb(string fileName)

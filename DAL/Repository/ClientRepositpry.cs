@@ -38,7 +38,6 @@ namespace DAL.Repository
         {
             if (item == null)
                 throw new ArgumentException("Client can not be null");
-            //Check(item);
 
             Context.ClientSet.Add(ToEntity(item));
             Context.SaveChanges();
@@ -87,7 +86,13 @@ namespace DAL.Repository
         }
         internal Model.Client AddIfNotAndGetClient(string firstName, string secondName)
         {
-            return ClientByName(firstName, secondName) ?? Context.ClientSet.Add(ToEntity(new Client(firstName, secondName)));
+            var client = ClientByName(firstName, secondName);
+            if (client == null)
+            {
+                client = Context.ClientSet.Add(ToEntity(new Client(firstName, secondName)));
+                Context.SaveChanges();
+            }
+            return client;
         }
 
 

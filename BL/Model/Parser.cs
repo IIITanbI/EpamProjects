@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using DAL.Models;
 
 namespace BL.Model
@@ -17,7 +18,8 @@ namespace BL.Model
                 throw new Exception("Wrong file name");
 
             string secondName = str[0];
-            DateTime date = DateTime.Parse(str[1]);
+            //DateTime date = DateTime.Parse(str[1]);
+            DateTime date = DateTime.ParseExact(str[1].Substring(0, 8), "ddMMyyyy", Thread.CurrentThread.CurrentCulture);
 
             return new FileInformation(fileName, date, new Manager(secondName));
         }
