@@ -32,6 +32,10 @@ namespace Project4
         static void Main(string[] args)
         {
             B b = new B();
+
+            string tt = "abcdfg";
+            var ss = tt.Split(' ');
+            Console.WriteLine(ss.Length);
             //b.test();
         }
     }

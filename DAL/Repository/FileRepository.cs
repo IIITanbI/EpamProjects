@@ -27,15 +27,15 @@ namespace DAL.Repository
             return file == null ? null : new File(file.Id, file.Name, file.Date, ManagerRepository.ToObject(file.Manager));
         }
 
-        private Model.Manager ManagerByName(string secondName)
+        internal Model.Manager ManagerByName(string secondName)
         {
             return new ManagerRepository().ManagerByName(secondName);
         }
-        private Model.Manager AddIfNotAndGetManager(string secondName)
+        internal Model.Manager AddIfNotAndGetManager(string secondName)
         {
             return new ManagerRepository().AddIfNotAndGetManager(secondName);
         }
-        private Model.File FileInfoById(int id)
+        internal Model.File FileById(int id)
         {
             return Context.FileSet.FirstOrDefault(x => x.Id == id);
         }
@@ -70,7 +70,7 @@ namespace DAL.Repository
             {
                 try
                 {
-                    var element = FileInfoById(id);
+                    var element = FileById(id);
                     var manager = AddIfNotAndGetManager(item.Manager.SecondName);
                     if (element == null)
                         throw new ArgumentException("File with this ID is not found");
@@ -92,7 +92,7 @@ namespace DAL.Repository
         {
             if (item == null)
                 throw new ArgumentException("File can not be null");
-            var element = FileInfoById(item.Id);
+            var element = FileById(item.Id);
             if (element == null)
                 throw new ArgumentException("File with this ID is not found");
             Context.FileSet.Remove(element);

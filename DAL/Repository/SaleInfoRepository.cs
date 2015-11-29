@@ -24,7 +24,7 @@ namespace DAL.Repository
         }
         internal static SaleInfo ToObject(Model.SaleInfo saleInfo)
         {
-            return saleInfo == null ? null : new SaleInfo(saleInfo.Id, saleInfo.Date, FileRepository.ToObject(saleInfo.File), 
+            return saleInfo == null ? null : new SaleInfo(saleInfo.Id, saleInfo.Date, FileRepository.ToObject(saleInfo.File),
                 ClientsRepository.ToObject(saleInfo.Client), ProductRepository.ToObject(saleInfo.Product), saleInfo.Cost);
         }
 
@@ -114,8 +114,7 @@ namespace DAL.Repository
         public SaleInfo SaleInfoObjectById(int id)
         {
             var saleInfo = Context.SaleInfoSet.FirstOrDefault(x => x.Id == id);
-            return saleInfo == null ? null : new SaleInfo(saleInfo.Id, saleInfo.Date, FileRepository.ToObject(saleInfo.File),
-                ClientsRepository.ToObject(saleInfo.Client), ProductRepository.ToObject(saleInfo.Product), saleInfo.Cost);
+            return saleInfo == null ? null : ToObject(saleInfo);
         }
 
         
