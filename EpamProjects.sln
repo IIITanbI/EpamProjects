@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL", "BL\BL.csproj", "{59257D42-8D20-4C9D-A441-CD3E698D6C6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleService", "Project4\ConsoleService.csproj", "{67BDBD29-68E7-46E7-B834-DD71BA64D207}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleService", "Project4\ConsoleService\ConsoleService.csproj", "{67BDBD29-68E7-46E7-B834-DD71BA64D207}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
