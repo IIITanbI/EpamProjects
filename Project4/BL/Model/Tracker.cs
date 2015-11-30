@@ -23,15 +23,14 @@ namespace BL.Model
             watcher.CreatedFile += (sender, info) =>
             {
                 CreateTask(info);
-                //Task.WaitAll();
             };
-            //Task.WaitAll();
+          
 
-            watcher.Run(() =>
+            watcher.Run();
+            while (Console.Read() != 'q')
             {
-                var result = Console.Read() != 'q';
-                return result;
-            });
+
+            }
         }
 
         public void CreateTask(FileInfo fileInfo)
@@ -39,7 +38,7 @@ namespace BL.Model
             Task task = new Task(() =>
             {
                 AddInformationToTheDb(fileInfo.FilePath);
-                Task.WaitAll();
+                //Task.WaitAll();
                 Print();
             });
             task.Start();

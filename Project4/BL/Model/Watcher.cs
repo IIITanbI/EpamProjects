@@ -17,7 +17,7 @@ namespace BL.Model
             Filter = filter;
         }
 
-        public void Run(Func<bool> func)
+        public void Run()
         {
             var fileSystemWatcher = new FileSystemWatcher(Path, Filter)
             {
@@ -29,7 +29,7 @@ namespace BL.Model
             fileSystemWatcher.EnableRaisingEvents = true;
 
             
-            while (func.Invoke()) {}
+           // while (func.Invoke()) {}
         }
 
         public event EventHandler<FileInfo> CreatedFile;

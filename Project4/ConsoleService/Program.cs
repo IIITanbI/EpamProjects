@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceProcess;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Project4
@@ -12,6 +13,7 @@ namespace Project4
     {
         static void Main(string[] args)
         {
+
             Service service = new Service();
 
             Console.CancelKeyPress += (x, y) =>
