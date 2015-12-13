@@ -7,7 +7,7 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
-    
+    [Authorize(Roles = "user")]
     public class MainTableController : Controller
     {
         // GET: Test
@@ -17,6 +17,10 @@ namespace WebApplication1.Controllers
             var tt = Enum.GetNames(typeof (TableEnum));
             for (int i = 0; i < tt.Length; i++)
             {
+                if (tt[i] == TableEnum.Users.ToString())
+                    if (!(User.Identity.IsAuthenticated && User.IsInRole("admin")))
+                        continue;
+   
                 selectList.Add(new SelectListItem()
                 {
                     Text = tt[i],
@@ -25,7 +29,6 @@ namespace WebApplication1.Controllers
                 });
             }
 
-            // return Json(list, JsonRequestBehavior.AllowGet);
             return View("Index", selectList);
         }
         public ActionResult GetTable(string tableName)
@@ -45,6 +48,8 @@ namespace WebApplication1.Controllers
                     return RedirectToAction("GetFileInformations", "FileInformationTable");
                 case TableEnum.SaleInfos:
                     return RedirectToAction("GetSaleInfos", "SaleInfoTable");
+                case TableEnum.Users:
+                    return RedirectToAction("GetUsers", "UserTable");
                 default:
                     return View("Error");
             }

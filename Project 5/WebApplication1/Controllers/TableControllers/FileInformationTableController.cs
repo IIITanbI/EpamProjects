@@ -85,7 +85,11 @@ namespace WebApplication1.Controllers.TableControllers
         [Authorize(Roles = "admin")]
         public ActionResult EditFileInformation(int id)
         {
-            var fileInformation = Mapper.Map<FileInformationModel>(new FileInformationRepository().FileInformationObjectById(id));
+            var _fileInformation = new FileInformationRepository().FileInformationObjectById(id);
+            if (_fileInformation == null)
+                return View("Error");
+
+            var fileInformation = Mapper.Map<FileInformationModel>(_fileInformation);
             return PartialView("EditFileInformationView", fileInformation);
         }
         [HttpPost]

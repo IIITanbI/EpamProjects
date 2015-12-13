@@ -85,7 +85,10 @@ namespace WebApplication1.Controllers.TableControllers
         [Authorize(Roles = "admin")]
         public ActionResult EditManager(int id)
         {
-            var manager = Mapper.Map<ManagerModel>(new ManagerRepository().ManagerObjectById(id));
+            var _manager = new ManagerRepository().ManagerObjectById(id);
+            if (_manager == null)
+                return View("Error");
+            var manager = Mapper.Map<ManagerModel>(_manager);
             return PartialView("EditManagerView", manager);
         }
         [HttpPost]

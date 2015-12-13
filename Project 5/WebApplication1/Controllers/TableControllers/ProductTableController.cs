@@ -85,7 +85,11 @@ namespace WebApplication1.Controllers.TableControllers
         [HttpGet]
         public ActionResult EditProduct(int id)
         {
-            var product = Mapper.Map<ProductModel>(new ProductRepository().ProductObjectById(id));
+            var _product = new ProductRepository().ProductObjectById(id);
+            if (_product == null)
+                return View("Error");
+
+            var product = Mapper.Map<ProductModel>(_product);
             return PartialView("EditProductView", product);
         }
         [Authorize(Roles = "admin")]

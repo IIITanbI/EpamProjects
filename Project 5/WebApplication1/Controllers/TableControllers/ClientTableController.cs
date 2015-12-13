@@ -87,7 +87,10 @@ namespace WebApplication1.Controllers.TableControllers
         [HttpGet]
         public ActionResult EditClient(int id)
         {
-            var client = Mapper.Map<ClientModel>(new ClientsRepository().ClientModelById(id));
+            var _client = new ClientsRepository().ClientModelById(id);
+            if (_client == null)
+                return View("Error");
+            var client = Mapper.Map<ClientModel>(_client);
             return PartialView("EditClientView", client);
         }
         [Authorize(Roles = "admin")]

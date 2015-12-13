@@ -9,6 +9,7 @@ namespace WebApplication1.Models
         Managers,
         Products,
         FileInformations,
-        SaleInfos
+        SaleInfos,
+        Users
     }
 }

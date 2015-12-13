@@ -97,7 +97,11 @@ namespace WebApplication1.Controllers.TableControllers
         [Authorize(Roles = "admin")]
         public ActionResult EditSaleInfo(int id)
         {
-            var saleInfo = Mapper.Map<SaleInfoModel>(new SaleInfoRepository().SaleInfoObjectById(id));
+            var _saleInfo = new SaleInfoRepository().SaleInfoObjectById(id);
+            if (_saleInfo == null)
+                return View("Error");
+
+            var saleInfo = Mapper.Map<SaleInfoModel>(_saleInfo);
             return PartialView("EditSaleInfoView", saleInfo);
         }
         [HttpPost]

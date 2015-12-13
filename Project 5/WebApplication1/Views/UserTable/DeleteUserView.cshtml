@@ -1,0 +1,56 @@
+﻿@using System.Web.Mvc.Html
+
+@model WebApplication1.Models.UserModel
+@{
+    ViewBag.tableName = "Users";
+}
+
+
+
+<body>
+@using (Ajax.BeginForm("DeleteUser", "", new AjaxOptions()
+{
+    HttpMethod = "POST",
+    OnSuccess = "onSuccess",
+    OnFailure = "test",
+}, new {@id = "form"}))
+{
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close" data-dismiss="modal" area-hidden="true">X</button>
+            <h4>Edit user</h4>
+        </div>
+        <div class="modal-body">
+            @Html.HiddenFor(model => model.Email)
+            <label class="col-md-2 control-label">Удалить?</label>    
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" data-dismiss="modal">Закрыть</button>
+        <button class="btn btn-primary" type="submit">Удалить</button>
+    </div>
+}
+</body>
+
+
+<script>
+    function onSuccess(data) {
+        if (data.success === true) {
+            $(".close").click();
+            getTable('@ViewBag.tableName');
+        } else {
+            //error
+            $('label[id^="error-"]').each(function (i, elem) {
+                elem.remove();
+            });
+            for (var i in data.error) {
+                if (data.error.hasOwnProperty(i)) {
+                    $(".modal-body").append("<div><label class='text-danger' id='error-" + i + "'>" + data.error[i] + "</label></div>");
+                }
+            };
+        }
+    };
+    
+  
+</script>
