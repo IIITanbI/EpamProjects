@@ -1,0 +1,129 @@
+﻿@using System.Web.Mvc.Html
+@using Microsoft.AspNet.Identity.EntityFramework
+@using WebApplication1.Models
+@model IEnumerable<WebApplication1.Models.ClientModel>
+
+
+<link type="text/css" rel="stylesheet" href="~/Content/simplePagination.css" />
+@Scripts.Render("~/Scripts/jquery.simplePagination.js")
+@Scripts.Render("~/Scripts/MyScript/MyScript.js")
+
+<body>
+
+<div><input type="number" value="20" min="1" id="numPerPage">
+</div>
+    
+        
+ @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+ {
+     @Html.ActionLink("Add", "AddClient", "", new {@class = "addItem"});
+ }   
+
+<table class="table table-striped">
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Id)</th>
+        <th>@Html.DisplayNameFor(model => model.FirstName)</th>
+        <th>@Html.DisplayNameFor(model => model.SecondName)</th>
+        @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+        {
+            <th>Actions</th>
+        }
+    </tr>
+
+    @foreach (var client in Model)
+    {
+        <tr class="paginate">
+            <td>@Html.DisplayFor(models => client.Id)</td>
+            <td>@Html.DisplayFor(models => client.FirstName)</td>
+            <td>@Html.DisplayFor(models => client.SecondName)</td>
+            @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+            {
+                <td>
+                    @Html.ActionLink("edit", "EditClient", new {id = client.Id}, new {@class = "editItem"}) /
+                    @Html.ActionLink("delete", "DeleteClientR", new {id = client.Id}, new {@class = "deleteItem"})
+                </td>
+            }
+        </tr>
+    }
+</table>
+<div id="page-nav"></div>
+</body>
+<div id="modDialog" class="modal">
+    <div id="dialogContent" class="modal-dialog"></div>
+</div>
+
+<script>
+    $(function () {
+        $(".editItem, .addItem, .deleteItem").click(function (e) {
+            e.preventDefault();
+            $.get(this.href, function(data) {
+                $('#dialogContent').html(data);
+                $('#modDialog').modal('show');
+            });
+        });
+
+        redrawPaginator($("#numPerPage").val());
+        $("#numPerPage").change(function () {
+            redrawPaginator(this.value);
+        });
+    });
+
+    
+    
+    //$("input[id^='editbutton']").click(function (e) {
+    //    var ind = this.id.indexOf("-");
+    //    var id = this.id.substring(ind + 1);
+
+    //    var row = $("#table-row-" + id);
+
+    //    row.children("td").each(function (i, cell) {
+    //        var $cell = $(cell);
+
+    //        if ($cell.hasClass("noteditable")) {
+    //            $cell.children("input").each(function(i, data) {
+    //                var $data = $(data);
+    //                $data.attr("disabled", false);
+    //            });
+    //            //$cell.attr("disabled", true);
+    //        } else {
+
+    //        }
+    //    });
+    //});
+    //jQuery(function ($) {
+    //    var pageParts = $(".paginate");
+    //    var numPages = pageParts.length;
+    //    var perPage = 2;
+    //    pageParts.hide();
+    //    pageParts.slice(0, perPage).show();
+
+    //    $("#page-nav").pagination({
+    //        items: numPages,
+    //        itemsOnPage: perPage,
+    //        cssStyle: "light-theme",
+
+    //        onPageClick: function (pageNum) {
+    //            var start = perPage * (pageNum - 1);
+    //            var end = start + perPage;
+    //            pageParts.hide();
+    //            pageParts.slice(start, end).show();
+    //        }
+    //    });
+
+    //});
+
+    @*$("#btnGetMovies").click(function () {
+        var actionUrl = '@Url.Action("Index", "TableView")';
+        $.getJSON(actionUrl, displayData);
+    });
+
+    function displayData(response) {
+        if (response != null) {
+            for (var i = 0; i < response.length; i++) {
+                $("#movieList").append("<li>" + response[i].Title + " " + response[i].Genre + " " + response[i].Year + "</li>")
+            }
+        }
+    }*@
+
+
+</script>

@@ -1,0 +1,68 @@
+﻿@using System.Web.Mvc.Html
+
+@model WebApplication1.Models.ClientModel
+@{
+    ViewBag.tableName = "Clients";
+}
+
+@Scripts.Render("~/bundles/validate")
+<body>
+@using (Ajax.BeginForm("AddClient", "", new AjaxOptions()
+{
+    HttpMethod = "POST",
+    OnSuccess = "onSuccess",
+    OnFailure = "test",
+}, new {@id = "form"}))
+{
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close" data-dismiss="modal" area-hidden="true">X</button>
+            <h4>Edit client</h4>
+        </div>
+        <div class="modal-body">
+            <table>
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
+                <tr>
+                    <td>@Html.LabelFor(model => model.FirstName)</td>
+                    <td>@Html.TextBoxFor(model => model.FirstName, new {@class = "form-control"})</td>
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new {@class = "text-danger"})
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.SecondName)</td>
+                    <td>@Html.TextBoxFor(model => model.SecondName, new {@class = "form-control"})</td>
+                    @Html.ValidationMessageFor(model => model.SecondName, "", new {@class = "text-danger"})
+                </tr>
+            </table>
+            
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" data-dismiss="modal">Закрыть</button>
+        <button class="btn btn-primary" type="submit">Сохранить изменения</button>
+    </div>
+}
+</body>
+
+
+<script>
+    function onSuccess(data) {
+        if (data.success === true) {
+            $(".close").click();
+            getTable('@ViewBag.tableName');
+        } else {
+            //error
+            $('label[id^="error-"]').each(function (i, elem) {
+                elem.remove();
+            });
+            for (var i in data.error) {
+                if (data.error.hasOwnProperty(i)) {
+                    $(".modal-body").append("<div><label class='text-danger' id='error-" + i + "'>" + data.error[i] + "</label></div>");
+                }
+            };
+        }
+    };
+
+
+</script>

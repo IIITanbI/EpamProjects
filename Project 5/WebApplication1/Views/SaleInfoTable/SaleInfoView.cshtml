@@ -1,0 +1,76 @@
+﻿@using System.Web.Mvc.Html
+@using WebApplication1.Models
+@model IEnumerable<WebApplication1.Models.SaleInfoModel>
+
+<link type="text/css" rel="stylesheet" href="~/Content/simplePagination.css" />
+@Scripts.Render("~/Scripts/jquery.simplePagination.js")
+@Scripts.Render("~/Scripts/MyScript/MyScript.js")
+
+<body>
+<div><input type="number" value="20" min="1" id="numPerPage">
+</div>
+    @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+    {
+        @Html.ActionLink("Add", "AddSaleInfo", "", new {@class = "addItem"})
+    }
+
+    <table class="table table-striped">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Id)</th>
+            <th>@Html.DisplayNameFor(model => model.ProductName)</th>
+            <th>@Html.DisplayNameFor(model => model.ClientFirstName)</th>
+            <th>@Html.DisplayNameFor(model => model.ClientSecondName)</th>
+            <th>@Html.DisplayNameFor(model => model.ManagerName)</th>
+            <th>@Html.DisplayNameFor(model => model.Date)</th>
+            <th>@Html.DisplayNameFor(model => model.Cost)</th>
+            <th>@Html.DisplayNameFor(model => model.FileName)</th>
+            @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+            {
+                <th>Actions</th>
+            }
+        </tr>
+
+        @foreach (var client in Model)
+        {
+            <tr class="paginate">
+                <td>@Html.DisplayFor(models => client.Id)</td>
+                <td>@Html.DisplayFor(models => client.ProductName)</td>
+                <td>@Html.DisplayFor(models => client.ClientFirstName)</td>
+                <td>@Html.DisplayFor(models => client.ClientSecondName)</td>
+                <td>@Html.DisplayFor(models => client.ManagerName)</td>
+                <td>@Html.DisplayFor(models => client.Date)</td>
+                <td>@Html.DisplayFor(models => client.Cost)</td>
+                <td>@Html.DisplayFor(models => client.FileName)</td>
+                @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+                {
+                    <td>
+                        @Html.ActionLink("edit", "EditSaleInfo", new {id = client.Id}, new {@class = "editItem"}) /
+                        @Html.ActionLink("delete", "DeleteSaleInfoR", new {id = client.Id}, new {@class = "deleteItem"})
+                    </td>
+                }
+            </tr>
+        }
+    </table>
+    <div id="page-nav"></div>
+</body>
+<div id="modDialog" class="modal">
+    <div id="dialogContent" class="modal-dialog"></div>
+</div>
+
+<script>
+    $(function () {
+        $(".editItem, .addItem, .deleteItem").click(function (e) {
+            e.preventDefault();
+            $.get(this.href, function(data) {
+                $('#dialogContent').html(data);
+                $('#modDialog').modal('show');
+            });
+        });
+
+        redrawPaginator($("#numPerPage").val());
+        $("#numPerPage").change(function () {
+            redrawPaginator(this.value);
+        });
+    });
+
+</script>
