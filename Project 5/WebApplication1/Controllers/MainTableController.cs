@@ -8,7 +8,7 @@ using WebApplication1.Models;
 namespace WebApplication1.Controllers
 {
     
-    public class TestController : Controller
+    public class MainTableController : Controller
     {
         // GET: Test
         public ActionResult Index()

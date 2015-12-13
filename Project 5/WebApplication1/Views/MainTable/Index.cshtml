@@ -1,0 +1,53 @@
+﻿@{
+    ViewBag.Title = "TestView";
+}
+@using System.Collections
+@using System.Web.Mvc.Html
+@using System.Web.WebSockets
+@using WebApplication1.Models
+@model IEnumerable<SelectListItem>
+
+
+
+
+@Html.DropDownList("Tables", Model, new
+{
+    @class = "control-label col-md-2"
+})
+<div>&nbsp;</div>
+<div id="result"></div>
+<script>
+    function getTable(tablename) {
+        $('#result').html("Loading");
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetTable")',
+            data:
+            {
+                tableName: tablename
+            },
+            datatype: "html",
+            success: function (data) {
+                $('#result').html(data);
+            }
+        });
+    };
+    $("#Tables").change(function () {
+        var text = $("#Tables option:selected").text();
+        getTable(text);
+    });
+
+    @*$("#Tables1").change(function () {
+    var actionUrl = '@Url.Action("Index", "TableView")';
+    $.getJSON(actionUrl, displayData);
+});
+function displayData(response) {
+    if (response != null) {
+        for (var i = 0; i < response.length; i++) {
+            $("#movieList").append("<li>" + response[i].Id + " " + response[i].FirstName + " " + response[i].SecondName + "</li>")
+        }
+    }
+}*@
+
+
+</script>

@@ -183,7 +183,7 @@
     <Compile Include="Controllers\TableControllers\ManagerTableController.cs" />
     <Compile Include="Controllers\TableControllers\ProductTableController.cs" />
     <Compile Include="Controllers\TableControllers\SaleInfoTableController.cs" />
-    <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\MainTableController.cs" />
     <Compile Include="folder\CustomDateAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -260,9 +260,7 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\TestView.cshtml" />
-    <Content Include="Views\Test\Index.cshtml" />
+    <Content Include="Views\MainTable\Index.cshtml" />
     <Content Include="Views\ClientTable\ClientView.cshtml" />
     <Content Include="Views\ClientTable\EditClientView.cshtml" />
     <Content Include="Views\ClientTable\AddClientView.cshtml" />

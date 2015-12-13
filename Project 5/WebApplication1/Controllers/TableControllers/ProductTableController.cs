@@ -10,6 +10,7 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Controllers.TableControllers
 {
+    [Authorize(Roles = "user")]
     public class ProductTableController : Controller
     {
         public ProductTableController()
@@ -30,6 +31,7 @@ namespace WebApplication1.Controllers.TableControllers
             return _errList;
         }
 
+        
         [HttpGet]
         public ActionResult GetProducts()
         {
@@ -38,12 +40,14 @@ namespace WebApplication1.Controllers.TableControllers
             return PartialView("ProductView", res);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public ActionResult AddProduct()
         {
             var product = new ProductModel();
             return PartialView("AddProductView", product);
         }
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public ActionResult AddProduct(ProductModel product)
         {
@@ -77,13 +81,14 @@ namespace WebApplication1.Controllers.TableControllers
                 error = _errList
             });
         }
-
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public ActionResult EditProduct(int id)
         {
             var product = Mapper.Map<ProductModel>(new ProductRepository().ProductObjectById(id));
             return PartialView("EditProductView", product);
         }
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public ActionResult EditProduct(ProductModel product)
         {
@@ -117,13 +122,15 @@ namespace WebApplication1.Controllers.TableControllers
             });
         }
 
-
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public ActionResult DeleteProductR(int id)
         {
             var product = new ProductModel(){ Id = id };
             return PartialView("DeleteProductView", product);
         }
+
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public ActionResult DeleteProduct(int id)
         {

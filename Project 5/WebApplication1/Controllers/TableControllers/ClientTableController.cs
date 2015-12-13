@@ -10,6 +10,7 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Controllers.TableControllers
 {
+    [Authorize(Roles = "user")]
     public class ClientTableController : Controller
     {
         public ClientTableController()
@@ -30,7 +31,7 @@ namespace WebApplication1.Controllers.TableControllers
             return _errList;
         }
 
-        [Authorize(Roles = "user")]
+        
         [HttpGet]
         public ActionResult GetClients()
         {

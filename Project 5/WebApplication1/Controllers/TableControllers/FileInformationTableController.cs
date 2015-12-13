@@ -10,6 +10,7 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Controllers.TableControllers
 {
+    [Authorize(Roles = "user")]
     public class FileInformationTableController : Controller
     {
         public FileInformationTableController()
@@ -37,13 +38,14 @@ namespace WebApplication1.Controllers.TableControllers
             var res = Mapper.Map<IList<FileInformation>, IList<FileInformationModel>>(fileInformations);
             return PartialView("FileInformationView", res);
         }
-
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public ActionResult AddFileInformation()
         {
             var fileInformation = new FileInformationModel();
             return PartialView("AddFileInformationView", fileInformation);
         }
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public ActionResult AddFileInformation(FileInformationModel fileInformation)
         {
@@ -80,12 +82,14 @@ namespace WebApplication1.Controllers.TableControllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public ActionResult EditFileInformation(int id)
         {
             var fileInformation = Mapper.Map<FileInformationModel>(new FileInformationRepository().FileInformationObjectById(id));
             return PartialView("EditFileInformationView", fileInformation);
         }
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public ActionResult EditFileInformation(FileInformationModel fileInformation)
         {
             List<string> _errList = new List<string>();
@@ -120,12 +124,14 @@ namespace WebApplication1.Controllers.TableControllers
 
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public ActionResult DeleteFileInformationR(int id)
         {
             var fileInformation = new FileInformationModel() { Id = id };
             return PartialView("DeleteFileInformationView", fileInformation);
         }
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public ActionResult DeleteFileInformation(int id)
         {
             List<string> _errList = new List<string>();

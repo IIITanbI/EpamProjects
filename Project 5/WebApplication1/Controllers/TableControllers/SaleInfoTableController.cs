@@ -10,6 +10,7 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Controllers.TableControllers
 {
+    [Authorize(Roles = "user")]
     public class SaleInfoTableController : Controller
     {
         public SaleInfoTableController()
@@ -44,12 +45,14 @@ namespace WebApplication1.Controllers.TableControllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public ActionResult AddSaleInfo()
         {
             var saleInfo = new SaleInfoModel();
             return PartialView("AddSaleInfoView", saleInfo);
         }
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public ActionResult AddSaleInfo(SaleInfoModel saleInfo)
         {
             List<string> _errList = new List<string>();
@@ -91,12 +94,14 @@ namespace WebApplication1.Controllers.TableControllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public ActionResult EditSaleInfo(int id)
         {
             var saleInfo = Mapper.Map<SaleInfoModel>(new SaleInfoRepository().SaleInfoObjectById(id));
             return PartialView("EditSaleInfoView", saleInfo);
         }
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public ActionResult EditSaleInfo(SaleInfoModel saleInfo)
         {
             List<string> _errList = new List<string>();
@@ -137,12 +142,14 @@ namespace WebApplication1.Controllers.TableControllers
 
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public ActionResult DeleteSaleInfoR(int id)
         {
             var saleInfo = new SaleInfoModel() { Id = id };
             return PartialView("DeleteSaleInfoView", saleInfo);
         }
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public ActionResult DeleteSaleInfo(int id)
         {
             List<string> _errList = new List<string>();

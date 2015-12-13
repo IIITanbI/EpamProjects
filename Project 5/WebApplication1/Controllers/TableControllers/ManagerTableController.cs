@@ -10,6 +10,7 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Controllers.TableControllers
 {
+    [Authorize(Roles = "user")]
     public class ManagerTableController : Controller
     {
         public ManagerTableController()
@@ -39,12 +40,14 @@ namespace WebApplication1.Controllers.TableControllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public ActionResult AddManager()
         {
             var manager = new ManagerModel();
             return PartialView("AddManagerView", manager);
         }
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public ActionResult AddManager(ManagerModel manager)
         {
             List<string> _errList = new List<string>();
@@ -79,12 +82,14 @@ namespace WebApplication1.Controllers.TableControllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public ActionResult EditManager(int id)
         {
             var manager = Mapper.Map<ManagerModel>(new ManagerRepository().ManagerObjectById(id));
             return PartialView("EditManagerView", manager);
         }
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public ActionResult EditManager(ManagerModel manager)
         {
             List<string> _errList = new List<string>();
@@ -119,12 +124,14 @@ namespace WebApplication1.Controllers.TableControllers
 
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public ActionResult DeleteManagerR(int id)
         {
             var manager = new ManagerModel() { Id = id };
             return PartialView("DeleteManagerView", manager);
         }
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public ActionResult DeleteManager(int id)
         {
             List<string> _errList = new List<string>();

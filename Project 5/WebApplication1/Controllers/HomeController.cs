@@ -10,12 +10,10 @@ namespace WebApplication1.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "MainTable");
         }
 
-        public ActionResult Go()
-        {
-            return RedirectToAction("Index", "Test");
-        }
     }
 }
