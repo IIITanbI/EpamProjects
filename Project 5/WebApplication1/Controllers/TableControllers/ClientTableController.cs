@@ -36,6 +36,9 @@ namespace WebApplication1.Controllers.TableControllers
         public ActionResult GetClients()
         {
             var clients = new ClientsRepository().Items.ToList();
+            var tt = clients[0];
+            tt = null;
+            var nn = nameof(tt.FirstName);
             var res = Mapper.Map<IList<Client>, IList<ClientModel>>(clients);
             return PartialView("ClientView", res);
         }

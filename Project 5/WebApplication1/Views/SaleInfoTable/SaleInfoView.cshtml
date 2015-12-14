@@ -2,6 +2,11 @@
 @using WebApplication1.Models
 @model IEnumerable<WebApplication1.Models.SaleInfoModel>
 
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/modernizr")
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryajax")
+@Scripts.Render("~/bundles/bootstrap")
 <link type="text/css" rel="stylesheet" href="~/Content/simplePagination.css" />
 @Scripts.Render("~/Scripts/jquery.simplePagination.js")
 @Scripts.Render("~/Scripts/MyScript/MyScript.js")
@@ -28,6 +33,22 @@
             {
                 <th>Actions</th>
             }
+        </tr>
+
+        <tr>
+            <th></th>
+            <th><input type="text" id="filter-ProductName"/></th>
+            <th><input type="text" id="filter-ClientFirstName"/></th>
+            <th><input type="text" id="filter-ClientSecondName"/></th>
+            <th><input type="text" id="filter-ManagerName"/></th>
+            <th>
+                <input type="date" id="filter-Date-from"/>
+                <input type="date" id="filter-Date-to" />
+            </th>
+            <th></th>
+            <th><input type="text" id="filter-FileName" /></th>
+            <th></th>
+            
         </tr>
 
         @foreach (var client in Model)
@@ -71,6 +92,70 @@
         $("#numPerPage").change(function () {
             redrawPaginator(this.value);
         });
+
+
+
+        $("#filter-ProductName, #filter-ClientFirstName, #filter-ClientSecondName, #filter-ManagerName, #filter-FileName").change(function () {
+            var $pp = this.parentNode;
+            var orvalue = this.value;
+            var ind = $pp.cellIndex;
+            var $arr = $.merge($(".paginate"), $(".filtered"));
+            $arr.each(function (i, v) {
+                var $row = $(v);
+                var $cell = $row.children()[ind];
+                var value = $cell.firstChild.data;
+                if (orvalue === "" || value === orvalue) {
+                    $row.show();
+                    $row.removeClass("filtered");
+                    $row.addClass("paginate");
+                }
+                else {
+                    $row.hide();
+                    $row.removeClass("paginate");
+                    $row.addClass("filtered");
+                }
+            });
+            redrawPaginator($("#numPerPage").val());
+        });
+
+        $("#filter-Date-from, #filter-Date-to").change(function () {
+            var $pp = this.parentNode;
+            var orvalue = this.value;
+            var from_value = new Date($("#filter-Date-from").val());
+            var to_value = new Date($("#filter-Date-to").val());
+            if (from_value == "Invalid Date")
+                from_value = 0;
+            else from_value = from_value.getTime();
+
+            if (to_value == "Invalid Date") 
+                to_value = 8640000000000000;
+            else to_value = to_value.getTime();
+
+            var ind = $pp.cellIndex;
+            var $arr = $.merge($(".paginate"), $(".filtered"));
+            $arr.each(function (i, v) {
+                var $row = $(v);
+                var $cell = $row.children()[ind];
+                
+                var value = $cell.firstChild.data;
+                var dd = new Date(value);
+                if (dd != "Invalid Date") {
+                    var c_value = dd.getTime();
+                    if (c_value >= from_value && c_value <= to_value) {
+                        $row.show();
+                        $row.removeClass("filtered");
+                        $row.addClass("paginate");
+                    }
+                    else {
+                        $row.hide();
+                        $row.removeClass("paginate");
+                        $row.addClass("filtered");
+                    }
+                }
+            });
+            redrawPaginator($("#numPerPage").val());
+        });
     });
+
 
 </script>

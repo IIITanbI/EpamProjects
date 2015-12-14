@@ -9,6 +9,7 @@ jQuery(function ($) {
 function redrawPaginator(perPage) {
     var pageParts = $(".paginate");
     var numPages = pageParts.length;
+    
 
     pageParts.hide();
     pageParts.slice(0, perPage).show();

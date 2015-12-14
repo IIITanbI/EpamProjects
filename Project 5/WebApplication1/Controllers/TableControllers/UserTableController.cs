@@ -16,6 +16,7 @@ namespace WebApplication1.Controllers.TableControllers
     [Authorize(Roles = "admin")]
     public class UserTableController : Controller
     {
+
         public List<string> GetModelErrors()
         {
             List<string> _errList = new List<string>();
@@ -44,7 +45,7 @@ namespace WebApplication1.Controllers.TableControllers
             {
                 users = usersContext.Users.ToList();
             }
-            var res = users.Select(user => new UserModel {Email = user.Email, Password = user.PasswordHash});
+            var res = users.Select(user => new UserModel { Email = user.Email, Password = user.PasswordHash });
             return PartialView("UserView", res);
         }
 
@@ -64,7 +65,7 @@ namespace WebApplication1.Controllers.TableControllers
             if (ModelState.IsValid)
             {
                 var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-                    
+
                 var newUser = new ApplicationUser { Email = user.Email, UserName = user.Email };
                 string password = user.Password;
                 var result = userManager.Create(newUser, password);
@@ -120,7 +121,7 @@ namespace WebApplication1.Controllers.TableControllers
                     var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
 
                     var newUser = new ApplicationUser { Email = user.Email, UserName = user.Email };
-                    var result =  userManager.UpdateAsync(newUser).Result;
+                    var result = userManager.UpdateAsync(newUser).Result;
                     if (!result.Succeeded)
                         _errList.AddRange(result.Errors);
                     else
@@ -146,7 +147,7 @@ namespace WebApplication1.Controllers.TableControllers
         [HttpGet]
         public ActionResult DeleteUserR(string email)
         {
-            var user = new UserModel() { Email = email};
+            var user = new UserModel() { Email = email };
             return PartialView("DeleteUserView", user);
         }
         [HttpPost]
