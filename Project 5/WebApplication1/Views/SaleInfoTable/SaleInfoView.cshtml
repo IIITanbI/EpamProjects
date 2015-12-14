@@ -2,84 +2,103 @@
 @using WebApplication1.Models
 @model IEnumerable<WebApplication1.Models.SaleInfoModel>
 
-@Styles.Render("~/Content/css")
-@Scripts.Render("~/bundles/modernizr")
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/jqueryajax")
-@Scripts.Render("~/bundles/bootstrap")
+
 <link type="text/css" rel="stylesheet" href="~/Content/simplePagination.css" />
 @Scripts.Render("~/Scripts/jquery.simplePagination.js")
 @Scripts.Render("~/Scripts/MyScript/MyScript.js")
-
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-more.js"></script>
 <body>
-<div><input type="number" value="20" min="1" id="numPerPage">
-</div>
-    @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
-    {
-        @Html.ActionLink("Add", "AddSaleInfo", "", new {@class = "addItem"})
-    }
-
-    <table class="table table-striped">
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Id)</th>
-            <th>@Html.DisplayNameFor(model => model.ProductName)</th>
-            <th>@Html.DisplayNameFor(model => model.ClientFirstName)</th>
-            <th>@Html.DisplayNameFor(model => model.ClientSecondName)</th>
-            <th>@Html.DisplayNameFor(model => model.ManagerName)</th>
-            <th>@Html.DisplayNameFor(model => model.Date)</th>
-            <th>@Html.DisplayNameFor(model => model.Cost)</th>
-            <th>@Html.DisplayNameFor(model => model.FileName)</th>
-            @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
-            {
-                <th>Actions</th>
-            }
-        </tr>
-
-        <tr>
-            <th></th>
-            <th><input type="text" id="filter-ProductName"/></th>
-            <th><input type="text" id="filter-ClientFirstName"/></th>
-            <th><input type="text" id="filter-ClientSecondName"/></th>
-            <th><input type="text" id="filter-ManagerName"/></th>
-            <th>
-                <input type="date" id="filter-Date-from"/>
-                <input type="date" id="filter-Date-to" />
-            </th>
-            <th></th>
-            <th><input type="text" id="filter-FileName" /></th>
-            <th></th>
-            
-        </tr>
-
-        @foreach (var client in Model)
+    <div id="body">
+        <div>
+            <input type="number" value="20" min="1" id="numPerPage">
+        </div>
+        @Html.ActionLink("graphics", "GetGrafics", "", new { @class = "getGraphics" })
+        @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
         {
-            <tr class="paginate">
-                <td>@Html.DisplayFor(models => client.Id)</td>
-                <td>@Html.DisplayFor(models => client.ProductName)</td>
-                <td>@Html.DisplayFor(models => client.ClientFirstName)</td>
-                <td>@Html.DisplayFor(models => client.ClientSecondName)</td>
-                <td>@Html.DisplayFor(models => client.ManagerName)</td>
-                <td>@Html.DisplayFor(models => client.Date)</td>
-                <td>@Html.DisplayFor(models => client.Cost)</td>
-                <td>@Html.DisplayFor(models => client.FileName)</td>
+            @Html.ActionLink("Add", "AddSaleInfo", "", new { @class = "addItem" })
+        }
+
+        <table class="table table-striped">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Id)</th>
+                <th>@Html.DisplayNameFor(model => model.ProductName)</th>
+                <th>@Html.DisplayNameFor(model => model.ClientFirstName)</th>
+                <th>@Html.DisplayNameFor(model => model.ClientSecondName)</th>
+                <th>@Html.DisplayNameFor(model => model.ManagerName)</th>
+                <th>@Html.DisplayNameFor(model => model.Date)</th>
+                <th>@Html.DisplayNameFor(model => model.Cost)</th>
+                <th>@Html.DisplayNameFor(model => model.FileName)</th>
                 @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
                 {
-                    <td>
-                        @Html.ActionLink("edit", "EditSaleInfo", new {id = client.Id}, new {@class = "editItem"}) /
-                        @Html.ActionLink("delete", "DeleteSaleInfoR", new {id = client.Id}, new {@class = "deleteItem"})
-                    </td>
+                    <th>Actions</th>
                 }
             </tr>
-        }
-    </table>
-    <div id="page-nav"></div>
+
+            <tr>
+                <th></th>
+                <th><input type="text" id="filter-ProductName" /></th>
+                <th><input type="text" id="filter-ClientFirstName" /></th>
+                <th><input type="text" id="filter-ClientSecondName" /></th>
+                <th><input type="text" id="filter-ManagerName" /></th>
+                <th>
+                    <input type="date" id="filter-Date-from" />
+                    <input type="date" id="filter-Date-to" />
+                </th>
+                <th></th>
+                <th><input type="text" id="filter-FileName" /></th>
+                <th></th>
+
+            </tr>
+
+            @foreach (var client in Model)
+            {
+                <tr class="paginate">
+                    <td>@Html.DisplayFor(models => client.Id)</td>
+                    <td>@Html.DisplayFor(models => client.ProductName)</td>
+                    <td>@Html.DisplayFor(models => client.ClientFirstName)</td>
+                    <td>@Html.DisplayFor(models => client.ClientSecondName)</td>
+                    <td>@Html.DisplayFor(models => client.ManagerName)</td>
+                    <td>@Html.DisplayFor(models => client.Date)</td>
+                    <td>@Html.DisplayFor(models => client.Cost)</td>
+                    <td>@Html.DisplayFor(models => client.FileName)</td>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+                    {
+                        <td>
+                            @Html.ActionLink("edit", "EditSaleInfo", new { id = client.Id }, new { @class = "editItem" }) /
+                            @Html.ActionLink("delete", "DeleteSaleInfoR", new { id = client.Id }, new { @class = "deleteItem" })
+                        </td>
+                    }
+                </tr>
+            }
+        </table>
+        <div id="page-nav"></div>
+        <div id="modDialog" class="modal">
+            <div id="dialogContent" class="modal-dialog"></div>
+        </div>
+    </div>
 </body>
-<div id="modDialog" class="modal">
-    <div id="dialogContent" class="modal-dialog"></div>
-</div>
+
 
 <script>
     $(function () {
+
+        $(".getGraphics").click(function (e) {
+            e.preventDefault();
+            $.get(this.href, function (data) {
+                $('#body').html(data);
+            });
+        });
+
+        redrawPaginator($("#numPerPage").val());
+        $("#numPerPage").change(function () {
+            redrawPaginator(this.value);
+        });
+
+
+
+
         $(".editItem, .addItem, .deleteItem").click(function (e) {
             e.preventDefault();
             $.get(this.href, function(data) {

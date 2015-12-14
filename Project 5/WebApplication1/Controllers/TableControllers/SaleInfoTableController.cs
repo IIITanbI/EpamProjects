@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -34,6 +35,46 @@ namespace WebApplication1.Controllers.TableControllers
                 }
             }
             return _errList;
+        }
+
+        [HttpGet]
+        public ActionResult GetGrafics()
+        {
+            return PartialView("Graphics");
+        }
+
+        [HttpGet]
+        public ActionResult GetManagerGraphic()
+        {
+            var srep = new SaleInfoRepository();
+            var mrep = new ManagerRepository();
+
+            var saleInfos = srep.Items.ToList();
+            var managers = mrep.Items.ToList();
+            var dict = managers.ToDictionary(manager => manager.Id, manager => 0);
+
+
+            int total = saleInfos.Count;
+            foreach (var saleInfo in saleInfos)
+            {
+                var _manager = saleInfo.FileInformation.Manager;
+                try
+                {
+                    dict[_manager.Id]++;
+                }
+                catch (Exception e)
+                { }
+            }
+
+
+            var res = new List<KeyValuePair<string, int>>();
+
+            foreach (var entry in dict)
+            {
+                var manag = managers.FirstOrDefault(manager => manager.Id == entry.Key);
+                res.Add(new KeyValuePair<string, int>(manag.SecondName, entry.Value));
+            }
+            return Json(res, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

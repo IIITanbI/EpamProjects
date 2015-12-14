@@ -288,6 +288,7 @@
     <Content Include="Views\UserTable\UserView.cshtml" />
     <Content Include="Views\UserTable\DeleteUserView.cshtml" />
     <Content Include="Views\UserTable\EditUserView.cshtml" />
+    <Content Include="Views\SaleInfoTable\Graphics.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj">
